@@ -1,5 +1,8 @@
 using System.Diagnostics;
+using Bottles;
+using FubuCore;
 using FubuCore.Conversion;
+using FubuMVC.Core.Packaging;
 using FubuTestingSupport;
 using KayakTestApplication;
 using NUnit.Framework;
@@ -18,6 +21,10 @@ namespace Serenity.Testing
         [TestFixtureSetUp]
         public void SetUp()
         {
+            FubuMvcPackageFacility.PhysicalRootPath = FileSystem.Combine("..", "..", "..", "KayakTestApplication");
+
+
+
             var context = new TestContext();
             theSystem = new InProcessSerenitySystem<KayakApplication>();
             theSystem.Setup();
@@ -43,7 +50,7 @@ namespace Serenity.Testing
         [Test]
         public void can_get_with_no_body()
         {
-            theApplication.Endpoints().ReadTextFrom<SayHelloController>(x => x.Hello())
+            theApplication.Endpoints().Get<SayHelloController>(x => x.Hello()).ReadAsText()
                 .ShouldStartWith("Hello");
         }
 

@@ -39,6 +39,8 @@ namespace Serenity
                     ApplicationRoot = "http://localhost:" + settings.Port
                 }));
 
+                runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(this));
+
                 return runtime;
             });
 
@@ -110,23 +112,31 @@ namespace Serenity
         {
             _browser = new Lazy<IWebDriver>(() =>
             {
-                var reset = startListener(_settings, _runtime.Value);
-
-                _disposals.Add(() =>
-                {
-                    _listener.Stop();
-                    _listener.SafeDispose();
-
-                    _listeningThread.Join(3000);
-                });
-
-                reset.WaitOne();
+                start();
 
                 var browser = WebDriverSettings.DriverBuilder()();
                 _disposals.Add(browser.Close);
 
                 return browser;
             });
+        }
+
+        
+        private void start()
+        {
+            if (_listener != null) return;
+
+            var reset = startListener(_settings, _runtime.Value);
+
+            _disposals.Add(() =>
+            {
+                _listener.Stop();
+                _listener.SafeDispose();
+
+                _listeningThread.Join(3000);
+            });
+
+            reset.WaitOne();
         }
 
         public void StopWebDriver()
@@ -151,6 +161,7 @@ namespace Serenity
 
         public EndpointDriver Endpoints()
         {
+            start();
             return new EndpointDriver(Urls);
         }
     }
