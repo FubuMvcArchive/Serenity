@@ -239,6 +239,7 @@
     <Content Include="WebContent\content\scripts\images\treeview-gray.gif" />
     <Content Include="WebContent\content\scripts\images\treeview-red-line.gif" />
     <Content Include="WebContent\content\scripts\images\treeview-red.gif" />
+    <Content Include="WebContent\content\scripts\jasmine.teamcity_reporter.js" />
     <Content Include="WebContent\content\scripts\jquery.treeview.css" />
     <Content Include="WebContent\content\scripts\jquery.treeview.js" />
     <Content Include="WebContent\content\scripts\serenity-jasmine.js" />
