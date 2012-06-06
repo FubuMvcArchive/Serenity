@@ -87,6 +87,13 @@ namespace Serenity.Jasmine
                 Wait.Until(() => browser.FindElement(By.ClassName("finished-at")).Text.IsNotEmpty());
                 var failures = browser.FindElements(By.CssSelector("div.suite.failed"));
 
+                if (_input.Mode == JasmineMode.run)
+                {
+                    ((IJavaScriptExecutor) browser).ExecuteScript("$('#jasmine-reporter').show();");
+                    var logs = browser.FindElements(By.ClassName("jasmine-reporter-item"));
+                    logs.Each(message => Console.WriteLine(message.Text));
+                    ((IJavaScriptExecutor) browser).ExecuteScript("$('#jasmine-reporter').hide();");
+                }
 
                 if (failures.Any())
                 {
