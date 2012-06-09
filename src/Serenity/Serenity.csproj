@@ -75,9 +75,6 @@
     <Reference Include="Kayak">
       <HintPath>..\packages\Kayak.0.7.2\lib\Kayak.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -245,6 +242,7 @@
     <Content Include="WebContent\content\scripts\jquery.treeview.css" />
     <Content Include="WebContent\content\scripts\jquery.treeview.js" />
     <Content Include="WebContent\content\scripts\serenity-jasmine.js" />
+    <Content Include="WebContent\content\scripts\sinon-1.2.0.js" />
     <EmbeddedResource Include="Jasmine\Header.htm" />
     <Content Include="WebContent\content\images\fubu-project.png" />
     <Content Include="WebContent\content\images\jasmine_logo.png" />

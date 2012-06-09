@@ -63,7 +63,6 @@ namespace Serenity.Jasmine
             _kayakLoop.Start();
 
 
-            // TODO -- make a helper method for this
             _driver.NavigateToHome();
 
             _reset.WaitOne();
