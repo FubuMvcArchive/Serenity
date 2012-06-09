@@ -34,23 +34,23 @@ namespace Serenity
             }
         }
 
-        public static Func<IWebDriver> DriverBuilder()
+        public static IBrowserLifecycle GetBrowserLifecyle()
         {
-            return DriverBuilder(Current.Browser);
+            return GetBrowserLifecyle(Current.Browser);
         }
 
-        public static Func<IWebDriver> DriverBuilder(BrowserType browserType)
+        public static IBrowserLifecycle GetBrowserLifecyle(BrowserType browserType)
         {
             switch (browserType)
             {
                 case BrowserType.Chrome:
-                    return () => new ChromeDriver();
+                    return new ChromeBrowser();
 
                 case BrowserType.IE:
-                    return () => new InternetExplorerDriver();
+                    return new InternetExplorerBrowser();
 
                 case BrowserType.Firefox:
-                    return () => new FirefoxDriver();
+                    return new FirefoxBrowser();
 
                 default:
                     throw new ArgumentOutOfRangeException("Unrecognized browser");

@@ -42,9 +42,9 @@ namespace Serenity.Jasmine
         [RequiredUsage("add_folders")]
         public IEnumerable<string> Folders { get; set; }
 
-        public Func<IWebDriver> GetBrowserBuilder()
+        public IBrowserLifecycle GetBrowser()
         {
-            return WebDriverSettings.DriverBuilder(BrowserFlag);
+            return WebDriverSettings.GetBrowserLifecyle(BrowserFlag);
         }
     }
 }

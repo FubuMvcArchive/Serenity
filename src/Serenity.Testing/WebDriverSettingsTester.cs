@@ -44,7 +44,7 @@ namespace Serenity.Testing
         [Test]
         public void build_firefox_driver()
         {
-            using (var browser = WebDriverSettings.DriverBuilder(BrowserType.Firefox)())
+            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Firefox).Driver)
             {
                 browser.ShouldBeOfType<FirefoxDriver>();
                 browser.Close();
@@ -55,7 +55,7 @@ namespace Serenity.Testing
         [Test]
         public void build_chrome_driver()
         {
-            using (var browser = WebDriverSettings.DriverBuilder(BrowserType.Chrome)())
+            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Chrome).Driver)
             {
                 browser.ShouldBeOfType<ChromeDriver>();
                 browser.Close();
@@ -67,7 +67,7 @@ namespace Serenity.Testing
         [Test]
         public void build_IE_driver_because_you_know_you_will_have_to_do_this_at_some_point()
         {
-            using (var browser = WebDriverSettings.DriverBuilder(BrowserType.IE)())
+            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.IE).Driver)
             {
                 browser.ShouldBeOfType<InternetExplorerDriver>();
                 browser.Close();

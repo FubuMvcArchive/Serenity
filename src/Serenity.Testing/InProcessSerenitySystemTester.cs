@@ -43,7 +43,8 @@ namespace Serenity.Testing
         [Test]
         public void can_activate_a_spark_screen_proving_that_the_file_system_paths_are_correct()
         {
-            theDriver.NavigateToUrl("http://localhost:5500/say/Jeremy");
+            theApplication.Navigation.NavigateTo(new NameModel{Name = "Jeremy"});
+
             theDriver.Driver.FindElement(By.TagName("h1")).Text.ShouldEqual("My name is Jeremy");
         }
 

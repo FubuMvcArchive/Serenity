@@ -9,17 +9,23 @@ namespace Serenity
     public class InProcessSerenitySystem<TSystem> : BasicSystem where TSystem : IApplicationSource, new()
     {
         private readonly Lazy<IApplicationUnderTest> _application;
+        private ApplicationSettings _settings;
 
         public InProcessSerenitySystem()
         {
             _application = new Lazy<IApplicationUnderTest>(() =>
             {
-                var settings = findApplicationSettings();
-                settings.Port = PortFinder.FindPort(settings.Port);
-                settings.RootUrl = "http://localhost:" + settings.Port;
+                _settings = findApplicationSettings();
+                _settings.Port = PortFinder.FindPort(_settings.Port);
+                _settings.RootUrl = "http://localhost:" + _settings.Port;
 
-                return new InProcessApplicationUnderTest<TSystem>(settings);
+                return new InProcessApplicationUnderTest<TSystem>(_settings);
             });
+        }
+
+        public ApplicationSettings Settings
+        {
+            get { return _settings; }
         }
 
         protected virtual ApplicationSettings findApplicationSettings()

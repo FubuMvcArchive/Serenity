@@ -1,6 +1,4 @@
-using System;
 using FubuMVC.Core;
-using OpenQA.Selenium;
 using StoryTeller.Engine;
 
 namespace Serenity
@@ -8,11 +6,11 @@ namespace Serenity
     public class SerenitySystem : BasicSystem
     {
         private readonly SerenityApplications _applications = new SerenityApplications();
-        private readonly Func<IWebDriver> _browserBuilder;
+        private readonly IBrowserLifecycle _browser;
 
         public SerenitySystem()
         {
-            _browserBuilder = WebDriverSettings.DriverBuilder();
+            _browser = WebDriverSettings.GetBrowserLifecyle();
         }
 
         public SerenityApplications Applications
@@ -23,7 +21,7 @@ namespace Serenity
         public void AddApplication(IApplicationSource source)
         {
             var settings = ApplicationSettings.ReadByName(source.GetType().Name);
-            var application = new ApplicationUnderTest(source, settings, _browserBuilder);
+            var application = new ApplicationUnderTest(source, settings, _browser);
             _applications.AddApplication(application);
         }
 

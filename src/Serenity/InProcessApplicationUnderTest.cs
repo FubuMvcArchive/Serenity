@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using FubuKayak;
 using FubuMVC.Core;
@@ -22,7 +23,7 @@ namespace Serenity
         private readonly IList<Action> _disposals = new List<Action>();
         private Listener _listener;
         private Thread _listeningThread;
-        private Lazy<IWebDriver> _browser;
+        private IBrowserLifecycle _browser;
 
         public InProcessApplicationUnderTest(ApplicationSettings settings)
         {
@@ -46,7 +47,7 @@ namespace Serenity
 
             _urls = new Lazy<IUrlRegistry>(() => _runtime.Value.Facility.Get<IUrlRegistry>());
 
-            StartWebDriver();
+            _browser = WebDriverSettings.GetBrowserLifecyle();
         }
 
         private ManualResetEvent startListener(ApplicationSettings settings, FubuRuntime runtime)
@@ -80,13 +81,14 @@ namespace Serenity
 
         public IWebDriver Driver
         {
-            get { return _browser.Value; }
+            get
+            {
+                start();
+
+                return _browser.Driver;
+            }
         }
 
-        public bool IsDriverInUse
-        {
-            get { return _browser != null && _browser.IsValueCreated; }
-        }
 
         public string RootUrl
         {
@@ -108,20 +110,11 @@ namespace Serenity
             return _runtime.Value.Facility.GetAll<T>();
         }
 
-        public void StartWebDriver()
+        public void RecycleWebDriver()
         {
-            _browser = new Lazy<IWebDriver>(() =>
-            {
-                start();
-
-                var browser = WebDriverSettings.DriverBuilder()();
-                _disposals.Add(browser.Close);
-
-                return browser;
-            });
+            _browser.Recycle();
         }
 
-        
         private void start()
         {
             if (_listener != null) return;
@@ -139,11 +132,6 @@ namespace Serenity
             reset.WaitOne();
         }
 
-        public void StopWebDriver()
-        {
-            _disposals.Each(x => x());
-        }
-
         public void Ping()
         {
             // NO-OP
@@ -151,12 +139,16 @@ namespace Serenity
 
         public void Teardown()
         {
-            StopWebDriver();
+            _browser.Dispose();
         }
 
         public NavigationDriver Navigation
         {
-            get { return new NavigationDriver(this); }
+            get
+            {
+                start();
+                return new NavigationDriver(this);
+            }
         }
 
         public EndpointDriver Endpoints()

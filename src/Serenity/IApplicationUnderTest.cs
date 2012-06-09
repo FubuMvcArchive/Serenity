@@ -18,11 +18,7 @@ namespace Serenity
         object GetInstance(Type type);
         IEnumerable<T> GetAll<T>();
 
-        // TODO -- don't care for this at all.  Needs to be 
-        // encapsulated into ApplicationUnderTest itself
-        void StartWebDriver();
-        void StopWebDriver();
-        bool IsDriverInUse { get; }
+        void RecycleWebDriver();
 
         void Ping();
 

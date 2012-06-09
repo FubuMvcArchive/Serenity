@@ -165,7 +165,7 @@ namespace Serenity.Jasmine
                 RootUrl = "http://localhost:" + _input.PortFlag
             };
 
-            var browserBuilder = _input.GetBrowserBuilder();
+            var browserBuilder = _input.GetBrowser();
 
             _applicationUnderTest = new ApplicationUnderTest(_application, applicationSettings, browserBuilder);
 

@@ -1,0 +1,133 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
+
+namespace Serenity
+{
+    public interface IBrowserSessionInitializer
+    {
+        void InitializeSession(IWebDriver driver);
+    }
+
+    public interface IBrowserLifecycle : IDisposable
+    {
+        void UseInitializer(IBrowserSessionInitializer initializer);
+
+        IWebDriver Driver { get; }
+        void Recycle();        
+    }
+
+    public abstract class BrowserLifecycle : IBrowserLifecycle
+    {
+        private Lazy<IWebDriver> _driver;
+        private readonly IList<IBrowserSessionInitializer> _initializers = new List<IBrowserSessionInitializer>();
+
+
+        protected BrowserLifecycle()
+        {
+            reset();
+        }
+
+        private void reset()
+        {
+            _driver = new Lazy<IWebDriver>(initializeDriver);
+        }
+
+        private IWebDriver initializeDriver()
+        {
+            var driver = buildDriver();
+            _initializers.Each(x => x.InitializeSession(driver));
+
+            return driver;
+        }
+
+        protected abstract IWebDriver buildDriver();
+
+        public void Dispose()
+        {
+            if (_driver.IsValueCreated)
+            {
+                _driver.Value.Close();
+                cleanUp(_driver.Value);
+                _driver.Value.Dispose();
+            }
+        }
+
+        protected virtual void cleanUp(IWebDriver value)
+        {
+            // do nothing for most browsers
+        }
+
+        public void UseInitializer(IBrowserSessionInitializer initializer)
+        {
+            _initializers.Add(initializer);
+        }
+
+        public IWebDriver Driver
+        {
+            get { return _driver.Value; }
+        }
+
+        public void Recycle()
+        {
+            Dispose();
+            reset();
+        }
+    } 
+
+    public class InternetExplorerBrowser : BrowserLifecycle
+    {
+        protected override IWebDriver buildDriver()
+        {
+            return new InternetExplorerDriver();
+        }
+    }
+
+    public class FirefoxBrowser : BrowserLifecycle
+    {
+        protected override IWebDriver buildDriver()
+        {
+            return new FirefoxDriver();
+        }
+    }
+
+    public class ChromeBrowser : BrowserLifecycle
+    {
+        protected override IWebDriver buildDriver()
+        {
+            return new ChromeDriver();
+        }
+
+        protected override void cleanUp(IWebDriver value)
+        {
+            Kill.Processes("chromedriver", "chromedriver.exe");
+        }
+    }
+
+    public static class Kill
+    {
+        public static void Processes(params string[] names)
+        {
+            names.Each(process =>
+            {
+                try
+                {
+                    Process.GetProcessesByName(process).Each(x =>
+                    {
+                        Console.WriteLine("Trying to kill process " + x);
+                        x.Kill();
+                    });
+                }
+                catch (Exception e)
+                {
+                    // send it out to Console, but otherwise just kill it
+                    Console.WriteLine(e);
+                }
+            });
+        }
+    }
+}

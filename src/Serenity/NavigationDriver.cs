@@ -44,7 +44,7 @@ namespace Serenity
 
         public void NavigateTo(object target)
         {
-            var url = _application.Urls.UrlFor(target);
+            var url = _application.Urls.UrlFor(target, categoryOrHttpMethod:"GET");
 
             NavigateToUrl(url);
         }

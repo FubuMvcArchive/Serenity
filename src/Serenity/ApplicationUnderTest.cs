@@ -16,21 +16,20 @@ namespace Serenity
     {
         private readonly string _name;
         private readonly string _rootUrl;
-        private Lazy<IWebDriver> _driver;
+        private readonly IBrowserLifecycle _browser;
         private readonly Lazy<IContainerFacility> _container;
         private readonly Lazy<IUrlRegistry> _urls;
         private readonly Lazy<IServiceLocator> _services;
-        private readonly Func<IWebDriver> _createWebDriver;
 
 
-        public ApplicationUnderTest(FubuRuntime runtime, ApplicationSettings settings, Func<IWebDriver> createWebDriver)
-            : this(settings.Name, settings.RootUrl, createWebDriver, () => runtime.Facility)
+        public ApplicationUnderTest(FubuRuntime runtime, ApplicationSettings settings, IBrowserLifecycle browser)
+            : this(settings.Name, settings.RootUrl, browser, () => runtime.Facility)
         {
             
         }
 
-        public ApplicationUnderTest(IApplicationSource source, ApplicationSettings settings, Func<IWebDriver> createWebDriver)
-            : this(source.GetType().Name, settings.RootUrl, createWebDriver, () =>
+        public ApplicationUnderTest(IApplicationSource source, ApplicationSettings settings, IBrowserLifecycle browser)
+            : this(source.GetType().Name, settings.RootUrl, browser, () =>
             {
                 var app = source.BuildApplication();
 
@@ -51,14 +50,11 @@ namespace Serenity
 
         }
 
-        private ApplicationUnderTest(string name, string rootUrl, Func<IWebDriver> createWebDriver, Func<IContainerFacility> containerSource)
+        private ApplicationUnderTest(string name, string rootUrl, IBrowserLifecycle browser, Func<IContainerFacility> containerSource)
         {
             _name = name;
             _rootUrl = rootUrl;
-
-            _createWebDriver = createWebDriver;
-
-            StartWebDriver();
+            _browser = browser;
 
             _container = new Lazy<IContainerFacility>(containerSource);
 
@@ -75,11 +71,6 @@ namespace Serenity
         public string Name
         {
             get { return _name; }
-        }
-
-        public bool IsDriverInUse
-        {
-            get { return _driver != null && _driver.IsValueCreated; }
         }
 
         public string RootUrl
@@ -102,23 +93,16 @@ namespace Serenity
             return _container.Value.GetAll<T>();
         }
 
+        public void RecycleWebDriver()
+        {
+            _browser.Recycle();
+        }
+
         public IUrlRegistry Urls
         {
             get { return _urls.Value; }
         }
 
-        public void StartWebDriver()
-        {
-            _driver = new Lazy<IWebDriver>(_createWebDriver);
-        }
-
-        public void StopWebDriver()
-        {
-            if (!IsDriverInUse) return;
-
-            Driver.Close();
-            Driver.SafeDispose();
-        }
 
         public void Ping()
         {
@@ -128,7 +112,7 @@ namespace Serenity
 
         public void Teardown()
         {
-            StopWebDriver();
+            _browser.Dispose();
         }
 
         public virtual NavigationDriver Navigation
@@ -143,7 +127,7 @@ namespace Serenity
 
         public IWebDriver Driver
         {
-            get { return _driver.Value; }
+            get { return _browser.Driver; }
         }
     }
 
