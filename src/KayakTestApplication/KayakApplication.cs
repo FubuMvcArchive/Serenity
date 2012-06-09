@@ -26,8 +26,6 @@ namespace KayakTestApplication
             Actions.IncludeClassesSuffixedWithController();
             this.UseSpark();
 
-            IncludeDiagnostics(true);
-
             Views.TryToAttachWithDefaultConventions();
         }
     }

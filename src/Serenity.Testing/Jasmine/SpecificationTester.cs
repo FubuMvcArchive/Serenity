@@ -143,5 +143,22 @@ namespace Serenity.Testing.Jasmine
                 .ShouldHaveTheSameElementsAs("somelib.fixture.html");
         
         }
+
+        [Test]
+        public void select_htm_files()
+        {
+            var spec = new Specification("somelib.spec.js");
+
+            var files = new System.Collections.Generic.List<AssetFile>(){
+                new AssetFile("not.fixture.htm"),
+                new AssetFile("somelib.css"),
+                new AssetFile("somelib.fixture.htm")
+            };
+
+            spec.SelectHtmlFiles(files);
+            spec.HtmlFiles.Select(x => x.Name)
+                .ShouldHaveTheSameElementsAs("somelib.fixture.htm");
+
+        }
     }
 }

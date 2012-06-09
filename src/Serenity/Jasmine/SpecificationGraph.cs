@@ -87,7 +87,7 @@ namespace Serenity.Jasmine
         {
             if (package.PackageName == "application") return false;
 
-            if (package.PackageName == AssemblyPackageInfo.CreateFor(typeof (SpecificationGraph).Assembly).Name)
+            if (package.PackageName == new AssemblyPackageInfo(typeof (SpecificationGraph).Assembly).Name)
                 return false;
 
             return true;

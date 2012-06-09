@@ -8,6 +8,7 @@ using FubuCore;
 using FubuKayak;
 using FubuMVC.Core;
 using FubuMVC.Core.Assets.Caching;
+using FubuMVC.OwinHost;
 using OpenQA.Selenium;
 
 namespace Serenity.Jasmine
@@ -27,6 +28,7 @@ namespace Serenity.Jasmine
         public JasmineRunner(JasmineInput input)
         {
             _input = input;
+            _input.PortFlag = PortFinder.FindPort(input.PortFlag);
         }
 
         void ISpecFileListener.Changed()

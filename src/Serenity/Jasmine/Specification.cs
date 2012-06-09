@@ -194,13 +194,17 @@ namespace Serenity.Jasmine
         }
 
         public static readonly string FixtureHtmlSuffix = ".fixture.html"; 
+        public static readonly string FixtureHtmlSuffix2 = ".fixture.htm"; 
 
         public void SelectHtmlFiles(IEnumerable<AssetFile> files)
         {
-            var libName = _subject + FixtureHtmlSuffix;
+            selectFilesBySuffix(FixtureHtmlSuffix, files);
+            selectFilesBySuffix(FixtureHtmlSuffix2, files);
+        }
 
-            Debug.WriteLine("I'm looking for " + libName);
-
+        private void selectFilesBySuffix(string suffix, IEnumerable<AssetFile> files)
+        {
+            var libName = _subject + suffix;
             files.Where(x => x.LibraryName() == libName).Each(_htmlFiles.Add);
         }
 
