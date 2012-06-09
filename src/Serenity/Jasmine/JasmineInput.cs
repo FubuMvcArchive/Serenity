@@ -28,7 +28,7 @@ namespace Serenity.Jasmine
         [RequiredUsage("default", "add_folders")]
         public JasmineMode Mode { get; set; }
 
-        [Description("Name of the file containing directives for where the specifications are located")]
+        [Description("Name of the application folder with Jasmine specs or a file containing directives for where the specifications are located")]
         [RequiredUsage("default", "add_folders")]
         public string SerenityFile { get; set; }
 

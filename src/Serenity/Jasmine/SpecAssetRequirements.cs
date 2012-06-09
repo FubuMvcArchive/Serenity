@@ -26,7 +26,7 @@ namespace Serenity.Jasmine
 
         public void RegisterRequirements(IEnumerable<Specification> specs)
         {
-            _requirements.Require("core");
+            _requirements.UseAssetIfExists("core");
             _requirements.Require("jasmine");
 
             specs.SelectMany(x => x.Libraries).Each(lib => _requirements.Require(lib.Name));

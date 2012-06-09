@@ -21,10 +21,24 @@ namespace Serenity.Jasmine
 
         public void ReadFile()
         {
+            var fileSystem = new FileSystem();
+            if (fileSystem.IsFile(_file))
+            {
+                readDirectivesFromFile(fileSystem);
+            }
+            else if (Directory.Exists(_file))
+            {
+                Console.WriteLine("Adding content from folder " + _file);
+                _application.AddContentFolder(_file);         
+            }
+        }
+
+        private void readDirectivesFromFile(FileSystem fileSystem)
+        {
             Console.WriteLine("Reading directives from " + _file);
 
 
-            var fileSystem = new FileSystem();
+            
             if (!fileSystem.FileExists(_file))
             {
                 throw new CommandFailureException("Designated serenity/jasmine file at {0} does not exist".ToFormat(_file));
