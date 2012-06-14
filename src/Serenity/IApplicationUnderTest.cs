@@ -18,7 +18,7 @@ namespace Serenity
         object GetInstance(Type type);
         IEnumerable<T> GetAll<T>();
 
-        void RecycleWebDriver();
+        IBrowserLifecycle Browser { get; }
 
         void Ping();
 

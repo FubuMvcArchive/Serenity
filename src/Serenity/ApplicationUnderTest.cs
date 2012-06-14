@@ -93,9 +93,9 @@ namespace Serenity
             return _container.Value.GetAll<T>();
         }
 
-        public void RecycleWebDriver()
+        public IBrowserLifecycle Browser
         {
-            _browser.Recycle();
+            get { return _browser; }
         }
 
         public IUrlRegistry Urls

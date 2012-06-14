@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
@@ -18,7 +19,8 @@ namespace Serenity
         void UseInitializer(IBrowserSessionInitializer initializer);
 
         IWebDriver Driver { get; }
-        void Recycle();        
+        void Recycle();
+        bool HasBeenStarted();
     }
 
     public abstract class BrowserLifecycle : IBrowserLifecycle
@@ -51,7 +53,14 @@ namespace Serenity
         {
             if (_driver.IsValueCreated)
             {
-                _driver.Value.Close();
+                var task = Task.Factory.StartNew(() => _driver.Value.Close());
+                task.ContinueWith(t =>
+                {
+                    Debug.WriteLine(t.Exception);
+                }, TaskContinuationOptions.OnlyOnFaulted);
+
+                task.Wait(500);
+                
                 cleanUp(_driver.Value);
                 _driver.Value.Dispose();
             }
@@ -76,6 +85,11 @@ namespace Serenity
         {
             Dispose();
             reset();
+        }
+
+        public bool HasBeenStarted()
+        {
+            return _driver.IsValueCreated;
         }
     } 
 

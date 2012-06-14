@@ -110,9 +110,9 @@ namespace Serenity
             return _runtime.Value.Facility.GetAll<T>();
         }
 
-        public void RecycleWebDriver()
+        public IBrowserLifecycle Browser
         {
-            _browser.Recycle();
+            get { return _browser; }
         }
 
         private void start()
