@@ -53,13 +53,19 @@ namespace Serenity
         {
             if (_driver.IsValueCreated)
             {
-                var task = Task.Factory.StartNew(() => _driver.Value.Close());
-                task.ContinueWith(t =>
+                var task = Task.Factory.StartNew(() =>
                 {
-                    Debug.WriteLine(t.Exception);
-                }, TaskContinuationOptions.OnlyOnFaulted);
+                    try
+                    {
+                        _driver.Value.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                });
 
-                task.Wait(500);
+                task.Wait(2000);
                 
                 cleanUp(_driver.Value);
                 _driver.Value.Dispose();
