@@ -21,12 +21,16 @@ namespace Serenity.Jasmine
         {
             PortFlag = 5500;
             BrowserFlag = BrowserType.Chrome;
-
+        	TimeoutFlag = 5;
         }
 
         [Description("Chooses whether to open the browser application or just run all the specs in CLI mode")]
         [RequiredUsage("default", "add_folders")]
         public JasmineMode Mode { get; set; }
+
+		[Description("Display verbose output of spec results for CI purposes")]
+		[FlagAlias("verbose", 'v')]
+		public bool VerboseFlag { get; set; }
 
         [Description("Name of the application folder with Jasmine specs or a file containing directives for where the specifications are located")]
         [RequiredUsage("default", "add_folders")]
@@ -34,6 +38,9 @@ namespace Serenity.Jasmine
 
         [Description("Optionally overrides which port number Kayak uses for the web application.  Default is 5500")]
         public int PortFlag { get; set; }
+
+		[Description("Optionally overrides the amount of time (in seconds) to wait for the specs to run.")]
+		public int TimeoutFlag { get; set; }
 
         [Description("Choose which browser to use for the testing")]
         public BrowserType BrowserFlag { get; set; }

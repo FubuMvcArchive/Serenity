@@ -85,10 +85,10 @@ namespace Serenity.Jasmine
                 _driver.NavigateTo<JasminePages>(x => x.AllSpecs());
 
                 var browser = _applicationUnderTest.Driver;
-                Wait.Until(() => browser.FindElement(By.ClassName("finished-at")).Text.IsNotEmpty());
+                Wait.Until(() => browser.FindElement(By.ClassName("finished-at")).Text.IsNotEmpty(), timeoutInMilliseconds: _input.TimeoutFlag * 1000);
                 var failures = browser.FindElements(By.CssSelector("div.suite.failed"));
 
-                if (_input.Mode == JasmineMode.run)
+                if (_input.Mode == JasmineMode.run && _input.VerboseFlag)
                 {
                     ((IJavaScriptExecutor) browser).ExecuteScript("$('#jasmine-reporter').show();");
                     var logs = browser.FindElements(By.ClassName("jasmine-reporter-item"));
