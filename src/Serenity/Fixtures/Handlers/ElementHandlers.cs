@@ -7,7 +7,7 @@ namespace Serenity.Fixtures.Handlers
     public static class ElementHandlers
     {
         private static readonly IList<IElementHandler> _handlers = new List<IElementHandler>();
-        private static readonly IList<IElementHandler> _defaultHandlers = new List<IElementHandler>{new SelectElementHandler(), new TextboxElementHandler(), new DefaultElementHandler()};
+        private static readonly IList<IElementHandler> _defaultHandlers = new List<IElementHandler>{new SelectElementHandler(), new TextboxElementHandler(), new TextAreaElementHandler(), new DefaultElementHandler()};
 
         public static IList<IElementHandler> Handlers
         {
