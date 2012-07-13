@@ -23,14 +23,5 @@ namespace Serenity
                 if (condition()) return;
             }
         }
-
-        public static IWebElement UntilElement(this IApplicationUnderTest testApp, Func<IWebElement> condition, int timeoutSeconds = 10)
-        {
-            WebDriverWait wait = new WebDriverWait(testApp.Driver, TimeSpan.FromSeconds(timeoutSeconds));
-            return wait.Until<IWebElement>((d) =>
-            {
-                return condition();
-            });
-        }
     }
 }
