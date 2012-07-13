@@ -112,6 +112,7 @@
     <Compile Include="Fixtures\Handlers\SelectElementHandlerTester.cs" />
     <Compile Include="Fixtures\ScreenFixtureTester.cs" />
     <Compile Include="InProcessSerenitySystemTester.cs" />
+    <Compile Include="Jasmine\JasmineConfigLoaderTester.cs" />
     <Compile Include="Jasmine\PackageSpecificationsTester.cs" />
     <Compile Include="Jasmine\SpecificationGraphIntegratedTester.cs" />
     <Compile Include="Jasmine\SpecificationGraphTester.cs" />
