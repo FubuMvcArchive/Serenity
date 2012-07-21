@@ -154,6 +154,7 @@
     <Compile Include="Jasmine\SpecificationGraph.cs" />
     <Compile Include="Jasmine\SpecPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Retry.cs" />
     <Compile Include="SerenityApplications.cs" />
     <Compile Include="SerenitySystem.cs" />
     <Compile Include="Wait.cs" />

@@ -20,5 +20,20 @@ namespace Serenity.Fixtures
             return id.IsEmpty() ? null : By.Id(id);
         }
 
+        // the interface just isn't very discoverable
+        public static object InjectJavascript(this IWebDriver driver, string script)
+        {
+            return ((IJavaScriptExecutor)driver).ExecuteScript(script);
+        }
+
+        public static T InjectJavascript<T>(this IWebDriver driver, string script)
+        {
+            return (T)driver.InjectJavascript(script);
+        }
+
+        public static IWebElement FindElementByData(this IWebDriver driver, string attribute, string value)
+        {
+            return driver.FindElement(By.CssSelector("*[data-{0}={1}]".ToFormat(attribute, value)));
+        }
     }
 }

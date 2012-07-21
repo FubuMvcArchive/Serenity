@@ -85,6 +85,46 @@ namespace Serenity.Fixtures
             return new ClickGrammar(config);
         }
 
+        // TODO -- UT this some how
+        protected IGrammar JQueryClick(string template, string id = null, string className = null, string css = null, string tagName = null)
+        {
+            string command = buildJQuerySearch(css, id, className, tagName);
+
+            return Do(template, () =>
+            {
+                Retry.Twice(() => Driver.InjectJavascript(command));
+            });
+        }
+
+        private static string buildJQuerySearch(string css, string id, string className, string tagName)
+        {
+            var search = css;
+
+            if (id.IsNotEmpty())
+            {
+                search = "#" + id;
+            }
+
+            if (className.IsNotEmpty())
+            {
+                search = "." + className;
+            }
+
+            if (tagName.IsNotEmpty())
+            {
+                search = tagName + search;
+            }
+
+            return "$('{0}').click();".ToFormat(search);
+        }
+
+        protected void ClickWithJQuery(string id = null, string className = null, string css = null, string tagName = null)
+        {
+            string command = buildJQuerySearch(css, id, className, tagName);
+
+            Retry.Twice(() => Driver.InjectJavascript(command));
+        }
+
         protected void PushElementContext(ISearchContext context)
         {
             _searchContexts.Push(context);
