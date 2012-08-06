@@ -88,10 +88,10 @@ namespace Serenity.Jasmine
 
                 if (_input.Mode == JasmineMode.run && _input.VerboseFlag)
                 {
-                    ((IJavaScriptExecutor) browser).ExecuteScript("$('#jasmine-reporter').show();");
+                    browser.As<IJavaScriptExecutor>().ExecuteScript("$('#jasmine-reporter').show();");
                     var logs = browser.FindElements(By.ClassName("jasmine-reporter-item"));
                     logs.Each(message => Console.WriteLine(message.Text));
-                    ((IJavaScriptExecutor) browser).ExecuteScript("$('#jasmine-reporter').hide();");
+                    browser.As<IJavaScriptExecutor>().ExecuteScript("$('#jasmine-reporter').hide();");
                 }
 
                 if (failures.Any())
