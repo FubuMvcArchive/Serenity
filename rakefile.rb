@@ -33,7 +33,7 @@ BUILD_NUMBER = "#{BUILD_VERSION}.#{build_revision}"
 props = { :stage => BUILD_DIR, :artifacts => ARTIFACTS }
 
 desc "**Default**, compiles and runs tests"
-task :default => [:compile, :unit_test]
+task :default => [:compile, :unit_test, :run_jasmine]
 
 desc "Target used for the CI server"
 task :ci => [:update_all_dependencies, :clean, :compile, :history, :package]
@@ -107,7 +107,10 @@ task :unit_test => :compile do
   runner.executeTests ['Serenity.Testing']
 end
 
-
+desc "Try out JasmineRunner"
+task :run_jasmine => [:compile] do
+	sh "src/SerenityRunner/bin/#{COMPILE_TARGET}/SerenityRunner.exe jasmine run src/JasmineTestApplication -b Firefox"
+end
 
 def self.bottles(args)
   bottles = Platform.runtime(Nuget.tool("Bottles", "BottleRunner.exe"))

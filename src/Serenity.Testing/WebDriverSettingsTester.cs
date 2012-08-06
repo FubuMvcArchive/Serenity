@@ -64,7 +64,7 @@ namespace Serenity.Testing
 
         // Before you run this, make sure that IE opens without the F12 tools visible because
         // WebDriver things that's a modal dialog box and throws up
-        [Test]
+        [Test, Ignore("Need to do the IE Driver thing like Chrome")]
         public void build_IE_driver_because_you_know_you_will_have_to_do_this_at_some_point()
         {
             using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.IE).Driver)

@@ -23,7 +23,7 @@ namespace Serenity.Testing
         {
             FubuMvcPackageFacility.PhysicalRootPath = FileSystem.Combine("..", "..", "..", "KayakTestApplication");
 
-
+            WebDriverSettings.Current.Browser = BrowserType.Firefox;
 
             var context = new TestContext();
             theSystem = new InProcessSerenitySystem<KayakApplication>();
