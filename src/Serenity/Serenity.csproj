@@ -112,6 +112,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BrowserLifecycles.cs" />
+    <Compile Include="Fixtures\Handlers\TextAreaElementHandler.cs" />
     <Compile Include="InProcessApplicationUnderTest.cs" />
     <Compile Include="Jasmine\AssetFileWatcher.cs" />
     <Compile Include="Jasmine\IJasmineConfigLoader.cs" />
