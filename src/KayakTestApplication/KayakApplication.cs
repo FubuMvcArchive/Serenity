@@ -24,7 +24,7 @@ namespace KayakTestApplication
             Routes.HomeIs<SayHelloController>(x => x.Hello());
 
             Actions.IncludeClassesSuffixedWithController();
-            this.UseSpark();
+            Import<SparkEngine>();
 
             Views.TryToAttachWithDefaultConventions();
         }
