@@ -57,7 +57,7 @@ namespace Serenity
             _listeningThread = new Thread(o =>
             {
                 _listener = new Listener(settings.Port);
-                _listener.Start(runtime, () => reset.Set());
+                _listener.Start(runtime, false, () => reset.Set());
             });
 
             _listeningThread.Name = "Serenity:Kayak:Thread";
