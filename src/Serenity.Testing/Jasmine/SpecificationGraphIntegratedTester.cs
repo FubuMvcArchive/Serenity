@@ -13,14 +13,14 @@ namespace Serenity.Testing.Jasmine
     [TestFixture]
     public class SpecificationGraphIntegratedTester
     {
-        private AssetPipeline thePipeline;
+        private AssetFileGraph thePipeline;
         private SpecificationGraph theGraph;
 
         [SetUp]
         public void SetUp()
         {
-            thePipeline = new AssetPipeline();
-            var builder = new AssetPipelineBuilder(new FileSystem(), thePipeline, new PackageLog());
+            thePipeline = new AssetFileGraph();
+            var builder = new AssetFileGraphBuilder(new FileSystem(), thePipeline, new PackageLog());
             builder.LoadFiles(new PackageAssetDirectory{
                 Directory = FileSystem.Combine("..", "..", "Jasmine", "TestPackage2"),
                 PackageName = "Pak2"

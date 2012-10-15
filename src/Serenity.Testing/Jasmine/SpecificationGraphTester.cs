@@ -13,13 +13,13 @@ namespace Serenity.Testing.Jasmine
     [TestFixture]
     public class SpecificationGraphTester
     {
-        private AssetPipeline thePipeline;
+        private AssetFileGraph thePipeline;
         private AssetFileDataMother theFiles;
 
         [SetUp]
         public void SetUp()
         {
-            thePipeline = new AssetPipeline();
+            thePipeline = new AssetFileGraph();
             theFiles = new AssetFileDataMother(thePipeline.AddFile);
         }
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using FubuMVC.Core.Assets;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.Urls;
 using OpenQA.Selenium;
@@ -22,7 +23,7 @@ namespace Serenity
         public static string AssetName(this IWebElement element)
         {
             var parts = (element.Href() ?? element.GetAttribute("src")).Split('/').ToList();
-            var index = parts.IndexOf(UrlRegistry.AssetsUrlFolder);
+            var index = parts.IndexOf(AssetUrls.AssetsUrlFolder);
 
             return parts.Skip(index).Join("/");
         }

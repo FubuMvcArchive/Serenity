@@ -1,5 +1,6 @@
 using System;
 using FubuMVC.Core;
+using FubuMVC.Core.Runtime;
 using FubuMVC.Core.UI;
 using HtmlTags;
 
@@ -144,7 +145,7 @@ namespace Serenity.Testing.FakeSystem
 
         public HtmlDocument get_person_Name(TextModel model)
         {
-            var document = new FubuHtmlDocument<TextModel>(_services){
+            var document = new FubuHtmlDocument<TextModel>(_services, new InMemoryFubuRequest()){
                 Model = model
             };
 

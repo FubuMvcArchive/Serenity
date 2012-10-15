@@ -13,7 +13,7 @@ namespace Serenity.Jasmine
         private readonly Cache<string, SpecificationFolder> _packages
             = new Cache<string, SpecificationFolder>(name => new SpecificationFolder(name));
 
-        public SpecificationGraph(IAssetPipeline pipeline)
+        public SpecificationGraph(IAssetFileGraph pipeline)
         {
             pipeline.AllPackages.Where(IsSpecPackage).Each(AddSpecs);
 
