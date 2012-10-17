@@ -74,7 +74,11 @@ namespace Serenity.Jasmine
         private string runningFolder()
         {
             var file = Assembly.GetExecutingAssembly().CodeBase;
-            if (file != null) return file.ParentDirectory();
+            if (file != null)
+            {
+                file = file.Replace("file:///", "");
+                return file.ParentDirectory();
+            }
 
             return AppDomain.CurrentDomain.BaseDirectory;
         }
