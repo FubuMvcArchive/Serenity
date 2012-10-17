@@ -47,7 +47,7 @@
       <HintPath>..\packages\FubuMVC.Coffee.0.0.1.441\lib\net40\FubuMVC.Coffee.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core">
-      <HintPath>..\packages\FubuMVC.Core.0.9.8.1219\lib\net40\FubuMVC.Core.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.0.9.8.1220\lib\net40\FubuMVC.Core.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core.Assets">
       <HintPath>..\packages\FubuMVC.Core.Assets.0.9.9.15\lib\net40\FubuMVC.Core.Assets.dll</HintPath>
@@ -65,8 +65,7 @@
       <HintPath>..\packages\FubuMVC.SelfHost.0.9.8.1219\lib\net40\FubuMVC.SelfHost.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.StructureMap">
-      <HintPath>..\packages\FubuMVC.StructureMap.0.9.8.1219\lib\net40\FubuMVC.StructureMap.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\FubuMVC.StructureMap.0.9.8.1220\lib\net40\FubuMVC.StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="HtmlTags">
       <HintPath>..\packages\HtmlTags.1.2.0.121\lib\4.0\HtmlTags.dll</HintPath>
@@ -241,37 +240,37 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="WebContent\scripts\images\ajax-loader.gif" />
-    <Content Include="WebContent\scripts\images\file.gif" />
-    <Content Include="WebContent\scripts\images\folder-closed.gif" />
-    <Content Include="WebContent\scripts\images\folder.gif" />
-    <Content Include="WebContent\scripts\images\minus.gif" />
-    <Content Include="WebContent\scripts\images\plus.gif" />
-    <Content Include="WebContent\scripts\images\treeview-black-line.gif" />
-    <Content Include="WebContent\scripts\images\treeview-black.gif" />
-    <Content Include="WebContent\scripts\images\treeview-default-line.gif" />
-    <Content Include="WebContent\scripts\images\treeview-default.gif" />
-    <Content Include="WebContent\scripts\images\treeview-famfamfam-line.gif" />
-    <Content Include="WebContent\scripts\images\treeview-famfamfam.gif" />
-    <Content Include="WebContent\scripts\images\treeview-gray-line.gif" />
-    <Content Include="WebContent\scripts\images\treeview-gray.gif" />
-    <Content Include="WebContent\scripts\images\treeview-red-line.gif" />
-    <Content Include="WebContent\scripts\images\treeview-red.gif" />
-    <Content Include="WebContent\scripts\jasmine.teamcity_reporter.js" />
-    <Content Include="WebContent\scripts\jquery.treeview.css" />
-    <Content Include="WebContent\scripts\jquery.treeview.js" />
-    <Content Include="WebContent\scripts\serenity-jasmine.js" />
-    <Content Include="WebContent\scripts\sinon-1.2.0.js" />
+    <Content Include="WebContent\content\scripts\images\ajax-loader.gif" />
+    <Content Include="WebContent\content\scripts\images\file.gif" />
+    <Content Include="WebContent\content\scripts\images\folder-closed.gif" />
+    <Content Include="WebContent\content\scripts\images\folder.gif" />
+    <Content Include="WebContent\content\scripts\images\minus.gif" />
+    <Content Include="WebContent\content\scripts\images\plus.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-black-line.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-black.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-default-line.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-default.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-famfamfam-line.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-famfamfam.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-gray-line.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-gray.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-red-line.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-red.gif" />
+    <Content Include="WebContent\content\scripts\jasmine.teamcity_reporter.js" />
+    <Content Include="WebContent\content\scripts\jquery.treeview.css" />
+    <Content Include="WebContent\content\scripts\jquery.treeview.js" />
+    <Content Include="WebContent\content\scripts\serenity-jasmine.js" />
+    <Content Include="WebContent\content\scripts\sinon-1.2.0.js" />
     <EmbeddedResource Include="Jasmine\Header.htm" />
-    <Content Include="WebContent\images\fubu-project.png" />
-    <Content Include="WebContent\images\jasmine_logo.png" />
-    <Content Include="WebContent\scripts\jasmine-jquery-1.3.1.js" />
-    <Content Include="WebContent\scripts\jasmine-runner.js" />
-    <Content Include="WebContent\scripts\jquery-1.7.min.js" />
-    <Content Include="WebContent\scripts\jasmine-html.js" />
-    <Content Include="WebContent\scripts\jasmine.css" />
-    <Content Include="WebContent\scripts\jasmine.js" />
-    <Content Include="WebContent\scripts\jasmine_favicon.png" />
+    <Content Include="WebContent\content\images\fubu-project.png" />
+    <Content Include="WebContent\content\images\jasmine_logo.png" />
+    <Content Include="WebContent\content\scripts\jasmine-jquery-1.3.1.js" />
+    <Content Include="WebContent\content\scripts\jasmine-runner.js" />
+    <Content Include="WebContent\content\scripts\jquery-1.7.min.js" />
+    <Content Include="WebContent\content\scripts\jasmine-html.js" />
+    <Content Include="WebContent\content\scripts\jasmine.css" />
+    <Content Include="WebContent\content\scripts\jasmine.js" />
+    <Content Include="WebContent\content\scripts\jasmine_favicon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
