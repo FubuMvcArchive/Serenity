@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Bottles;
 using Bottles.Diagnostics;
+using FubuCore;
 using FubuMVC.Coffee;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
@@ -25,10 +26,10 @@ namespace Serenity.Jasmine
             return FubuApplication
                 .For<SerenityJasmineRegistry>()
                 .StructureMap(new Container())
-                .Packages(x =>
-                {
-                    x.Assembly(GetType().Assembly);
+                .Packages(x => {
                     x.Loader(this);
+                    x.Assembly(GetType().Assembly);
+
                 });
         }
 
@@ -39,11 +40,18 @@ namespace Serenity.Jasmine
 
         public IEnumerable<IPackageInfo> Load(IPackageLog log)
         {
-            return _contentFolders.Select(x =>
+            var packages = new List<IPackageInfo>();
+
+            foreach (var folder in _contentFolders)
             {
-                log.Trace("Loading content package from " + x);
-                return new ContentOnlyPackageInfo(x, Path.GetFileName(x));
-            });
+                log.Trace("Loading content package from " + folder);
+                var pak = new ContentOnlyPackageInfo(folder, Path.GetFileName(folder));
+                packages.Add(pak);
+
+                packages.AddRange(ContentOnlyPackageInfo.FromAssemblies(folder));
+            }
+
+            return packages;
         }
 
         public void AddContentFolder(string contentFolder)
