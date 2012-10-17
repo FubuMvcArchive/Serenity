@@ -35,7 +35,7 @@ namespace Serenity.Testing.FakeSystem
 			
 			var testResult = theRunner.RunTest(new TestExecutionRequest(test, new TestStopConditions()));
 			//var testResult = TestRunnerExtensions.RunTest(theRunner, test);
-			TestingExtensions.ShouldEqual(testResult.Counts, 0, 0, 0, 0);
+			testResult.Counts.ShouldEqual(0, 0, 0, 0);
 			//testResult.Counts.ShouldEqual(1, 0, 0, 0); 
         }
 
@@ -50,7 +50,7 @@ namespace Serenity.Testing.FakeSystem
 			
 			var testResult = theRunner.RunTest(new TestExecutionRequest(test, new TestStopConditions()));
             //var testResult = theRunner.RunTest(test);
-			TestingExtensions.ShouldEqual(testResult.Counts, 1, 0, 0, 0);
+			testResult.Counts.ShouldEqual(1, 0, 0, 0);
             //testResult.Counts.ShouldEqual(1, 0, 0, 0); 
         }
 
@@ -66,14 +66,14 @@ namespace Serenity.Testing.FakeSystem
 
 			var testResult = theRunner.RunTest(new TestExecutionRequest(test, new TestStopConditions()));
             //var testResult = theRunner.RunTest(test);
-			TestingExtensions.ShouldEqual(testResult.Counts, 0, 1, 0, 0);
+			testResult.Counts.ShouldEqual(0, 1, 0, 0);
             //testResult.Counts.ShouldEqual(0, 1, 0, 0);
         }
 
         [TestFixtureTearDown]
         public void Teardown()
         {
-			FubuCore.BasicExtensions.SafeDispose(theRunner);
+			theRunner.SafeDispose();
             //theRunner.SafeDispose();
         }
     }
@@ -100,7 +100,7 @@ namespace Serenity.Testing.FakeSystem
         protected override ApplicationSettings findApplicationSettings()
         {
             var settings = ApplicationSettings.For<FakeSerenitySource>();
-            settings.PhysicalPath = FubuCore.StringExtensions.ToFullPath(".");
+            settings.PhysicalPath = ".".ToFullPath();
 
             return settings;
         }

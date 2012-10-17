@@ -13,7 +13,7 @@
     <tags>web framework specification fubumvc</tags>
     <dependencies>
       <dependency id="FubuMVC.References"/>
-      <dependency id="FubuKayak" />
+      <dependency id="FubuMVC.SelfHost" />
       <dependency id="StoryTeller" />
       <dependency id="Selenium.RC" version="2.21.0"/>
       <dependency id="Selenium.Support" version="2.21.0"/>

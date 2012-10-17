@@ -1,26 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using FubuCore;
-using FubuKayak;
 using FubuMVC.Core;
-using FubuMVC.OwinHost;
+using FubuMVC.SelfHost;
 using OpenQA.Selenium;
+using PortFinder = FubuMVC.OwinHost.PortFinder;
 
 namespace Serenity.Jasmine
 {
     public class JasmineRunner : ISpecFileListener
     {
         private readonly JasmineInput _input;
-        private readonly ManualResetEvent _reset = new ManualResetEvent(false);
         private SerenityJasmineApplication _application;
         private ApplicationUnderTest _applicationUnderTest;
+        private JasmineConfiguration _configuration;
         private NavigationDriver _driver;
-        private FubuKayakApplication _kayak;
-        private Thread _kayakLoop;
+        private SelfHostHttpServer _server;
         private AssetFileWatcher _watcher;
-    	private JasmineConfiguration _configuration;
 
 
         public JasmineRunner(JasmineInput input)
@@ -29,6 +27,8 @@ namespace Serenity.Jasmine
             _input.PortFlag = PortFinder.FindPort(input.PortFlag);
         }
 
+        #region ISpecFileListener Members
+
         void ISpecFileListener.Changed()
         {
             _applicationUnderTest.Driver.Navigate().Refresh();
@@ -36,8 +36,8 @@ namespace Serenity.Jasmine
 
         void ISpecFileListener.Deleted()
         {
-            _kayak.Recycle(watchAssetFiles);
-            // TODO -- make a helper method for this
+            recycleServer();
+
             _applicationUnderTest.Driver.Navigate().GoToUrl(_applicationUnderTest.RootUrl);
         }
 
@@ -48,76 +48,79 @@ namespace Serenity.Jasmine
 
         public void Recycle()
         {
-            _kayak.Recycle(watchAssetFiles);
+            recycleServer();
             _applicationUnderTest.Driver.Navigate().Refresh();
+        }
+
+        #endregion
+
+        private void recycleServer()
+        {
+            FubuRuntime runtime = _application.BuildApplication().Bootstrap();
+            _server.Recycle(runtime)
+                .ContinueWith(t => { watchAssetFiles(runtime); }).Wait();
         }
 
         public void OpenInteractive()
         {
             buildApplication();
 
-            var threadStart = new ThreadStart(run);
-            _kayakLoop = new Thread(threadStart);
-            _kayakLoop.Start();
-
+            run();
 
             _driver.NavigateToHome();
-
-            _reset.WaitOne();
         }
 
         public bool RunAllSpecs()
         {
-            var title = "Running Jasmine specs for project at " + _input.SerenityFile;
+            string title = "Running Jasmine specs for project at " + _input.SerenityFile;
             Console.WriteLine(title);
-            var line = "".PadRight(title.Length, '-');
+            string line = "".PadRight(title.Length, '-');
 
             Console.WriteLine(line);
 
             buildApplication();
-            var returnValue = true;
+            bool returnValue = true;
 
-            _kayak = new FubuKayakApplication(_application);
-            _kayak.RunApplication(_input.PortFlag, runtime =>
+            _server = new SelfHostHttpServer(_input.PortFlag);
+            _server.Start(_application.BuildApplication().Bootstrap(), ".".ToFullPath());
+
+            _driver.NavigateTo<JasminePages>(x => x.AllSpecs());
+
+            IWebDriver browser = _applicationUnderTest.Driver;
+            Wait.Until(() => browser.FindElement(By.ClassName("finished-at")).Text.IsNotEmpty(),
+                       timeoutInMilliseconds: _input.TimeoutFlag*1000);
+            ReadOnlyCollection<IWebElement> failures = browser.FindElements(By.CssSelector("div.suite.failed"));
+
+            if (_input.Mode == JasmineMode.run && _input.VerboseFlag)
             {
-                _driver.NavigateTo<JasminePages>(x => x.AllSpecs());
+                browser.As<IJavaScriptExecutor>().ExecuteScript("$('#jasmine-reporter').show();");
+                ReadOnlyCollection<IWebElement> logs = browser.FindElements(By.ClassName("jasmine-reporter-item"));
+                logs.Each(message => Console.WriteLine(message.Text));
+                browser.As<IJavaScriptExecutor>().ExecuteScript("$('#jasmine-reporter').hide();");
+            }
 
-                var browser = _applicationUnderTest.Driver;
-                Wait.Until(() => browser.FindElement(By.ClassName("finished-at")).Text.IsNotEmpty(), timeoutInMilliseconds: _input.TimeoutFlag * 1000);
-                var failures = browser.FindElements(By.CssSelector("div.suite.failed"));
+            if (failures.Any())
+            {
+                returnValue = false;
 
-                if (_input.Mode == JasmineMode.run && _input.VerboseFlag)
-                {
-                    browser.As<IJavaScriptExecutor>().ExecuteScript("$('#jasmine-reporter').show();");
-                    var logs = browser.FindElements(By.ClassName("jasmine-reporter-item"));
-                    logs.Each(message => Console.WriteLine(message.Text));
-                    browser.As<IJavaScriptExecutor>().ExecuteScript("$('#jasmine-reporter').hide();");
-                }
-
-                if (failures.Any())
-                {
-                    returnValue = false;
-
-                    Console.WriteLine(line);
-                    writeFailures(failures);
-                }
-
-                Console.WriteLine();
                 Console.WriteLine(line);
-                writeTotals(browser);
+                writeFailures(failures);
+            }
 
-                browser.Quit();
-                browser.SafeDispose();
-                _kayak.Stop();
-            });
+            Console.WriteLine();
+            Console.WriteLine(line);
+            writeTotals(browser);
 
+            browser.Quit();
+            browser.SafeDispose();
+            _server.Dispose();
 
             return returnValue;
         }
 
         private static void writeTotals(IWebDriver browser)
         {
-            var totals = browser.FindElement(By.CssSelector("div.jasmine_reporter a.description")).Text;
+            string totals = browser.FindElement(By.CssSelector("div.jasmine_reporter a.description")).Text;
 
             Console.WriteLine(totals);
         }
@@ -125,8 +128,7 @@ namespace Serenity.Jasmine
 
         private static void writeFailures(IEnumerable<IWebElement> failures)
         {
-            failures.Each(suite =>
-            {
+            failures.Each(suite => {
                 Console.WriteLine(suite.FindElement(By.CssSelector("a.description")).Text);
 
                 suite.FindElements(By.CssSelector("div.spec.failed a.description"))
@@ -136,10 +138,10 @@ namespace Serenity.Jasmine
 
         private void run()
         {
-            _kayak = new FubuKayakApplication(_application);
-            _kayak.RunApplication(_input.PortFlag, watchAssetFiles);
-
-            _reset.Set();
+            _server = new SelfHostHttpServer(_input.PortFlag);
+            FubuRuntime runtime = _application.BuildApplication().Bootstrap();
+            _server.Start(runtime, ".".ToFullPath());
+            watchAssetFiles(runtime);
         }
 
         private void watchAssetFiles(FubuRuntime runtime)
@@ -155,21 +157,37 @@ namespace Serenity.Jasmine
         private void buildApplication()
         {
             _application = new SerenityJasmineApplication();
-        	var fileSystem = new FileSystem();
-        	var loader = new JasmineConfigLoader(fileSystem);
+            var fileSystem = new FileSystem();
+            var loader = new JasmineConfigLoader(fileSystem);
             var configurator = new JasmineConfigurator(fileSystem, loader);
             _configuration = configurator.Configure(_input.SerenityFile, _application);
 
 
-            var applicationSettings = new ApplicationSettings{
+            var applicationSettings = new ApplicationSettings
+            {
                 RootUrl = "http://localhost:" + _input.PortFlag
             };
 
-            var browserBuilder = _input.GetBrowser();
+            IBrowserLifecycle browserBuilder = _input.GetBrowser();
 
             _applicationUnderTest = new ApplicationUnderTest(_application, applicationSettings, browserBuilder);
 
             _driver = new NavigationDriver(_applicationUnderTest);
+        }
+
+        public void Close()
+        {
+            _server.SafeDispose();
+
+            try
+            {
+                _applicationUnderTest.Browser.Driver.Quit();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error while trying to close the browser window");
+            }
+            _applicationUnderTest.Driver.SafeDispose();
         }
     }
 }

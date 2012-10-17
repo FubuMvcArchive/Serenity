@@ -86,6 +86,7 @@ namespace Serenity.Jasmine
         public static bool IsSpecPackage(PackageAssets package)
         {
             if (package.PackageName == "application") return false;
+            if (package.PackageName == typeof(IAssetFileGraph).Assembly.GetName().Name)
 
             if (package.PackageName == new AssemblyPackageInfo(typeof (SpecificationGraph).Assembly).Name)
                 return false;

@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using FubuKayak;
 using FubuMVC.Core;
 using FubuMVC.Core.Endpoints;
 using FubuMVC.Core.Http;
 using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Registration.ObjectGraph;
 using FubuMVC.Core.Urls;
-
+using FubuMVC.SelfHost;
 using OpenQA.Selenium;
 using FubuCore;
 
@@ -21,9 +20,8 @@ namespace Serenity
         private readonly Lazy<FubuRuntime> _runtime;
         private readonly Lazy<IUrlRegistry> _urls;
         private readonly IList<Action> _disposals = new List<Action>();
-        private Listener _listener;
-        private Thread _listeningThread;
         private IBrowserLifecycle _browser;
+        private SelfHostHttpServer _server;
 
         public InProcessApplicationUnderTest(ApplicationSettings settings)
         {
@@ -35,6 +33,7 @@ namespace Serenity
 
                 // TODO -- add some diagnostics here
                 var runtime = new TSystem().BuildApplication().Bootstrap();
+
                 runtime.Facility.Register(typeof(ICurrentHttpRequest), ObjectDef.ForValue(new StubCurrentHttpRequest()
                 {
                     ApplicationRoot = "http://localhost:" + settings.Port
@@ -54,14 +53,8 @@ namespace Serenity
         {
             var reset = new ManualResetEvent(false);
 
-            _listeningThread = new Thread(o =>
-            {
-                _listener = new Listener(settings.Port);
-                _listener.Start(runtime, false, () => reset.Set());
-            });
-
-            _listeningThread.Name = "Serenity:Kayak:Thread";
-            _listeningThread.Start();
+            _server = new SelfHostHttpServer(settings.Port);
+            _server.Start(runtime, settings.PhysicalPath);
 
             return reset;
         }
@@ -117,17 +110,11 @@ namespace Serenity
 
         private void start()
         {
-            if (_listener != null) return;
+            if (_server != null) return;
 
             var reset = startListener(_settings, _runtime.Value);
 
-            _disposals.Add(() =>
-            {
-                _listener.Stop();
-                _listener.SafeDispose();
-
-                _listeningThread.Join(3000);
-            });
+            _disposals.Add(() => _server.Dispose());
 
             reset.WaitOne();
         }

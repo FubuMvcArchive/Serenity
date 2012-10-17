@@ -56,3 +56,5 @@ deploymentplan.html
 deployment
 !docs/source/topics/deployment
 fubu.cmd
+storyteller.cmd
+run_st.cmd

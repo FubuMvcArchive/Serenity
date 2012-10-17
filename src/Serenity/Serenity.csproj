@@ -32,68 +32,56 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bottles">
-      <HintPath>..\packages\Bottles.0.9.1.373\lib\Bottles.dll</HintPath>
+      <HintPath>..\packages\Bottles.0.9.1.376\lib\Bottles.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.0.0.4001\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="FubuCore">
-      <HintPath>..\packages\FubuCore.0.9.9.191\lib\FubuCore.dll</HintPath>
-    </Reference>
-    <Reference Include="FubuKayak">
-      <HintPath>..\packages\FubuKayak.0.9.9.19\lib\net40\FubuKayak.dll</HintPath>
+      <HintPath>..\packages\FubuCore.0.9.9.192\lib\FubuCore.dll</HintPath>
     </Reference>
     <Reference Include="FubuLocalization">
-      <HintPath>..\packages\FubuLocalization.0.9.5.84\lib\FubuLocalization.dll</HintPath>
+      <HintPath>..\packages\FubuLocalization.0.9.5.85\lib\FubuLocalization.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Coffee">
-      <HintPath>..\packages\FubuMVC.Coffee.0.0.1.437\lib\net40\FubuMVC.Coffee.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Coffee.0.0.1.441\lib\net40\FubuMVC.Coffee.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core">
-      <HintPath>..\packages\FubuMVC.Core.0.9.8.1214\lib\net40\FubuMVC.Core.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.0.9.8.1219\lib\net40\FubuMVC.Core.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core.Assets">
-      <HintPath>..\packages\FubuMVC.Core.Assets.0.9.9.12\lib\net40\FubuMVC.Core.Assets.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.Assets.0.9.9.15\lib\net40\FubuMVC.Core.Assets.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core.UI">
-      <HintPath>..\packages\FubuMVC.Core.UI.0.9.9.13\lib\net40\FubuMVC.Core.UI.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.UI.0.9.9.17\lib\net40\FubuMVC.Core.UI.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core.View">
-      <HintPath>..\packages\FubuMVC.Core.View.0.9.9.12\lib\net40\FubuMVC.Core.View.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.View.0.9.9.16\lib\net40\FubuMVC.Core.View.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.OwinHost">
-      <HintPath>..\packages\FubuKayak.0.9.9.19\lib\net40\FubuMVC.OwinHost.dll</HintPath>
+      <HintPath>..\packages\FubuKayak.0.9.9.22\lib\net40\FubuMVC.OwinHost.dll</HintPath>
+    </Reference>
+    <Reference Include="FubuMVC.SelfHost">
+      <HintPath>..\packages\FubuMVC.SelfHost.0.9.8.1219\lib\net40\FubuMVC.SelfHost.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.StructureMap">
-      <HintPath>..\packages\FubuMVC.StructureMap.0.9.8.1214\lib\net40\FubuMVC.StructureMap.dll</HintPath>
-    </Reference>
-    <Reference Include="Gate, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Gate.0.1.4\lib\Gate.dll</HintPath>
-    </Reference>
-    <Reference Include="Gate.Kayak">
-      <HintPath>..\packages\Gate.Kayak.0.1.4\lib\Gate.Kayak.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.StructureMap.0.9.8.1219\lib\net40\FubuMVC.StructureMap.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="HtmlTags">
-      <HintPath>..\packages\HtmlTags.1.1.0.119\lib\4.0\HtmlTags.dll</HintPath>
+      <HintPath>..\packages\HtmlTags.1.2.0.121\lib\4.0\HtmlTags.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="Kayak">
-      <HintPath>..\packages\Kayak.0.7.2\lib\Kayak.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Owin">
-      <HintPath>..\packages\Owin.0.7\lib\net40\Owin.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium">
       <HintPath>..\packages\Selenium.WebDriverBackedSelenium.2.25.1\lib\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="StoryTeller">
-      <HintPath>..\packages\Storyteller.1.1.0.498\lib\net40\StoryTeller.dll</HintPath>
+      <HintPath>..\packages\Storyteller.1.1.0.510\lib\net40\StoryTeller.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
@@ -101,8 +89,23 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.SelfHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.SelfHost.4.0.20710.0\lib\net40\System.Web.Http.SelfHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -238,37 +241,37 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="WebContent\content\scripts\images\ajax-loader.gif" />
-    <Content Include="WebContent\content\scripts\images\file.gif" />
-    <Content Include="WebContent\content\scripts\images\folder-closed.gif" />
-    <Content Include="WebContent\content\scripts\images\folder.gif" />
-    <Content Include="WebContent\content\scripts\images\minus.gif" />
-    <Content Include="WebContent\content\scripts\images\plus.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-black-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-black.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-default-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-default.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-famfamfam-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-famfamfam.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-gray-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-gray.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-red-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-red.gif" />
-    <Content Include="WebContent\content\scripts\jasmine.teamcity_reporter.js" />
-    <Content Include="WebContent\content\scripts\jquery.treeview.css" />
-    <Content Include="WebContent\content\scripts\jquery.treeview.js" />
-    <Content Include="WebContent\content\scripts\serenity-jasmine.js" />
-    <Content Include="WebContent\content\scripts\sinon-1.2.0.js" />
+    <Content Include="WebContent\scripts\images\ajax-loader.gif" />
+    <Content Include="WebContent\scripts\images\file.gif" />
+    <Content Include="WebContent\scripts\images\folder-closed.gif" />
+    <Content Include="WebContent\scripts\images\folder.gif" />
+    <Content Include="WebContent\scripts\images\minus.gif" />
+    <Content Include="WebContent\scripts\images\plus.gif" />
+    <Content Include="WebContent\scripts\images\treeview-black-line.gif" />
+    <Content Include="WebContent\scripts\images\treeview-black.gif" />
+    <Content Include="WebContent\scripts\images\treeview-default-line.gif" />
+    <Content Include="WebContent\scripts\images\treeview-default.gif" />
+    <Content Include="WebContent\scripts\images\treeview-famfamfam-line.gif" />
+    <Content Include="WebContent\scripts\images\treeview-famfamfam.gif" />
+    <Content Include="WebContent\scripts\images\treeview-gray-line.gif" />
+    <Content Include="WebContent\scripts\images\treeview-gray.gif" />
+    <Content Include="WebContent\scripts\images\treeview-red-line.gif" />
+    <Content Include="WebContent\scripts\images\treeview-red.gif" />
+    <Content Include="WebContent\scripts\jasmine.teamcity_reporter.js" />
+    <Content Include="WebContent\scripts\jquery.treeview.css" />
+    <Content Include="WebContent\scripts\jquery.treeview.js" />
+    <Content Include="WebContent\scripts\serenity-jasmine.js" />
+    <Content Include="WebContent\scripts\sinon-1.2.0.js" />
     <EmbeddedResource Include="Jasmine\Header.htm" />
-    <Content Include="WebContent\content\images\fubu-project.png" />
-    <Content Include="WebContent\content\images\jasmine_logo.png" />
-    <Content Include="WebContent\content\scripts\jasmine-jquery-1.3.1.js" />
-    <Content Include="WebContent\content\scripts\jasmine-runner.js" />
-    <Content Include="WebContent\content\scripts\jquery-1.7.min.js" />
-    <Content Include="WebContent\content\scripts\jasmine-html.js" />
-    <Content Include="WebContent\content\scripts\jasmine.css" />
-    <Content Include="WebContent\content\scripts\jasmine.js" />
-    <Content Include="WebContent\content\scripts\jasmine_favicon.png" />
+    <Content Include="WebContent\images\fubu-project.png" />
+    <Content Include="WebContent\images\jasmine_logo.png" />
+    <Content Include="WebContent\scripts\jasmine-jquery-1.3.1.js" />
+    <Content Include="WebContent\scripts\jasmine-runner.js" />
+    <Content Include="WebContent\scripts\jquery-1.7.min.js" />
+    <Content Include="WebContent\scripts\jasmine-html.js" />
+    <Content Include="WebContent\scripts\jasmine.css" />
+    <Content Include="WebContent\scripts\jasmine.js" />
+    <Content Include="WebContent\scripts\jasmine_favicon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

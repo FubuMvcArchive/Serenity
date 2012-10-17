@@ -31,6 +31,11 @@ namespace Serenity.Jasmine
             if (input.Mode == JasmineMode.interactive)
             {
                 runner.OpenInteractive();
+
+                Console.WriteLine("Press any key to end the session and close the browser");
+                Console.ReadLine();
+
+                runner.Close();
             }
 
             if (input.Mode == JasmineMode.run)
