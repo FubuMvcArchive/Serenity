@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using FubuCore;
 using FubuMVC.Core;
 using FubuMVC.SelfHost;
@@ -70,6 +71,14 @@ namespace Serenity.Jasmine
             _driver.NavigateToHome();
         }
 
+        private string runningFolder()
+        {
+            var file = Assembly.GetExecutingAssembly().CodeBase;
+            if (file != null) return file.ParentDirectory();
+
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
+
         public bool RunAllSpecs()
         {
             string title = "Running Jasmine specs for project at " + _input.SerenityFile;
@@ -82,7 +91,7 @@ namespace Serenity.Jasmine
             bool returnValue = true;
 
             _server = new SelfHostHttpServer(_input.PortFlag);
-            _server.Start(_application.BuildApplication().Bootstrap(), ".".ToFullPath());
+            _server.Start(_application.BuildApplication().Bootstrap(), runningFolder());
 
             _driver.NavigateTo<JasminePages>(x => x.AllSpecs());
 
@@ -140,7 +149,7 @@ namespace Serenity.Jasmine
         {
             _server = new SelfHostHttpServer(_input.PortFlag);
             FubuRuntime runtime = _application.BuildApplication().Bootstrap();
-            _server.Start(runtime, ".".ToFullPath());
+            _server.Start(runtime, runningFolder());
             watchAssetFiles(runtime);
         }
 
