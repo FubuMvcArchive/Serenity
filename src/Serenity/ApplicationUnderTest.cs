@@ -35,7 +35,7 @@ namespace Serenity
 
                 app.ModifyRegistry(r => r.Services(x =>
                 {
-                    x.ReplaceService<ICurrentHttpRequest>(new StubCurrentHttpRequest
+                    x.ReplaceService<ICurrentHttpRequest>(new StandInCurrentHttpRequest
                     {
                         ApplicationRoot = settings.RootUrl
                     });
@@ -60,7 +60,7 @@ namespace Serenity
 
             _urls = new Lazy<IUrlRegistry>(() =>
             {
-                var urls = GetInstance<IUrlRegistry>();
+                var urls = _container.Value.Get<IUrlRegistry>();
                 urls.As<UrlRegistry>().RootAt(_rootUrl);
                 return urls;
             });
@@ -78,19 +78,9 @@ namespace Serenity
             get { return _rootUrl; }
         }
 
-        public T GetInstance<T>()
+        public IServiceLocator Services
         {
-            return _container.Value.Get<T>();
-        }
-
-        public object GetInstance(Type type)
-        {
-            return _services.Value.GetInstance(type);
-        }
-
-        public IEnumerable<T> GetAll<T>()
-        {
-            return _container.Value.GetAll<T>();
+            get { return _services.Value; }
         }
 
         public IBrowserLifecycle Browser
@@ -131,37 +121,5 @@ namespace Serenity
         }
     }
 
-    public class StubCurrentHttpRequest : ICurrentHttpRequest
-    {
-        public string TheRawUrl;
-        public string TheRelativeUrl;
-        public string ApplicationRoot = "http://server";
-        public string TheHttpMethod = "GET";
-        public string StubFullUrl = "http://server/";
 
-        public string RawUrl()
-        {
-            return TheRawUrl;
-        }
-
-        public string RelativeUrl()
-        {
-            return TheRelativeUrl;
-        }
-
-        public string FullUrl()
-        {
-            return StubFullUrl;
-        }
-
-        public string ToFullUrl(string url)
-        {
-            return url.ToAbsoluteUrl(ApplicationRoot);
-        }
-
-        public string HttpMethod()
-        {
-            return TheHttpMethod;
-        }
-    }
 }

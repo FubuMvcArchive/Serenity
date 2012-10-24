@@ -55,7 +55,6 @@ namespace Serenity.Fixtures
 
         public override sealed void SetUp(ITestContext context)
         {
-            // TODO -- later, make this thing be able to swap up the application under test
             _application = context.Retrieve<IApplicationUnderTest>();
 
             beforeRunning();
@@ -156,7 +155,7 @@ namespace Serenity.Fixtures
             // TODO -- later on, use the naming convention from fubu instead of pretending
             // that this rule is always true
             var config = GestureForProperty(expression);
-            if (FubuCore.StringExtensions.IsNotEmpty(key))
+            if (key.IsNotEmpty())
             {
                 config.CellName = key;
             }
@@ -197,7 +196,7 @@ namespace Serenity.Fixtures
 
         protected void EditableElement(Expression<Func<T, object>> expression, string label = null)
         {
-            var accessor = FubuCore.Reflection.ReflectionExtensions.ToAccessor(expression);
+            var accessor = expression.ToAccessor();
             var name = accessor.Name;
 
             this["Check" + name] = CheckScreenValue(expression, label);
@@ -206,18 +205,14 @@ namespace Serenity.Fixtures
 
         protected void EditableElementsForAllImmediateProperties()
         {
-			System.Collections.Generic.GenericEnumerableExtensions.Each<PropertyInfo>(
-				System.Linq.Enumerable.Where(
-             typeof (T)
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance),
-                x => x.CanRead && x.CanWrite),
-                prop =>
-                {
-                    var accessor = new SingleProperty(prop);
-                    var expression = accessor.ToExpression<T>();
+			typeof (T)
+			    .GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanRead && x.CanWrite).Each(prop =>
+			    {
+			        var accessor = new SingleProperty(prop);
+			        var expression = accessor.ToExpression<T>();
 
-                    EditableElement(expression);
-                });
+			        EditableElement(expression);
+			    });
         }
 
         //public void EditableElements(params)

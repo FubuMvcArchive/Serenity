@@ -1,7 +1,6 @@
 using FubuMVC.Core;
 using FubuMVC.Core.Assets.Combination;
 using FubuMVC.Core.Http;
-using FubuMVC.OwinHost;
 
 namespace Serenity.Jasmine
 {
@@ -15,7 +14,7 @@ namespace Serenity.Jasmine
             Services(x =>
             {
                 x.ReplaceService<ICombinationDeterminationService, NulloCombinationDeterminationService>();
-                x.ReplaceService<ICurrentHttpRequest, OwinCurrentHttpRequest>();
+                x.ReplaceService<ICurrentHttpRequest, StandInCurrentHttpRequest>();
             });
         }
     }

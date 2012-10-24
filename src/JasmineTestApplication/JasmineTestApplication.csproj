@@ -52,9 +52,6 @@
       <HintPath>..\packages\HtmlTags.1.2.0.121\lib\4.0\HtmlTags.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="StructureMap">
-      <HintPath>..\packages\structuremap.2.6.4.65\lib\net40\StructureMap.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />

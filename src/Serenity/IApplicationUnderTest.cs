@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FubuCore;
 using FubuMVC.Core.Endpoints;
 using FubuMVC.Core.Urls;
 using OpenQA.Selenium;
@@ -14,9 +15,7 @@ namespace Serenity
 
         string RootUrl { get; }
 
-        T GetInstance<T>();
-        object GetInstance(Type type);
-        IEnumerable<T> GetAll<T>();
+        IServiceLocator Services { get; }
 
         IBrowserLifecycle Browser { get; }
 

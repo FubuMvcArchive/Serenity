@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using FubuMVC.Core;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.UI;
@@ -24,7 +25,7 @@ namespace Serenity.Testing.FakeSystem
         [TestFixtureSetUp]
         public void SetUp()
         {
-            theRunner = TestRunnerBuilder.ForSystem<FakeSerenitySystem>();
+            theRunner = TestRunner.ForSystem<FakeSerenitySystem>();
         }
 		
         [Test]
@@ -78,6 +79,10 @@ namespace Serenity.Testing.FakeSystem
         }
     }
 
+    public class FakeSerenitySystem : FubuMvcSystem<FakeSerenitySource>
+    {
+    }
+
     public class NameScreenFixture : ScreenFixture<TextModel>
     {
         public NameScreenFixture()
@@ -94,22 +99,6 @@ namespace Serenity.Testing.FakeSystem
         }
     }
 
-    public class FakeSerenitySystem : InProcessSerenitySystem<FakeSerenitySource>
-    {
-        
-        protected override ApplicationSettings findApplicationSettings()
-        {
-            var settings = ApplicationSettings.For<FakeSerenitySource>();
-            settings.PhysicalPath = ".".ToFullPath();
-
-            return settings;
-        }
-
-        public override void RegisterFixtures(FixtureRegistry registry)
-        {
-            registry.AddFixture<NameScreenFixture>();
-        }
-    }
 
     public class FakeSerenitySource : IApplicationSource
     {

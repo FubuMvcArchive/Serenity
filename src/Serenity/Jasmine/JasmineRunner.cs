@@ -7,7 +7,6 @@ using FubuCore;
 using FubuMVC.Core;
 using FubuMVC.SelfHost;
 using OpenQA.Selenium;
-using PortFinder = FubuMVC.OwinHost.PortFinder;
 
 namespace Serenity.Jasmine
 {
