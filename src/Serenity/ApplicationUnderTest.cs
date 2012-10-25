@@ -102,7 +102,7 @@ namespace Serenity
 
         public void Teardown()
         {
-            _browser.Dispose();
+            _browser.SafeDispose();
         }
 
         public virtual NavigationDriver Navigation

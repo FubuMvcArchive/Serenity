@@ -63,9 +63,8 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="StoryTeller, Version=2.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Storyteller2.2.0.0.2\lib\net40\StoryTeller.dll</HintPath>
+    <Reference Include="StoryTeller">
+      <HintPath>..\packages\Storyteller2.2.0.0.3\lib\net40\StoryTeller.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -89,9 +89,8 @@
     <Reference Include="Selenium.WebDriverBackedSelenium">
       <HintPath>..\packages\Selenium.WebDriverBackedSelenium.2.25.1\lib\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
-    <Reference Include="StoryTeller, Version=2.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Storyteller2.2.0.0.2\lib\net40\StoryTeller.dll</HintPath>
+    <Reference Include="StoryTeller">
+      <HintPath>..\packages\Storyteller2.2.0.0.3\lib\net40\StoryTeller.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -177,6 +176,9 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="content\scripts\Player.js" />
+    <Content Include="content\scripts\Song.js" />
+    <Content Include="content\scripts\specs\PlayerSpec.js" />
     <Content Include="HTMLPage1.htm" />
     <Content Include="jasmine.txt" />
     <Content Include="Jasmine\TestPackage1\content\scripts\Player.js" />

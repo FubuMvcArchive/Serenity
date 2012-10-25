@@ -27,6 +27,12 @@ namespace Serenity.Testing.FakeSystem
         {
             theRunner = TestRunner.ForSystem<FakeSerenitySystem>();
         }
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            theRunner.Dispose();
+        }
 		
         [Test]
         public void run_simple_test()

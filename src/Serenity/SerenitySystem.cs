@@ -1,6 +1,7 @@
 using System;
 using FubuCore.Binding;
 using FubuMVC.Core;
+using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Registration.ObjectGraph;
 using FubuMVC.SelfHost;
 using StoryTeller.Engine;
@@ -71,16 +72,22 @@ namespace Serenity
 
         private void resetApplication()
         {
-            if (_application != null && _application.IsValueCreated)
-            {
-                _application.Value.Teardown();
-            }
+            shutdownApplication();
 
             _application = new Lazy<IApplicationUnderTest>(buildApplication);
         }
 
+        private void shutdownApplication()
+        {
+            if (_application != null && _application.IsValueCreated)
+            {
+                _application.Value.Teardown();
+            }
+        }
+
         private IApplicationUnderTest buildApplication()
         {
+            FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
             var runtime = _runtimeSource();
             var application = _hosting.Start(_settings, runtime, WebDriverSettings.GetBrowserLifecyle());
 
@@ -91,6 +98,7 @@ namespace Serenity
 
         public void Dispose()
         {
+            shutdownApplication();
             _hosting.Shutdown();
         }
 
