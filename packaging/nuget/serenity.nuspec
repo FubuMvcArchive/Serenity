@@ -14,7 +14,7 @@
     <dependencies>
       <dependency id="FubuMVC.References" />
       <dependency id="FubuMVC.SelfHost" version="0.9.8.1220" />
-      <dependency id="StoryTeller2" />
+      <dependency id="Storyteller2" />
       <dependency id="Selenium.RC" version="2.21.0" />
       <dependency id="Selenium.Support" version="2.25.1" />
       <dependency id="Selenium.WebDriver" version="2.25.1" />
