@@ -146,6 +146,28 @@ namespace Serenity.Fixtures
         {
             _searchContexts.Pop();
         }
+
+        protected string GetData(IWebElement element)
+        {
+            return Driver.GetData(element);
+        }
+
+        protected string GetData(By finder)
+        {
+            var element = SearchContext.FindElement(finder);
+            return SearchContext.GetData(element);
+        }
+
+        protected void SetData(IWebElement element, string data)
+        {
+            SearchContext.SetData(element, data);
+        }
+
+        protected void SetData(By finder, string data)
+        {
+            var element = SearchContext.FindElement(finder);
+            SetData(element, data);
+        }
     }
 
     public class ScreenFixture<T> : ScreenFixture
