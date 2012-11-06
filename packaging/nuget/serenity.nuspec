@@ -12,7 +12,7 @@
     <description>Giving you piece of mind by making it easy to integrate both Storyteller and Jasmine testing into your FubuMVC applications</description>
     <tags>web framework specification fubumvc</tags>
     <dependencies>
-      <dependency id="FubuMVC.References" />
+      <dependency id="FubuMVC.Core" />
       <dependency id="FubuMVC.SelfHost" version="0.9.8.1220" />
       <dependency id="Storyteller2" />
       <dependency id="Selenium.RC" version="2.21.0" />
