@@ -8,10 +8,15 @@ namespace Serenity.Jasmine
 {
     [CommandDescription("Opens up a web browser application to browse and execute Jasmine specifications",
         Name = "jasmine")]
-    [Usage("default", "runs the jasmine tests")]
-    [Usage("add_folders", "adds new folders to a Serenity/Jasmine project")]
     public class JasmineCommand : FubuCommand<JasmineInput>
     {
+        public JasmineCommand()
+        {
+            Usage("runs the jasmine tests").Arguments(x => x.Mode, x => x.SerenityFile);
+            Usage("adds new folders to a Serenity/Jasmine project")
+                .Arguments(x => x.Mode, x => x.SerenityFile, x => x.Folders);
+        }
+
         public override bool Execute(JasmineInput input)
         {
             if (input.Mode == JasmineMode.add_folders)

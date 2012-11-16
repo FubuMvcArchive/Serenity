@@ -25,7 +25,6 @@ namespace Serenity.Jasmine
         }
 
         [Description("Chooses whether to open the browser application or just run all the specs in CLI mode")]
-        [RequiredUsage("default", "add_folders")]
         public JasmineMode Mode { get; set; }
 
 		[Description("Display verbose output of spec results for CI purposes")]
@@ -33,7 +32,6 @@ namespace Serenity.Jasmine
 		public bool VerboseFlag { get; set; }
 
         [Description("Name of the application folder with Jasmine specs or a file containing directives for where the specifications are located")]
-        [RequiredUsage("default", "add_folders")]
         public string SerenityFile { get; set; }
 
         [Description("Optionally overrides which port number Kayak uses for the web application.  Default is 5500")]
@@ -46,7 +44,6 @@ namespace Serenity.Jasmine
         public BrowserType BrowserFlag { get; set; }
 
         [Description("Adds folders to a Jasmine project in the add_folders.  \nFolders can be either absolute paths or relative to the jasmine text file")]
-        [RequiredUsage("add_folders")]
         public IEnumerable<string> Folders { get; set; }
 
         public IBrowserLifecycle GetBrowser()
