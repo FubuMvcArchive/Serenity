@@ -57,8 +57,8 @@ namespace Serenity.Jasmine
         private void recycleServer()
         {
             FubuRuntime runtime = _application.BuildApplication().Bootstrap();
-            _server.Recycle(runtime)
-                .ContinueWith(t => { watchAssetFiles(runtime); }).Wait();
+            _server.Recycle(runtime);
+            watchAssetFiles(runtime);
         }
 
         public void OpenInteractive()
@@ -93,8 +93,8 @@ namespace Serenity.Jasmine
             buildApplication();
             bool returnValue = true;
 
-            _server = new SelfHostHttpServer(_input.PortFlag);
-            _server.Start(_application.BuildApplication().Bootstrap(), runningFolder());
+            _server = new SelfHostHttpServer(_input.PortFlag, runningFolder());
+            _server.Start(_application.BuildApplication().Bootstrap());
 
             _driver.NavigateTo<JasminePages>(x => x.AllSpecs());
 
@@ -150,9 +150,9 @@ namespace Serenity.Jasmine
 
         private void run()
         {
-            _server = new SelfHostHttpServer(_input.PortFlag);
+            _server = new SelfHostHttpServer(_input.PortFlag, runningFolder());
             FubuRuntime runtime = _application.BuildApplication().Bootstrap();
-            _server.Start(runtime, runningFolder());
+            _server.Start(runtime);
             watchAssetFiles(runtime);
         }
 

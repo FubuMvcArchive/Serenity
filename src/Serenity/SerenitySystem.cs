@@ -38,8 +38,8 @@ namespace Serenity
 
         public IApplicationUnderTest Start(ApplicationSettings settings, FubuRuntime runtime, IBrowserLifecycle lifecycle)
         {
-            _server = new SelfHostHttpServer(settings.Port);
-            _server.Start(runtime, settings.PhysicalPath);
+            _server = new SelfHostHttpServer(settings.Port, settings.PhysicalPath);
+            _server.Start(runtime);
 
             settings.RootUrl = _server.BaseAddress;
 

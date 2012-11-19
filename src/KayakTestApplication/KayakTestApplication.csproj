@@ -32,31 +32,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bottles">
-      <HintPath>..\packages\Bottles.0.9.9.403\lib\Bottles.dll</HintPath>
+      <HintPath>..\packages\Bottles.0.9.9.405\lib\Bottles.dll</HintPath>
     </Reference>
     <Reference Include="FubuCore">
-      <HintPath>..\packages\FubuCore.1.0.0.207\lib\FubuCore.dll</HintPath>
+      <HintPath>..\packages\FubuCore.1.0.0.208\lib\FubuCore.dll</HintPath>
     </Reference>
     <Reference Include="FubuLocalization">
-      <HintPath>..\packages\FubuLocalization.0.9.5.106\lib\FubuLocalization.dll</HintPath>
+      <HintPath>..\packages\FubuLocalization.0.9.5.107\lib\FubuLocalization.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core">
-      <HintPath>..\packages\FubuMVC.Core.0.9.9.1277\lib\net40\FubuMVC.Core.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.0.9.9.1283\lib\net40\FubuMVC.Core.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core.View">
-      <HintPath>..\packages\FubuMVC.Core.View.0.9.9.44\lib\net40\FubuMVC.Core.View.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.View.0.9.9.51\lib\net40\FubuMVC.Core.View.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.SelfHost">
-      <HintPath>..\packages\FubuMVC.SelfHost.0.9.9.1277\lib\net40\FubuMVC.SelfHost.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.SelfHost.0.9.9.1283\lib\net40\FubuMVC.SelfHost.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Spark">
-      <HintPath>..\packages\FubuMVC.Spark.0.9.9.44\lib\net40\FubuMVC.Spark.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Spark.0.9.9.51\lib\net40\FubuMVC.Spark.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.StructureMap">
-      <HintPath>..\packages\FubuMVC.StructureMap.0.9.9.1277\lib\net40\FubuMVC.StructureMap.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.StructureMap.0.9.9.1283\lib\net40\FubuMVC.StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="HtmlTags">
-      <HintPath>..\packages\HtmlTags.1.2.0.129\lib\4.0\HtmlTags.dll</HintPath>
+      <HintPath>..\packages\HtmlTags.1.2.0.130\lib\4.0\HtmlTags.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>

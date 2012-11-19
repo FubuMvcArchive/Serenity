@@ -15,6 +15,7 @@ using StoryTeller.Engine;
 
 namespace Serenity.Fixtures
 {
+    [Hidden]
     public class ScreenFixture : Fixture
     {
         private readonly Stack<ISearchContext> _searchContexts = new Stack<ISearchContext>();
