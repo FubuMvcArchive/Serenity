@@ -6,6 +6,7 @@ using FubuMVC.Core;
 using FubuMVC.Core.Bootstrapping;
 using FubuMVC.Core.Endpoints;
 using FubuMVC.Core.Http;
+using FubuMVC.Core.Runtime;
 using FubuMVC.Core.Urls;
 
 using OpenQA.Selenium;
@@ -17,13 +18,13 @@ namespace Serenity
         private readonly string _name;
         private readonly string _rootUrl;
         private readonly IBrowserLifecycle _browser;
-        private readonly Lazy<IContainerFacility> _container;
+        private readonly Lazy<IServiceFactory> _container;
         private readonly Lazy<IUrlRegistry> _urls;
         private readonly Lazy<IServiceLocator> _services;
 
 
         public ApplicationUnderTest(FubuRuntime runtime, ApplicationSettings settings, IBrowserLifecycle browser)
-            : this(settings.Name, settings.RootUrl, browser, () => runtime.Facility)
+            : this(settings.Name, settings.RootUrl, browser, () => runtime.Factory)
         {
             
         }
@@ -41,22 +42,21 @@ namespace Serenity
                     });
                 }));
 
-                app.Bootstrap();
+                return app.Bootstrap().Factory;
 
 
-                return app.Facility;
             })
         {
 
         }
 
-        private ApplicationUnderTest(string name, string rootUrl, IBrowserLifecycle browser, Func<IContainerFacility> containerSource)
+        private ApplicationUnderTest(string name, string rootUrl, IBrowserLifecycle browser, Func<IServiceFactory> factorySource)
         {
             _name = name;
             _rootUrl = rootUrl;
             _browser = browser;
 
-            _container = new Lazy<IContainerFacility>(containerSource);
+            _container = new Lazy<IServiceFactory>(factorySource);
 
             _urls = new Lazy<IUrlRegistry>(() =>
             {

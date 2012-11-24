@@ -44,7 +44,7 @@ namespace KayakTestApplication
             return model;
         }
 
-        public IDictionary<string, object> post_name(NameModel model)
+        public Dictionary<string, object> post_name(NameModel model)
         {
             return new Dictionary<string, object>{{"name", model.Name}};
         }

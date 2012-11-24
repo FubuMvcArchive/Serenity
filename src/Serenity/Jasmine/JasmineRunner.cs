@@ -160,7 +160,7 @@ namespace Serenity.Jasmine
         {
             if (_watcher == null)
             {
-                _watcher = runtime.Facility.Get<AssetFileWatcher>();
+                _watcher = runtime.Factory.Get<AssetFileWatcher>();
                 _watcher.StartWatching(this, _configuration);
             }
         }

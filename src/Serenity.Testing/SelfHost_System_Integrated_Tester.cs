@@ -1,4 +1,5 @@
-﻿using FubuMVC.Core;
+﻿using System.Net;
+using FubuMVC.Core;
 using FubuTestingSupport;
 using KayakTestApplication;
 using NUnit.Framework;
@@ -33,6 +34,7 @@ namespace Serenity.Testing
 
             // The below is enough to prove we're making a round trip
             var response = application.Endpoints().PostJson(new NameModel {Name = "Jeremy"});
+            response.StatusCode.ShouldEqual(HttpStatusCode.OK);
             response.ReadAsJson<NameModel>().Name.ShouldEqual("Jeremy");
         }
     }
