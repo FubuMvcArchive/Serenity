@@ -21,6 +21,7 @@ namespace Serenity
         private readonly Lazy<IServiceFactory> _container;
         private readonly Lazy<IUrlRegistry> _urls;
         private readonly Lazy<IServiceLocator> _services;
+        private Lazy<NavigationDriver> _navigation;
 
 
         public ApplicationUnderTest(FubuRuntime runtime, ApplicationSettings settings, IBrowserLifecycle browser)
@@ -55,6 +56,8 @@ namespace Serenity
                 urls.As<UrlRegistry>().RootAt(_rootUrl);
                 return urls;
             });
+
+            _navigation = new Lazy<NavigationDriver>(() => new NavigationDriver(this));
 
             _services = new Lazy<IServiceLocator>(() => _container.Value.Get<IServiceLocator>());
         }
@@ -98,7 +101,7 @@ namespace Serenity
 
         public virtual NavigationDriver Navigation
         {
-            get { return new NavigationDriver(this); }
+            get { return _navigation.Value; }
         }
 
         public virtual EndpointDriver Endpoints()
