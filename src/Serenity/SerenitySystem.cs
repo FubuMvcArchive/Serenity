@@ -91,9 +91,16 @@ namespace Serenity
             var runtime = _runtimeSource();
             var application = _hosting.Start(_settings, runtime, WebDriverSettings.GetBrowserLifecyle());
 
+            configureApplication(application);
+
             runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(application));
 
             return application;
+        }
+
+        protected virtual void configureApplication(IApplicationUnderTest application)
+        {
+            
         }
 
         public void Dispose()
