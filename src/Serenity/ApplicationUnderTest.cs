@@ -33,15 +33,6 @@ namespace Serenity
             : this(source.GetType().Name, settings.RootUrl, browser, () =>
             {
                 var app = source.BuildApplication();
-
-                app.ModifyRegistry(r => r.Services(x =>
-                {
-                    x.ReplaceService<ICurrentHttpRequest>(new StandInCurrentHttpRequest
-                    {
-                        ApplicationRoot = settings.RootUrl
-                    });
-                }));
-
                 return app.Bootstrap().Factory;
 
 
