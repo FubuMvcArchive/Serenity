@@ -60,6 +60,7 @@ namespace Serenity
         private readonly Func<FubuRuntime> _runtimeSource;
         private readonly ISerenityHosting _hosting;
         private Lazy<IApplicationUnderTest> _application;
+        private BindingRegistry _binding;
 
         public FubuMvcSystem(ApplicationSettings settings, Func<FubuRuntime> runtimeSource)
         {
@@ -91,14 +92,15 @@ namespace Serenity
             var runtime = _runtimeSource();
             var application = _hosting.Start(_settings, runtime, WebDriverSettings.GetBrowserLifecyle());
 
-            configureApplication(application);
+            _binding = application.Services.GetInstance<BindingRegistry>();
+            configureApplication(application, _binding);
 
             runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(application));
 
             return application;
         }
 
-        protected virtual void configureApplication(IApplicationUnderTest application)
+        protected virtual void configureApplication(IApplicationUnderTest application, BindingRegistry binding)
         {
             
         }
@@ -111,7 +113,7 @@ namespace Serenity
 
         public IExecutionContext CreateContext()
         {
-            return new FubuMvcContext(_application.Value);
+            return new FubuMvcContext(_application.Value, _binding);
         }
 
         public void Recycle()
@@ -124,10 +126,12 @@ namespace Serenity
     public class FubuMvcContext : IExecutionContext
     {
         private readonly IApplicationUnderTest _application;
+        private readonly BindingRegistry _binding;
 
-        public FubuMvcContext(IApplicationUnderTest application)
+        public FubuMvcContext(IApplicationUnderTest application, BindingRegistry binding)
         {
             _application = application;
+            _binding = binding;
         }
 
         public void Dispose()
@@ -142,7 +146,7 @@ namespace Serenity
 
         public BindingRegistry BindingRegistry
         {
-            get { return _application.Services.GetInstance<BindingRegistry>(); }
+            get { return _binding; }
         }
     }
 
