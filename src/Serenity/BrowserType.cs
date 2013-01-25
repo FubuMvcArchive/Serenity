@@ -4,6 +4,7 @@ namespace Serenity
     {
         Firefox,
         IE,
-        Chrome
+        Chrome,
+		Phantom
     }
 }

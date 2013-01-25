@@ -6,6 +6,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
+using OpenQA.Selenium.PhantomJS;
 
 namespace Serenity
 {
@@ -98,6 +99,14 @@ namespace Serenity
             return _driver.IsValueCreated;
         }
     } 
+
+	public class PhantomBrowser : BrowserLifecycle
+	{
+		protected override IWebDriver buildDriver()
+		{
+			return new PhantomJSDriver(AppDomain.CurrentDomain.BaseDirectory);
+		}
+	}
 
     public class InternetExplorerBrowser : BrowserLifecycle
     {

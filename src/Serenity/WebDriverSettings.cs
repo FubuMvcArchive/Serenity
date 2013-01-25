@@ -52,6 +52,9 @@ namespace Serenity
                 case BrowserType.Firefox:
                     return new FirefoxBrowser();
 
+				case BrowserType.Phantom:
+					return new PhantomBrowser();
+
                 default:
                     throw new ArgumentOutOfRangeException("Unrecognized browser");
             }
