@@ -161,24 +161,27 @@ namespace Serenity
         {
             try
             {
-                return ApplicationSettings.ReadFor<T>();
+                return ApplicationSettings.ReadFor<T>() ?? DefaultSettings();
             }
             // So wrong...
             catch(ArgumentOutOfRangeException)
             {
-                var sourceFolder = AppDomain.CurrentDomain.BaseDirectory.ParentDirectory().ParentDirectory().ParentDirectory();
-                var applicationFolder = sourceFolder.AppendPath(typeof (T).Assembly.GetName().Name);
-
-                return new ApplicationSettings
-                {
-                    ApplicationSourceName = typeof(T).AssemblyQualifiedName,
-                    PhysicalPath = applicationFolder,
-                    Port = 5500 // just a starting point
-                };
+                return DefaultSettings();
             }
         }
 
+        private static ApplicationSettings DefaultSettings()
+        {
+            var sourceFolder = AppDomain.CurrentDomain.BaseDirectory.ParentDirectory().ParentDirectory().ParentDirectory();
+            var applicationFolder = sourceFolder.AppendPath(typeof (T).Assembly.GetName().Name);
 
+            return new ApplicationSettings
+            {
+                ApplicationSourceName = typeof (T).AssemblyQualifiedName,
+                PhysicalPath = applicationFolder,
+                Port = 5500 // just a starting point
+            };
+        }
     }
 
 
