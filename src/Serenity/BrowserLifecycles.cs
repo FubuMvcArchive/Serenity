@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using FubuCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.PhantomJS;
+using Serenity.StoryTeller;
+using StoryTeller;
 
 namespace Serenity
 {
@@ -102,8 +105,18 @@ namespace Serenity
 
 	public class PhantomBrowser : BrowserLifecycle
 	{
+		public const string File = "phantomjs.exe";
+
 		protected override IWebDriver buildDriver()
 		{
+			var fileSystem = new FileSystem();
+			var settings = StoryTellerEnvironment.Get<SerenityEnvironment>();
+
+			if (fileSystem.FileExists(settings.WorkingDir, File))
+			{
+				return new PhantomJSDriver(settings.WorkingDir);
+			}
+
 			return new PhantomJSDriver(AppDomain.CurrentDomain.BaseDirectory);
 		}
 	}

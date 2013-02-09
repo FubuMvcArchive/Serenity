@@ -1,9 +1,12 @@
 using System;
+using System.Diagnostics;
 using FubuCore.Binding;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Registration.ObjectGraph;
 using FubuMVC.SelfHost;
+using Serenity.StoryTeller;
+using StoryTeller;
 using StoryTeller.Engine;
 using FubuCore;
 
@@ -88,6 +91,9 @@ namespace Serenity
 
         private IApplicationUnderTest buildApplication()
         {
+			var settings = StoryTellerEnvironment.Get<SerenityEnvironment>();
+	        WebDriverSettings.Current.Browser = settings.Browser;
+
             FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
             var runtime = _runtimeSource();
             var application = _hosting.Start(_settings, runtime, WebDriverSettings.GetBrowserLifecyle());
