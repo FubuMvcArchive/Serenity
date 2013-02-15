@@ -32,6 +32,8 @@ fubu-content
 spark.zip
 _combined/
 storyteller
+!src/Serenity/StoryTeller
+!src/Serenity/StoryTeller/*.*
 src/Spark.Web.FubuMVC/
 report.htm
 installation_report.htm
