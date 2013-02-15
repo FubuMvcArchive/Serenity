@@ -13,8 +13,8 @@
     <tags>web framework specification fubumvc</tags>
     <dependencies>
       <dependency id="FubuMVC.Core" />
-      <dependency id="FubuMVC.SelfHost" version="0.9.8.1220" />
-      <dependency id="Storyteller2" />
+      <dependency id="FubuMVC.Katana" version="1.0.1.1416" />
+      <dependency id="Storyteller2" version="2.0.0.15" />
       <dependency id="Selenium.RC" version="2.21.0" />
       <dependency id="Selenium.Support" version="2.29.1" />
       <dependency id="Selenium.WebDriver" version="2.29.1" />

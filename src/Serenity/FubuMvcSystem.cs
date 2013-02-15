@@ -51,7 +51,7 @@ namespace Serenity
         private IApplicationUnderTest buildApplication()
         {
 			var settings = StoryTellerEnvironment.Get<SerenityEnvironment>();
-	        WebDriverSettings.Current.Browser = settings.Browser;
+	        WebDriverSettings.Import(settings);
 
             FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
             var runtime = _runtimeSource();

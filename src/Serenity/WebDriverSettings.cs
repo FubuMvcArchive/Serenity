@@ -59,5 +59,10 @@ namespace Serenity
                     throw new ArgumentOutOfRangeException("Unrecognized browser");
             }
         }
+
+		public static void Import(SerenityEnvironment settings)
+		{
+			Current.Browser = settings.Browser;
+		}
     }
 }
