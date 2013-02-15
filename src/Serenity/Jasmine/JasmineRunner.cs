@@ -5,7 +5,8 @@ using System.Linq;
 using System.Reflection;
 using FubuCore;
 using FubuMVC.Core;
-using FubuMVC.SelfHost;
+using FubuMVC.Katana;
+using FubuMVC.OwinHost;
 using OpenQA.Selenium;
 
 namespace Serenity.Jasmine
@@ -17,7 +18,7 @@ namespace Serenity.Jasmine
         private ApplicationUnderTest _applicationUnderTest;
         private JasmineConfiguration _configuration;
         private NavigationDriver _driver;
-        private SelfHostHttpServer _server;
+        private EmbeddedFubuMvcServer _server;
         private AssetFileWatcher _watcher;
 
 
@@ -56,9 +57,8 @@ namespace Serenity.Jasmine
 
         private void recycleServer()
         {
-            FubuRuntime runtime = _application.BuildApplication().Bootstrap();
-            _server.Recycle(runtime);
-            watchAssetFiles(runtime);
+			resetServer();
+            watchAssetFiles(_application.BuildApplication().Bootstrap());
         }
 
         public void OpenInteractive()
@@ -82,6 +82,16 @@ namespace Serenity.Jasmine
             return AppDomain.CurrentDomain.BaseDirectory;
         }
 
+		private void resetServer()
+		{
+			if (_server != null)
+			{
+				_server.SafeDispose();
+			}
+
+			_server = _application.BuildApplication().RunEmbedded(runningFolder(), _input.PortFlag);
+		}
+
         public bool RunAllSpecs()
         {
             string title = "Running Jasmine specs for project at " + _input.SerenityFile;
@@ -93,8 +103,7 @@ namespace Serenity.Jasmine
             buildApplication();
             bool returnValue = true;
 
-            _server = new SelfHostHttpServer(_input.PortFlag, runningFolder());
-            _server.Start(_application.BuildApplication().Bootstrap());
+	        resetServer();
 
             _driver.NavigateTo<JasminePages>(x => x.AllSpecs());
 
@@ -150,10 +159,7 @@ namespace Serenity.Jasmine
 
         private void run()
         {
-            _server = new SelfHostHttpServer(_input.PortFlag, runningFolder());
-            FubuRuntime runtime = _application.BuildApplication().Bootstrap();
-            _server.Start(runtime);
-            watchAssetFiles(runtime);
+	        recycleServer();
         }
 
         private void watchAssetFiles(FubuRuntime runtime)
