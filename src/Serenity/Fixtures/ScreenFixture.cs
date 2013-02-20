@@ -176,6 +176,19 @@ namespace Serenity.Fixtures
 
     public class ScreenFixture<T> : ScreenFixture
     {
+        private void enterValue(Expression<Func<T, object>> expression, string value)
+        {
+            // TODO -- use the field naming convention?
+            var name = expression.ToAccessor().Name;
+            SetData(By.Name(name), value);
+        }
+
+        public string readValue(Expression<Func<T, object>> expression)
+        {
+            var name = expression.ToAccessor().Name;
+            return GetData(By.Name(name));
+        }
+
         private GestureConfig getGesture(Expression<Func<T, object>> expression, string label = null, string key = null)
         {
             // TODO -- later on, use the naming convention from fubu instead of pretending
