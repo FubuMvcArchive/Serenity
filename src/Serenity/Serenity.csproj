@@ -87,7 +87,7 @@
       <HintPath>..\packages\Owin.Extensions.0.6.4\lib\net40\Owin.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium">
-      <HintPath>..\packages\Selenium.WebDriverBackedSelenium.2.29.1\lib\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
+      <HintPath>..\packages\Selenium.WebDriverBackedSelenium.2.31.2\lib\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="StoryTeller">
       <HintPath>..\packages\Storyteller2.2.0.0.15\lib\net40\StoryTeller.dll</HintPath>
@@ -105,11 +105,11 @@
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WebDriver, Version=2.29.1.0, Culture=neutral, PublicKeyToken=1c2bd1631853048f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selenium.WebDriver.2.29.1\lib\net40\WebDriver.dll</HintPath>
+    <Reference Include="WebDriver">
+      <HintPath>..\packages\Selenium.WebDriver.2.31.2\lib\net40\WebDriver.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver.Support">
-      <HintPath>..\packages\Selenium.Support.2.29.1\lib\net40\WebDriver.Support.dll</HintPath>
+      <HintPath>..\packages\Selenium.Support.2.31.2\lib\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

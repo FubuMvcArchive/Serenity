@@ -105,7 +105,7 @@
       <HintPath>..\packages\RhinoMocks.3.6\lib\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium">
-      <HintPath>..\packages\Selenium.WebDriverBackedSelenium.2.29.1\lib\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
+      <HintPath>..\packages\Selenium.WebDriverBackedSelenium.2.31.2\lib\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="StoryTeller">
       <HintPath>..\packages\Storyteller2.2.0.0.15\lib\net40\StoryTeller.dll</HintPath>
@@ -123,10 +123,10 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WebDriver">
-      <HintPath>..\packages\Selenium.WebDriver.2.29.1\lib\net40\WebDriver.dll</HintPath>
+      <HintPath>..\packages\Selenium.WebDriver.2.31.2\lib\net40\WebDriver.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver.Support">
-      <HintPath>..\packages\Selenium.Support.2.29.1\lib\net40\WebDriver.Support.dll</HintPath>
+      <HintPath>..\packages\Selenium.Support.2.31.2\lib\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
