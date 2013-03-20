@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using FubuCore.Conversion;
 using FubuMVC.Core;
@@ -9,6 +10,7 @@ using HtmlTags;
 using NUnit.Framework;
 using FubuMVC.StructureMap;
 using OpenQA.Selenium;
+using Rhino.Mocks;
 using Serenity.Fixtures;
 using StoryTeller.Domain;
 using StoryTeller.Engine;
@@ -106,6 +108,29 @@ namespace Serenity.Testing.FakeSystem
             
         }
 
+        [Test]
+        public void calls_subsystem_start_on_each()
+        {
+            var system = new FakeSerenitySystem();
+            system.SubSystems.Each(x => {
+                x.AssertWasCalled(o => o.Start(system.Application.Services));
+            });
+        }
+
+        [Test]
+        public void calls_syssystem_stop_on_each_when_disposing()
+        {
+            var system = new FakeSerenitySystem();
+            system.Application.ShouldNotBeNull();
+        
+            system.Dispose();
+
+            system.SubSystems.Each(x =>
+            {
+                x.AssertWasCalled(o => o.Stop());
+            });
+        }
+
         [TestFixtureTearDown]
         public void Teardown()
         {
@@ -118,12 +143,22 @@ namespace Serenity.Testing.FakeSystem
     {
         public IContainer TheContainer;
 
+        public IList<ISubSystem> SubSystems = new List<ISubSystem>();
+
         public FakeSerenitySystem()
         {
             AddConverter<RandomTypeConverter>();
             AfterNavigation = new FakeAfterNavigation();
 
             OnStartup<IContainer>(c => TheContainer = c);
+
+            var system1 = MockRepository.GenerateMock<ISubSystem>();
+            var system2 = MockRepository.GenerateMock<ISubSystem>();
+            var system3 = MockRepository.GenerateMock<ISubSystem>();
+        
+            AddSubSystem(system1);
+            AddSubSystem(system2);
+            AddSubSystem(system3);
         }
     }
 

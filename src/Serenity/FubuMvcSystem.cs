@@ -33,6 +33,7 @@ namespace Serenity
         // TODO -- this reoccurs so often that we might as well put something in FubuCore for it
         private readonly IList<Action<BindingRegistry>> _bindingRegistrations = new List<Action<BindingRegistry>>(); 
         private readonly IList<Action<IApplicationUnderTest>> _applicationAlterations = new List<Action<IApplicationUnderTest>>();
+        private readonly IList<ISubSystem> _subSystems = new List<ISubSystem>(); 
 
         public FubuMvcSystem(ApplicationSettings settings, Func<FubuRuntime> runtimeSource)
         {
@@ -47,6 +48,27 @@ namespace Serenity
             _hosting = new Lazy<ISerenityHosting>(() => _createHosting());
 
             resetApplication();
+        }
+
+
+        public void AddSubSystem<T>() where T : ISubSystem, new()
+        {
+            AddSubSystem(new T());
+        }
+
+        public void AddSubSystem(ISubSystem subSystem)
+        {
+            _subSystems.Add(subSystem);
+        }
+
+        public IEnumerable<ISubSystem> SubSystems
+        {
+            get { return _subSystems; }
+        }
+
+        public IApplicationUnderTest Application
+        {
+            get { return _application.Value; }
         }
 
         /// <summary>
@@ -125,6 +147,8 @@ namespace Serenity
             {
                 _application.Value.Teardown();
             }
+
+            _subSystems.Each(x => x.Stop());
         }
 
         private IApplicationUnderTest buildApplication()
@@ -144,6 +168,10 @@ namespace Serenity
             configureApplication(application, _binding);
 
             runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(application));
+
+            // TODO -- add some registration stuff here?
+
+            _subSystems.Each(x => x.Start(application.Services));
 
             return application;
         }
