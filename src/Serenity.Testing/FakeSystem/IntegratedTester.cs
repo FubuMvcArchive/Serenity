@@ -8,6 +8,7 @@ using HtmlTags;
 
 using NUnit.Framework;
 using FubuMVC.StructureMap;
+using OpenQA.Selenium;
 using Serenity.Fixtures;
 using StoryTeller.Domain;
 using StoryTeller.Engine;
@@ -88,6 +89,14 @@ namespace Serenity.Testing.FakeSystem
                 .Any().ShouldBeTrue();
         }
 
+        [Test]
+        public void register_a_custom_after_navigation()
+        {
+            var context = new FakeSerenitySystem().CreateContext();
+            context.Services.GetInstance<IApplicationUnderTest>()
+                   .Navigation.AfterNavigation.ShouldBeOfType<FakeAfterNavigation>();
+        }
+
         [TestFixtureTearDown]
         public void Teardown()
         {
@@ -101,6 +110,15 @@ namespace Serenity.Testing.FakeSystem
         public FakeSerenitySystem()
         {
             AddConverter<RandomTypeConverter>();
+            AfterNavigation = new FakeAfterNavigation();
+        }
+    }
+
+    public class FakeAfterNavigation : IAfterNavigation
+    {
+        public void AfterNavigation(IWebDriver driver, string desiredUrl)
+        {
+            throw new NotImplementedException();
         }
     }
 

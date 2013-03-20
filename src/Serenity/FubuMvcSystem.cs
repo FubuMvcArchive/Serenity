@@ -30,7 +30,9 @@ namespace Serenity
         private Lazy<IApplicationUnderTest> _application;
         private BindingRegistry _binding;
 
+        // TODO -- this reoccurs so often that we might as well put something in FubuCore for it
         private readonly IList<Action<BindingRegistry>> _bindingRegistrations = new List<Action<BindingRegistry>>(); 
+        private readonly IList<Action<IApplicationUnderTest>> _applicationAlterations = new List<Action<IApplicationUnderTest>>();
 
         public FubuMvcSystem(ApplicationSettings settings, Func<FubuRuntime> runtimeSource)
         {
@@ -45,6 +47,18 @@ namespace Serenity
             _hosting = new Lazy<ISerenityHosting>(() => _createHosting());
 
             resetApplication();
+        }
+
+        /// <summary>
+        /// Register a policy about what to do after navigating the browser to handle issues
+        /// like being redirected to a login screen
+        /// </summary>
+        public IAfterNavigation AfterNavigation
+        {
+            set
+            {
+                _applicationAlterations.Add(aut => aut.Navigation.AfterNavigation = value);
+            }
         }
 
         /// <summary>
@@ -110,6 +124,8 @@ namespace Serenity
             FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
             var runtime = _runtimeSource();
             var application = _hosting.Value.Start(_settings, runtime, WebDriverSettings.GetBrowserLifecyle());
+            _applicationAlterations.Each(x => x(application));
+
 
             _binding = application.Services.GetInstance<BindingRegistry>();
             _bindingRegistrations.Each(x => x(_binding));
