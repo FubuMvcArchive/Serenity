@@ -1,6 +1,7 @@
 using FubuCore;
 using FubuMVC.Core;
 using FubuMVC.Katana;
+using FubuMVC.OwinHost;
 
 namespace Serenity
 {
@@ -32,7 +33,8 @@ namespace Serenity
 
 		public IApplicationUnderTest Start(ApplicationSettings settings, FubuRuntime runtime, IBrowserLifecycle lifecycle)
 		{
-			_server = new EmbeddedFubuMvcServer(runtime, settings.PhysicalPath);
+		    var port = PortFinder.FindPort(settings.Port);
+			_server = new EmbeddedFubuMvcServer(runtime, settings.PhysicalPath, port);
 
 			settings.RootUrl = _server.BaseAddress;
 			return new ApplicationUnderTest(runtime, settings, lifecycle);
