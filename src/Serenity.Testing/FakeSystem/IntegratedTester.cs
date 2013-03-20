@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using FubuCore.Conversion;
 using FubuMVC.Core;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.UI;
@@ -14,6 +15,8 @@ using StoryTeller.Execution;
 using StructureMap;
 using FubuCore;
 using Serenity.Testing.Fixtures;
+using FubuTestingSupport;
+using System.Linq;
 
 namespace Serenity.Testing.FakeSystem
 {
@@ -77,6 +80,14 @@ namespace Serenity.Testing.FakeSystem
             //testResult.Counts.ShouldEqual(0, 1, 0, 0);
         }
 
+        [Test]
+        public void convert_with_custom_converter()
+        {
+            var context = new FakeSerenitySystem().CreateContext();
+            context.BindingRegistry.Converters.AllConverterFamilies.OfType<RandomTypeConverter>()
+                .Any().ShouldBeTrue();
+        }
+
         [TestFixtureTearDown]
         public void Teardown()
         {
@@ -87,6 +98,23 @@ namespace Serenity.Testing.FakeSystem
 
     public class FakeSerenitySystem : FubuMvcSystem<FakeSerenitySource>
     {
+        public FakeSerenitySystem()
+        {
+            AddConverter<RandomTypeConverter>();
+        }
+    }
+
+    public class RandomTypeConverter : StatelessConverter<RandomType>
+    {
+        protected override RandomType convert(string text)
+        {
+            return new RandomType {Name = text};
+        }
+    }
+
+    public class RandomType
+    {
+        public string Name { get; set; }
     }
 
     public class NameScreenFixture : ScreenFixture<TextModel>

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using FubuCore.Binding;
+using FubuCore.Conversion;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Registration.ObjectGraph;
@@ -10,6 +12,15 @@ using FubuCore;
 
 namespace Serenity
 {
+    
+    public interface ISubSystem
+    {
+        // TODO -- this should be in Storyteller itself(?)
+
+        void Start(IServiceLocator services);
+        void Stop();
+    }
+
     public class FubuMvcSystem : ISystem
     {
         private readonly ApplicationSettings _settings;
@@ -18,6 +29,8 @@ namespace Serenity
 	    private Func<ISerenityHosting> _createHosting;
         private Lazy<IApplicationUnderTest> _application;
         private BindingRegistry _binding;
+
+        private readonly IList<Action<BindingRegistry>> _bindingRegistrations = new List<Action<BindingRegistry>>(); 
 
         public FubuMvcSystem(ApplicationSettings settings, Func<FubuRuntime> runtimeSource)
         {
@@ -32,6 +45,26 @@ namespace Serenity
             _hosting = new Lazy<ISerenityHosting>(() => _createHosting());
 
             resetApplication();
+        }
+
+        /// <summary>
+        /// Add a new converter strategy to customize how Storyteller will convert a string
+        /// into a type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void AddConverter<T>() where T : IObjectConverterFamily, new()
+        {
+            AddConverter(new T());
+        }
+
+        /// <summary>
+        /// Add a new converter strategy to customize how Storyteller will convert a string
+        /// into a type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void AddConverter(IObjectConverterFamily family)
+        {
+            _bindingRegistrations.Add(registry => registry.Converters.RegisterConverterFamily(family));
         }
 
         /// <summary>
@@ -79,6 +112,8 @@ namespace Serenity
             var application = _hosting.Value.Start(_settings, runtime, WebDriverSettings.GetBrowserLifecyle());
 
             _binding = application.Services.GetInstance<BindingRegistry>();
+            _bindingRegistrations.Each(x => x(_binding));
+
             configureApplication(application, _binding);
 
             runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(application));
