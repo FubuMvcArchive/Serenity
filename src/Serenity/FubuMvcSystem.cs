@@ -3,6 +3,7 @@ using FubuCore.Binding;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Registration.ObjectGraph;
+using Serenity.Fixtures.Handlers;
 using StoryTeller;
 using StoryTeller.Engine;
 using FubuCore;
@@ -32,6 +33,26 @@ namespace Serenity
 
             resetApplication();
         }
+
+        /// <summary>
+        /// Add an element handler to the ElementHandlers collection for driving
+        /// IWebElement's with WebDriver
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void AddElementHandler<T>() where T : IElementHandler, new()
+        {
+            AddElementHandler(new T());
+        }
+
+        /// <summary>
+        /// Add an element handler to the ElementHandlers collection for driving
+        /// IWebElement's with WebDriver
+        /// </summary>
+        public void AddElementHandler(IElementHandler handler)
+        {
+            ElementHandlers.Handlers.Add(handler);
+        }
+
 
         private void resetApplication()
         {
