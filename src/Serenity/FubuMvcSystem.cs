@@ -50,6 +50,17 @@ namespace Serenity
         }
 
         /// <summary>
+        /// Catch all method to call any service from the running application when
+        /// the application restarts
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="startup"></param>
+        public void OnStartup<TService>(Action<TService> startup)
+        {
+            _applicationAlterations.Add(app => startup(app.Services.GetInstance<TService>()));
+        }
+
+        /// <summary>
         /// Register a policy about what to do after navigating the browser to handle issues
         /// like being redirected to a login screen
         /// </summary>
@@ -137,6 +148,7 @@ namespace Serenity
             return application;
         }
 
+        // TODO -- like to make this go away
         protected virtual void configureApplication(IApplicationUnderTest application, BindingRegistry binding)
         {
             

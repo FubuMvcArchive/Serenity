@@ -97,6 +97,15 @@ namespace Serenity.Testing.FakeSystem
                    .Navigation.AfterNavigation.ShouldBeOfType<FakeAfterNavigation>();
         }
 
+        [Test]
+        public void smoke_test_the_on_start_up()
+        {
+            var system = new FakeSerenitySystem();
+            system.CreateContext().ShouldNotBeNull();
+            system.TheContainer.ShouldNotBeNull();
+            
+        }
+
         [TestFixtureTearDown]
         public void Teardown()
         {
@@ -107,10 +116,14 @@ namespace Serenity.Testing.FakeSystem
 
     public class FakeSerenitySystem : FubuMvcSystem<FakeSerenitySource>
     {
+        public IContainer TheContainer;
+
         public FakeSerenitySystem()
         {
             AddConverter<RandomTypeConverter>();
             AfterNavigation = new FakeAfterNavigation();
+
+            OnStartup<IContainer>(c => TheContainer = c);
         }
     }
 
