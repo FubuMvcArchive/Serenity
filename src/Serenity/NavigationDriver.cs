@@ -59,7 +59,7 @@ namespace Serenity
 
         public void NavigateTo<T>(Expression<Action<T>> expression)
         {
-            var url = _application.Urls.UrlFor(expression, null);
+            var url = _application.Urls.UrlFor(expression, "GET");
             NavigateToUrl(url);
         }
 
