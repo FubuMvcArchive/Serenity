@@ -11,7 +11,8 @@
     <RootNamespace>SerenityRunner</RootNamespace>
     <AssemblyName>SerenityRunner</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -105,9 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ProjectRoot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <TagLine>Get some piece of mind about your FubuMVC and test that thing!</TagLine>
+  <Name>Serenity</Name>
+  <GitHubPage>http://github.com/DarthFubuMVC/Serenity</GitHubPage>
+  <UserGroupUrl>https://groups.google.com/forum/?fromgroups#!forum/fubumvc-devel</UserGroupUrl>
+  <BuildServerUrl>http://build.fubu-project.org/project.html?projectId=project18&amp;tab=projectOverview</BuildServerUrl>
+  <BottleName>Serenity.Docs</BottleName>
+  <TeamCityBuildType>bt28</TeamCityBuildType>
+
+  <Nugets>
+    <PublishedNuget>
+      <Name>Serenity</Name>
+      <Description>Giving you piece of mind by making it easy to integrate both Storyteller and Jasmine testing into your FubuMVC applications</Description>
+    </PublishedNuget>
+  </Nugets>
+  <Url>serenity</Url>
+</ProjectRoot>

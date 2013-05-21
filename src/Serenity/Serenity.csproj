@@ -170,9 +170,6 @@
     <Compile Include="WebElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="WebContent\jasmine.asset.config" />
   </ItemGroup>
   <ItemGroup>

@@ -60,3 +60,5 @@ deployment
 fubu.cmd
 storyteller.cmd
 run_st.cmd
+Gemfile.lock
+logs
