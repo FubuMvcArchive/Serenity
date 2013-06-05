@@ -34,7 +34,7 @@ task :run_jasmine => [:compile] do
 end
 
 desc "Target used for the CI server (Mono)"
-task :mono_ci => [:clean, :compile, :history]
+task :mono_ci => [:compile]
 
 
 
