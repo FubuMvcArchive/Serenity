@@ -43,6 +43,9 @@
     <Reference Include="FubuLocalization">
       <HintPath>..\packages\FubuLocalization\lib\FubuLocalization.dll</HintPath>
     </Reference>
+    <Reference Include="FubuMVC.Ajax">
+      <HintPath>..\packages\FubuMVC.Ajax\lib\net40\FubuMVC.Ajax.dll</HintPath>
+    </Reference>
     <Reference Include="FubuMVC.Coffee">
       <HintPath>..\packages\FubuMVC.Coffee\lib\net40\FubuMVC.Coffee.dll</HintPath>
     </Reference>
