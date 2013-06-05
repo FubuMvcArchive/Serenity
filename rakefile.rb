@@ -33,7 +33,8 @@ task :run_jasmine => [:compile] do
 	sh "src/SerenityRunner/bin/#{@solution.compilemode}/SerenityRunner.exe jasmine run src/JasmineTestApplication -b Firefox"
 end
 
-
+desc "Target used for the CI server (Mono)"
+task :mono_ci => [:clean, :compile, :history]
 
 
 
