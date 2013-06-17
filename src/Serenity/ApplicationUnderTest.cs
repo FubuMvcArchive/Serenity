@@ -106,7 +106,7 @@ namespace Serenity
 
         public virtual EndpointDriver Endpoints()
         {
-            return new EndpointDriver(Urls);
+            return new EndpointDriver(Urls, _rootUrl);
         }
 
         public IWebDriver Driver
