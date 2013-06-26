@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Castle.DynamicProxy.Generators.Emitters;
 using FubuCore;
 using FubuCore.Reflection;
 using FubuLocalization;
+using FubuMVC.Core;
 using FubuMVC.Core.Endpoints;
+using FubuMVC.Core.Registration.Routes;
+using FubuMVC.Core.Urls;
 using OpenQA.Selenium;
 using Serenity.Fixtures.Grammars;
 using StoryTeller;
@@ -171,6 +175,52 @@ namespace Serenity.Fixtures
         {
             var element = SearchContext.FindElement(finder);
             SetData(element, data);
+        }
+
+        protected IGrammar BrowserIsAt(object model, string title, string categoryOrHttpMethod = null)
+        {
+            return BrowserIsAt(x => x.UrlFor(model, categoryOrHttpMethod), title);
+        }
+
+        protected IGrammar BrowserIsAt<T>(string title, string categoryOrHttpMethod = null) where T : class
+        {
+            return BrowserIsAt(x => x.UrlFor<T>(categoryOrHttpMethod), title);
+        }
+
+        protected IGrammar BrowserIsAt(Type handlerType, string title, MethodInfo method = null,
+            string categoryOrHttpMethodOrHttpMethod = null)
+        {
+            return BrowserIsAt(x => x.UrlFor(handlerType, method, categoryOrHttpMethodOrHttpMethod), title);
+        }
+
+        protected IGrammar BrowserIsAt<TController>(Expression<Action<TController>> expression, string title,
+            string categoryOrHttpMethod = null)
+        {
+            return BrowserIsAt(x => x.UrlFor(expression, categoryOrHttpMethod), title);
+        }
+
+        protected IGrammar BrowserIsAt(Type modelType, RouteParameters parameters, string title,
+            string categoryOrHttpMethod = null)
+        {
+            return BrowserIsAt(x => x.UrlFor(modelType, parameters, categoryOrHttpMethod), title);
+        }
+
+        protected IGrammar BrowserIsAt(Func<IUrlRegistry, string> toUrl, string title)
+        {
+            return new FactGrammar(() =>
+                IsUrlMatch(Application.Driver.Url, toUrl(Application.Urls)),
+                title);
+        }
+
+        protected static bool IsUrlMatch(string browserUrl, string url)
+        {
+            var browserUri = new Uri(browserUrl.ToAbsoluteUrl());
+            var searchUri = new Uri(url.ToAbsoluteUrl());
+            if (!browserUri.Host.Equals(searchUri.Host, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return false;
+            }
+            return browserUri.AbsolutePath.StartsWith(searchUri.AbsolutePath, StringComparison.CurrentCultureIgnoreCase);
         }
     }
 

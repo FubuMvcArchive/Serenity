@@ -150,6 +150,7 @@
   <ItemGroup>
     <Compile Include="BrowserFixture.cs" />
     <Compile Include="debugging.cs" />
+    <Compile Include="Fixtures\BrowserIsAtTester.cs" />
     <Compile Include="Fixtures\Grammars\CheckValueGrammarTester.cs" />
     <Compile Include="Fixtures\Grammars\ClickGrammerTester.cs" />
     <Compile Include="Fixtures\Grammars\EnterValueGrammarTester.cs" />
