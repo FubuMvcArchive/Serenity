@@ -14,7 +14,8 @@ namespace Serenity.Fixtures.Handlers
 
         public void EnterData(ISearchContext context, IWebElement element, object data)
         {
-            var value = (bool)data;
+            bool value;
+            bool.TryParse(data.ToString(), out value);
 
             var isChecked = IsChecked(element);
 
