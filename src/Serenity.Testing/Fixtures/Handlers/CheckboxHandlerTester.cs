@@ -141,6 +141,45 @@ namespace Serenity.Testing.Fixtures.Handlers
         }
 
         [Test]
+        public void enter_data_true_string()
+        {
+            var target = theDriver.FindElement(By.Id("target2"));
+
+            CheckboxHandler.IsChecked(target).ShouldBeFalse();
+
+            theHandler.EnterData(null, target, "true");
+            CheckboxHandler.IsChecked(target).ShouldBeTrue();
+
+            theHandler.EnterData(null, target, "True");
+            CheckboxHandler.IsChecked(target).ShouldBeTrue();
+        }
+
+        [Test]
+        public void enter_data_false_string()
+        {
+            var target = theDriver.FindElement(By.Id("target3"));
+
+            CheckboxHandler.IsChecked(target).ShouldBeTrue();
+
+            theHandler.EnterData(null, target, "false");
+            CheckboxHandler.IsChecked(target).ShouldBeFalse();
+
+            theHandler.EnterData(null, target, "False");
+            CheckboxHandler.IsChecked(target).ShouldBeFalse();
+        }
+
+        [Test]
+        public void enter_data_empty_string()
+        {
+            var target = theDriver.FindElement(By.Id("target3"));
+
+            CheckboxHandler.IsChecked(target).ShouldBeTrue();
+
+            theHandler.EnterData(null, target, string.Empty);
+            CheckboxHandler.IsChecked(target).ShouldBeFalse();
+        }
+
+        [Test]
         public void get_data()
         {
             theHandler.GetData(theDriver, theDriver.FindElement(By.Id("checked"))).ShouldEqual(true.ToString());
