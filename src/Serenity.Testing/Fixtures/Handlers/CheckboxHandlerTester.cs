@@ -17,7 +17,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         private CheckboxHandler theHandler = new CheckboxHandler();
         private IBrowserLifecycle _lifecycle;
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetUp()
         {
             var document = new HtmlDocument();
