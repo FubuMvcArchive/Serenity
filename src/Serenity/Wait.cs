@@ -18,7 +18,7 @@ namespace Serenity
             while (clock.ElapsedMilliseconds < timeoutInMilliseconds)
             {
                 Thread.Yield();
-                Thread.Sleep(500);
+                Thread.Sleep(millisecondPolling);
 
                 if (condition()) return;
             }
