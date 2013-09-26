@@ -4,6 +4,7 @@ using FubuCore;
 using FubuCore.CommandLine;
 using StoryTeller;
 using StoryTeller.Execution;
+using StoryTeller.Workspace;
 
 namespace Serenity.StoryTeller
 {
@@ -40,7 +41,7 @@ namespace Serenity.StoryTeller
 
 			Console.WriteLine("Using browser " + input.BrowserFlag);
 
-			var runner = new ProjectRunner(new[] { input.ProjectFile }, input.ResultsFile);
+            var runner = new ProjectRunner(new[] { Project.LoadFromFile(input.ProjectFile) }, input.ResultsFile);
 			if (input.WorkspaceFlag.IsNotEmpty())
 			{
 				Console.WriteLine("Using workspace " + input.WorkspaceFlag);
