@@ -28,6 +28,11 @@ end
 	sln.defaults = [:run_jasmine]
 end
 
+FubuRake::Storyteller.new({
+  :path => 'src/StorytellerProject',
+  :compilemode => @solution.compilemode
+})
+
 desc "Try out JasmineRunner"
 task :run_jasmine => [:compile] do
 	sh "src/SerenityRunner/bin/#{@solution.compilemode}/SerenityRunner.exe jasmine run src/JasmineTestApplication -b Firefox"

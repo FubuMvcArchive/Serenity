@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Test name="Passing Test" lifecycle="Regression">
+  <HomeScreen>
+    <GoToHome isStep="True" />
+    <Comment><![CDATA[The text box is hard coded to be "bar"]]></Comment>
+    <TheTextboxValueIs isStep="True" returnValue="bar" />
+  </HomeScreen>
+</Test>
