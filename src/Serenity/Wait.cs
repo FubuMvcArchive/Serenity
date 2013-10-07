@@ -8,9 +8,9 @@ namespace Serenity
 {
     public static class Wait
     {
-        public static void Until(Func<bool> condition, int millisecondPolling = 500, int timeoutInMilliseconds = 5000)
+        public static bool Until(Func<bool> condition, int millisecondPolling = 500, int timeoutInMilliseconds = 5000)
         {
-            if (condition()) return;
+            if (condition()) return true;
 
             var clock = new Stopwatch();
             clock.Start();
@@ -20,8 +20,10 @@ namespace Serenity
                 Thread.Yield();
                 Thread.Sleep(millisecondPolling);
 
-                if (condition()) return;
+                if (condition()) return true;
             }
+
+            return false;
         }
     }
 }
