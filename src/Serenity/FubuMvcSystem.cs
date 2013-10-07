@@ -9,6 +9,7 @@ using Serenity.Fixtures.Handlers;
 using StoryTeller;
 using StoryTeller.Engine;
 using FubuCore;
+using StoryTeller.Workspace;
 
 namespace Serenity
 {
@@ -49,6 +50,9 @@ namespace Serenity
 
             resetApplication();
         }
+
+        public BrowserType? DefaultBrowser { get; set; }
+        
 
 
         public void AddSubSystem<T>() where T : ISubSystem, new()
@@ -151,6 +155,22 @@ namespace Serenity
             _subSystems.Each(x => x.Stop());
         }
 
+        public BrowserType ChooseBrowserType()
+        {
+            if (Project.Current != null && Project.Current.Profile.IsNotEmpty())
+            {
+                BrowserType profileType = BrowserType.IE;
+                if (BrowserType.TryParse(Project.Current.Profile, true, out profileType))
+                {
+                    return profileType;
+                }
+            }
+
+            if (DefaultBrowser != null) return DefaultBrowser.Value;
+
+            return WebDriverSettings.Current.Browser;
+        }
+
         private IApplicationUnderTest buildApplication()
         {
 			var settings = StoryTellerEnvironment.Get<SerenityEnvironment>();
@@ -158,7 +178,10 @@ namespace Serenity
 
             FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
             var runtime = _runtimeSource();
-            var application = _hosting.Value.Start(_settings, runtime, WebDriverSettings.GetBrowserLifecyle());
+
+
+            var browserLifecycle = WebDriverSettings.GetBrowserLifecyle(ChooseBrowserType());
+            var application = _hosting.Value.Start(_settings, runtime, browserLifecycle);
             _applicationAlterations.Each(x => x(application));
 
 

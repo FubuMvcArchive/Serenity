@@ -33,6 +33,20 @@ FubuRake::Storyteller.new({
   :compilemode => @solution.compilemode
 })
 
+FubuRake::Storyteller.new({
+  :path => 'src/StorytellerProject',
+  :prefix => 'st:phantom',
+  :profile => 'phantom',
+  :compilemode => @solution.compilemode
+})
+
+FubuRake::Storyteller.new({
+  :path => 'src/StorytellerProject',
+  :prefix => 'st:chrome',
+  :profile => 'chrome',
+  :compilemode => @solution.compilemode
+})
+
 desc "Try out JasmineRunner"
 task :run_jasmine => [:compile] do
 	sh "src/SerenityRunner/bin/#{@solution.compilemode}/SerenityRunner.exe jasmine run src/JasmineTestApplication -b Firefox"
