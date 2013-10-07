@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web.Caching;
+using Bottles.Services.Messaging.Tracking;
+using Bottles.Services.Remote;
 using FubuCore.Binding;
 using FubuCore.Conversion;
+using FubuCore.Util;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Registration.ObjectGraph;
@@ -13,15 +18,6 @@ using StoryTeller.Workspace;
 
 namespace Serenity
 {
-    
-    public interface ISubSystem
-    {
-        // TODO -- this should be in Storyteller itself(?)
-
-        void Start(IServiceLocator services);
-        void Stop();
-    }
-
     public class FubuMvcSystem : ISystem
     {
         private readonly ApplicationSettings _settings;
@@ -49,11 +45,28 @@ namespace Serenity
             _hosting = new Lazy<ISerenityHosting>(() => _createHosting());
 
             resetApplication();
+
+            Current = this;
         }
 
-        public BrowserType? DefaultBrowser { get; set; }
-        
+        public static FubuMvcSystem Current { get; set; }
 
+        public BrowserType? DefaultBrowser { get; set; }
+
+        private readonly Cache<string, RemoteSubSystem> _remoteSubSystems = new Cache<string, RemoteSubSystem>();
+
+        public RemoteSubSystem RemoteSubSystemFor(string name)
+        {
+            return _remoteSubSystems[name];
+        }
+
+        public void AddRemoteSubSystem(string name, Action<RemoteDomainExpression> configuration)
+        {
+            var system = new RemoteSubSystem(() => new RemoteServiceRunner(configuration));
+            _remoteSubSystems[name] = system;
+
+            _subSystems.Add(system);
+        }
 
         public void AddSubSystem<T>() where T : ISubSystem, new()
         {
@@ -63,6 +76,11 @@ namespace Serenity
         public void AddSubSystem(ISubSystem subSystem)
         {
             _subSystems.Add(subSystem);
+        }
+
+        public void StartListeningForMessages()
+        {
+            MessageHistory.StartListening(_remoteSubSystems.Select(x => x.Runner).ToArray());
         }
 
         public IEnumerable<ISubSystem> SubSystems

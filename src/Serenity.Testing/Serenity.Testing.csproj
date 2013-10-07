@@ -164,12 +164,14 @@
     <Compile Include="Fixtures\ScreenFixtureCommonGrammarsTester.cs" />
     <Compile Include="Fixtures\Handlers\SelectElementHandlerTester.cs" />
     <Compile Include="Fixtures\ScreenFixtureTester.cs" />
+    <Compile Include="FubuMvcSystemTester.cs" />
     <Compile Include="Jasmine\JasmineConfigLoaderTester.cs" />
     <Compile Include="Jasmine\JasmineRunner_IntegratedTester.cs" />
     <Compile Include="Jasmine\PackageSpecificationsTester.cs" />
     <Compile Include="Jasmine\SpecificationGraphIntegratedTester.cs" />
     <Compile Include="Jasmine\SpecificationGraphTester.cs" />
     <Compile Include="Jasmine\SpecificationTester.cs" />
+    <Compile Include="MessageWatching_over_remote_AppDomain_integration_tester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Katana_System_Integrated_Tester.cs" />
     <Compile Include="WaitTester.cs" />
@@ -179,6 +181,10 @@
     <ProjectReference Include="..\KayakTestApplication\KayakTestApplication.csproj">
       <Project>{68CC89AB-EE8B-4B2D-9BA0-8B0FBF460446}</Project>
       <Name>KayakTestApplication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RemoteService\RemoteService.csproj">
+      <Project>{F8186EC7-237A-4C24-AA48-1CFCDD099A8D}</Project>
+      <Name>RemoteService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Serenity\Serenity.csproj">
       <Project>{900A0419-3579-4DAE-85BE-71A3E4B34239}</Project>

@@ -130,6 +130,7 @@
     <Compile Include="Fixtures\Handlers\TextAreaElementHandler.cs" />
     <Compile Include="FubuMvcContext.cs" />
     <Compile Include="ISerenityHosting.cs" />
+    <Compile Include="ISubSystem.cs" />
     <Compile Include="Jasmine\AssetFileWatcher.cs" />
     <Compile Include="Jasmine\IJasmineConfigLoader.cs" />
     <Compile Include="Jasmine\ISpecFileListener.cs" />
