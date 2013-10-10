@@ -53,7 +53,7 @@ namespace Serenity
 
         private readonly Cache<string, RemoteSubSystem> _remoteSubSystems = new Cache<string, RemoteSubSystem>();
         private ISerenityHosting _hosting;
-        private IApplicationUnderTest _application;
+        protected IApplicationUnderTest _application;
         private IEnumerable<IContextualInfoProvider> _contextualProviders;
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace Serenity
             return new FubuMvcContext(_application, _binding, _contextualProviders);
         }
 
-        private void startAll()
+        protected virtual void startAll()
         {
             Task.WaitAll(_subSystems.Select(x => x.Start()).ToArray());
         }
