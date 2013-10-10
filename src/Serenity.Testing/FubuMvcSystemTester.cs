@@ -29,7 +29,7 @@ namespace Serenity.Testing
             system.AddRemoteSubSystem("foo", x => { });
 
             system.RemoteSubSystemFor("foo").ShouldNotBeNull();
-            system.SubSystems.Single().ShouldBeOfType<RemoteSubSystem>();
+            system.SubSystems.OfType<RemoteSubSystem>().Single().ShouldBeOfType<RemoteSubSystem>();
         }
 
 
