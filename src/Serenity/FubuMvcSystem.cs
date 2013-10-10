@@ -212,24 +212,34 @@ namespace Serenity
         {
             if (_application == null)
             {
-                Task.WaitAll(_subSystems.Select(x => x.Stop()).ToArray());
+                stopAll();
             }
         }
 
-        public IExecutionContext CreateContext()
+        protected virtual void stopAll()
+        {
+            Task.WaitAll(_subSystems.Select(x => x.Stop()).ToArray());
+        }
+
+        public virtual IExecutionContext CreateContext()
         {
             if (_application == null)
             {
-                Task.WaitAll(_subSystems.Select(x => x.Start()).ToArray());
+                startAll();
             }
 
             return new FubuMvcContext(_application, _binding, _contextualProviders);
         }
 
+        private void startAll()
+        {
+            Task.WaitAll(_subSystems.Select(x => x.Start()).ToArray());
+        }
+
         public void Recycle()
         {
-            Task.WaitAll(_subSystems.Select(x => x.Stop()).ToArray());
-            Task.WaitAll(_subSystems.Select(x => x.Start()).ToArray());
+            stopAll();
+            startAll();
         }
 
         Task ISubSystem.Start()
