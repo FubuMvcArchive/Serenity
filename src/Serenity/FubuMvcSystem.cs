@@ -15,6 +15,7 @@ using StoryTeller;
 using StoryTeller.Engine;
 using FubuCore;
 using StoryTeller.Workspace;
+using StructureMap;
 
 namespace Serenity
 {
@@ -46,6 +47,19 @@ namespace Serenity
         private readonly Cache<string, RemoteSubSystem> _remoteSubSystems = new Cache<string, RemoteSubSystem>();
         private ISerenityHosting _hosting;
         private IApplicationUnderTest _application;
+
+        /// <summary>
+        /// *IF* your underlying container is StructureMap, this is a convenience method
+        /// to modify the underlying container on Serenity system start up time
+        /// </summary>
+        /// <param name="configuration"></param>
+        public void ModifyContainer(Action<ConfigurationExpression> configuration)
+        {
+            _applicationAlterations.Add(app => {
+                var container = app.Services.GetInstance<IContainer>();
+                container.Configure(configuration);
+            });
+        }
 
         public RemoteSubSystem RemoteSubSystemFor(string name)
         {
