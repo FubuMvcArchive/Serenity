@@ -1,8 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FubuCore;
+using FubuCore.Util;
 using FubuMVC.Core;
 using FubuMVC.StructureMap;
 using FubuTestingSupport;
+using HtmlTags;
 using NUnit.Framework;
+using StoryTeller.Engine;
 using StructureMap;
 
 namespace Serenity.Testing
@@ -38,6 +43,42 @@ namespace Serenity.Testing
                 system.CreateContext().Services.GetInstance<IColor>()
                     .ShouldBeOfType<Green>();
             }
+        }
+
+        [Test]
+        public void works_with_the_contextual_providers()
+        {
+            using (var system = new FubuMvcSystem<TargetApplication>())
+            {
+                system.ModifyContainer(x => {
+                    x.For<IContextualInfoProvider>().Add(new FakeContextualProvider("red", "green"));
+                    x.For<IContextualInfoProvider>().Add(new FakeContextualProvider("blue", "orange"));
+                });
+
+                system.CreateContext().As<IResultsExtension>()
+                    .Tags().Select(x => x.Text())
+                    .ShouldHaveTheSameElementsAs("red", "green", "blue", "orange");
+            }
+        }
+    }
+
+    public class FakeContextualProvider : IContextualInfoProvider
+    {
+        private readonly string[] _colors;
+
+        public FakeContextualProvider(params string[] colors)
+        {
+            _colors = colors;
+        }
+
+        public void Reset()
+        {
+            
+        }
+
+        public IEnumerable<HtmlTag> GenerateReports()
+        {
+            return _colors.Select(x => new HtmlTag("span").Text(x));
         }
     }
 

@@ -10,6 +10,7 @@ using FubuCore.Util;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Registration.ObjectGraph;
+using HtmlTags;
 using Serenity.Fixtures.Handlers;
 using StoryTeller;
 using StoryTeller.Engine;
@@ -19,6 +20,12 @@ using StructureMap;
 
 namespace Serenity
 {
+    public interface IContextualInfoProvider
+    {
+        void Reset();
+        IEnumerable<HtmlTag> GenerateReports();
+    }
+
     public class FubuMvcSystem : ISystem, ISubSystem
     {
         private readonly ApplicationSettings _settings;
@@ -47,6 +54,7 @@ namespace Serenity
         private readonly Cache<string, RemoteSubSystem> _remoteSubSystems = new Cache<string, RemoteSubSystem>();
         private ISerenityHosting _hosting;
         private IApplicationUnderTest _application;
+        private IEnumerable<IContextualInfoProvider> _contextualProviders;
 
         /// <summary>
         /// *IF* your underlying container is StructureMap, this is a convenience method
@@ -120,6 +128,23 @@ namespace Serenity
             {
                 _applicationAlterations.Add(aut => aut.Navigation.AfterNavigation = value);
             }
+        }
+
+        /// <summary>
+        /// Be aware that this will ONLY work with StructureMap as the underlying container
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void AddContextualProvider<T>() where T : IContextualInfoProvider
+        {
+            ModifyContainer(x => x.For<IContextualInfoProvider>().Add<T>());
+        }
+
+        /// <summary>
+        /// Be aware that this will ONLY work with StructureMap as the underlying container
+        /// </summary>
+        public void AddContextualProvider(IContextualInfoProvider provider) 
+        {
+            ModifyContainer(x => x.For<IContextualInfoProvider>().Add(provider));
         }
 
         /// <summary>
@@ -198,7 +223,7 @@ namespace Serenity
                 Task.WaitAll(_subSystems.Select(x => x.Start()).ToArray());
             }
 
-            return new FubuMvcContext(_application, _binding);
+            return new FubuMvcContext(_application, _binding, _contextualProviders);
         }
 
         public void Recycle()
@@ -227,6 +252,9 @@ namespace Serenity
                 _bindingRegistrations.Each(x => x(_binding));
 
                 configureApplication(_application, _binding);
+
+                _contextualProviders = runtime.Factory.GetAll<IContextualInfoProvider>();
+
 
                 runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(_application));
             });
