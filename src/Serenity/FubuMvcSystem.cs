@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Caching;
+using System.Threading.Tasks;
 using Bottles.Services.Messaging.Tracking;
 using Bottles.Services.Remote;
 using FubuCore.Binding;
@@ -18,13 +18,10 @@ using StoryTeller.Workspace;
 
 namespace Serenity
 {
-    public class FubuMvcSystem : ISystem
+    public class FubuMvcSystem : ISystem, ISubSystem
     {
         private readonly ApplicationSettings _settings;
         private readonly Func<FubuRuntime> _runtimeSource;
-        private readonly Lazy<ISerenityHosting> _hosting;
-	    private Func<ISerenityHosting> _createHosting;
-        private Lazy<IApplicationUnderTest> _application;
         private BindingRegistry _binding;
 
         // TODO -- this reoccurs so often that we might as well put something in FubuCore for it
@@ -37,14 +34,7 @@ namespace Serenity
             _settings = settings;
             _runtimeSource = runtimeSource;
 
-			_createHosting = () =>
-			{
-				return settings.RootUrl.IsEmpty() ? (ISerenityHosting)new KatanaHosting() : new ExternalHosting();
-			};
-
-            _hosting = new Lazy<ISerenityHosting>(() => _createHosting());
-
-            resetApplication();
+            _subSystems.Add(this);
 
             Current = this;
         }
@@ -54,6 +44,8 @@ namespace Serenity
         public BrowserType? DefaultBrowser { get; set; }
 
         private readonly Cache<string, RemoteSubSystem> _remoteSubSystems = new Cache<string, RemoteSubSystem>();
+        private ISerenityHosting _hosting;
+        private IApplicationUnderTest _application;
 
         public RemoteSubSystem RemoteSubSystemFor(string name)
         {
@@ -90,7 +82,7 @@ namespace Serenity
 
         public IApplicationUnderTest Application
         {
-            get { return _application.Value; }
+            get { return _application; }
         }
 
         /// <summary>
@@ -155,24 +147,6 @@ namespace Serenity
             ElementHandlers.Handlers.Add(handler);
         }
 
-
-        private void resetApplication()
-        {
-            shutdownApplication();
-
-            _application = new Lazy<IApplicationUnderTest>(buildApplication);
-        }
-
-        private void shutdownApplication()
-        {
-            if (_application != null && _application.IsValueCreated)
-            {
-                _application.Value.Teardown();
-            }
-
-            _subSystems.Each(x => x.Stop());
-        }
-
         public BrowserType ChooseBrowserType()
         {
             if (Project.Current != null && Project.Current.Profile.IsNotEmpty())
@@ -189,66 +163,67 @@ namespace Serenity
             return WebDriverSettings.Current.Browser;
         }
 
-        private IApplicationUnderTest buildApplication()
-        {
-			var settings = StoryTellerEnvironment.Get<SerenityEnvironment>();
-	        WebDriverSettings.Import(settings);
-
-            FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
-            var runtime = _runtimeSource();
-
-
-            var browserLifecycle = WebDriverSettings.GetBrowserLifecyle(ChooseBrowserType());
-            var application = _hosting.Value.Start(_settings, runtime, browserLifecycle);
-            _applicationAlterations.Each(x => x(application));
-
-
-            _binding = application.Services.GetInstance<BindingRegistry>();
-            _bindingRegistrations.Each(x => x(_binding));
-
-            configureApplication(application, _binding);
-
-            runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(application));
-
-            // TODO -- add some registration stuff here?
-
-            _subSystems.Each(x => x.Start(application.Services));
-
-            return application;
-        }
-
         // TODO -- like to make this go away
         protected virtual void configureApplication(IApplicationUnderTest application, BindingRegistry binding)
         {
             
         }
 
-		public void UseHosting<T>()
-			where T : ISerenityHosting, new()
-		{
-			UseHosting(new T());
-		}
-
-		public void UseHosting(ISerenityHosting hosting)
-		{
-			_createHosting = () => hosting;
-		}
-
         public void Dispose()
         {
-            shutdownApplication();
-            _hosting.Value.Shutdown();
+            if (_application == null)
+            {
+                Task.WaitAll(_subSystems.Select(x => x.Stop()).ToArray());
+            }
         }
 
         public IExecutionContext CreateContext()
         {
-            return new FubuMvcContext(_application.Value, _binding);
+            if (_application == null)
+            {
+                Task.WaitAll(_subSystems.Select(x => x.Start()).ToArray());
+            }
+
+            return new FubuMvcContext(_application, _binding);
         }
 
         public void Recycle()
         {
-            _hosting.Value.Shutdown();
-            resetApplication();
+            Task.WaitAll(_subSystems.Select(x => x.Stop()).ToArray());
+            Task.WaitAll(_subSystems.Select(x => x.Start()).ToArray());
+        }
+
+        Task ISubSystem.Start()
+        {
+            return Task.Factory.StartNew(() => {
+                var settings = StoryTellerEnvironment.Get<SerenityEnvironment>();
+                WebDriverSettings.Import(settings);
+
+                FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
+                var runtime = _runtimeSource();
+
+
+                var browserLifecycle = WebDriverSettings.GetBrowserLifecyle(ChooseBrowserType());
+                _hosting = _settings.RootUrl.IsEmpty() ? (ISerenityHosting)new KatanaHosting() : new ExternalHosting();
+
+                _application = _hosting.Start(_settings, runtime, browserLifecycle);
+                _applicationAlterations.Each(x => x(_application));
+
+                _binding = _application.Services.GetInstance<BindingRegistry>();
+                _bindingRegistrations.Each(x => x(_binding));
+
+                configureApplication(_application, _binding);
+
+                runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(_application));
+            });
+        }
+
+        Task ISubSystem.Stop()
+        {
+            return Task.Factory.StartNew(() => {
+                _application.Teardown();
+                _hosting.Shutdown();
+            });
         }
     }
 

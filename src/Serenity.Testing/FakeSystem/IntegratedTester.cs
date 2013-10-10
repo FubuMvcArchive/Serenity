@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Reflection;
+using System.Threading.Tasks;
 using FubuCore.Conversion;
 using FubuMVC.Core;
 using FubuMVC.Core.Runtime;
@@ -113,7 +115,7 @@ namespace Serenity.Testing.FakeSystem
         {
             var system = new FakeSerenitySystem();
             system.SubSystems.Each(x => {
-                x.AssertWasCalled(o => o.Start(system.Application.Services));
+                x.AssertWasCalled(o => o.Start());
             });
         }
 
@@ -121,6 +123,8 @@ namespace Serenity.Testing.FakeSystem
         public void calls_syssystem_stop_on_each_when_disposing()
         {
             var system = new FakeSerenitySystem();
+            system.CreateContext();
+
             system.Application.ShouldNotBeNull();
         
             system.Dispose();
@@ -152,15 +156,22 @@ namespace Serenity.Testing.FakeSystem
 
             OnStartup<IContainer>(c => TheContainer = c);
 
-            var system1 = MockRepository.GenerateMock<ISubSystem>();
-            var system2 = MockRepository.GenerateMock<ISubSystem>();
-            var system3 = MockRepository.GenerateMock<ISubSystem>();
-        
-            AddSubSystem(system1);
-            AddSubSystem(system2);
-            AddSubSystem(system3);
+            AddSubSystem(MockedSubSystem());
+            AddSubSystem(MockedSubSystem());
+            AddSubSystem(MockedSubSystem());
+        }
+
+        public ISubSystem MockedSubSystem()
+        {
+            var system = MockRepository.GenerateMock<ISubSystem>();
+            system.Stub(x => x.Start()).Return(Task.Factory.StartNew(() => {}));
+            system.Stub(x => x.Stop()).Return(Task.Factory.StartNew(() => {}));
+
+            return system;
         }
     }
+
+   
 
     public class FakeAfterNavigation : IAfterNavigation
     {
