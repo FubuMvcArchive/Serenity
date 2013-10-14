@@ -76,7 +76,11 @@ namespace Serenity
 
         public void AddRemoteSubSystem(string name, Action<RemoteDomainExpression> configuration)
         {
-            var system = new RemoteSubSystem(() => new RemoteServiceRunner(configuration));
+            var system = new RemoteSubSystem(() => new RemoteServiceRunner(x => {
+                x.Properties[FubuMode.Testing] = true.ToString();
+                configuration(x);
+            }));
+
             _remoteSubSystems[name] = system;
 
             _subSystems.Add(system);
@@ -117,6 +121,24 @@ namespace Serenity
         {
             _applicationAlterations.Add(app => startup(app.Services.GetInstance<TService>()));
         }
+
+        /// <summary>
+        /// Catch all method to perform any action from the running application when 
+        /// the application restarts
+        /// </summary>
+        /// <param name="action"></param>
+        public void OnStartup(Action action)
+        {
+            _applicationAlterations.Add(app => action());
+        }
+
+        public IEnumerable<RemoteSubSystem> RemoteSubSystems
+        {
+            get
+            {
+                return _subSystems.OfType<RemoteSubSystem>();
+            }
+        } 
 
         /// <summary>
         /// Register a policy about what to do after navigating the browser to handle issues
@@ -203,6 +225,7 @@ namespace Serenity
         }
 
         // TODO -- like to make this go away
+        [Obsolete("This method should not NEED to be used.  Please favor the OnStartup registrations instead")]
         protected virtual void configureApplication(IApplicationUnderTest application, BindingRegistry binding)
         {
             
@@ -228,7 +251,13 @@ namespace Serenity
                 startAll();
             }
 
-            return new FubuMvcContext(_application, _binding, _contextualProviders);
+            
+
+            var context = new FubuMvcContext(_application, _binding, _contextualProviders);
+
+            _contextCreationActions.Each(x => x());
+
+            return context;
         }
 
         protected virtual void startAll()
@@ -276,6 +305,30 @@ namespace Serenity
                 _application.Teardown();
                 _hosting.Shutdown();
             });
+        }
+
+
+        private readonly IList<Action> _contextCreationActions = new List<Action>(); 
+
+        /// <summary>
+        /// Perform an action immediately after a new execution context
+        /// is created immediately before the test itself is executed
+        /// </summary>
+        /// <param name="action"></param>
+        public void OnContextCreation(Action action)
+        {
+            _contextCreationActions.Add(action);
+        }
+
+        /// <summary>
+        /// Perform an action using a service resolved from the application 
+        /// immediately after a new execution context
+        /// is created immediately before the test itself is executed
+        /// </summary>
+        /// <param name="action"></param>
+        public void OnContextCreation<T>(Action<T> action)
+        {
+            _contextCreationActions.Add(() => action(Application.Services.GetInstance<T>()));
         }
     }
 
