@@ -44,10 +44,8 @@ namespace Serenity
 
             _subSystems.Add(this);
 
-            Current = this;
+            OnContextCreation(StartListeningForMessages);
         }
-
-        public static FubuMvcSystem Current { get; set; }
 
         public BrowserType? DefaultBrowser { get; set; }
 
@@ -278,13 +276,13 @@ namespace Serenity
                 WebDriverSettings.Import(settings);
 
                 FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
-                var runtime = _runtimeSource();
+                _runtime = _runtimeSource();
 
 
                 var browserLifecycle = WebDriverSettings.GetBrowserLifecyle(ChooseBrowserType());
                 _hosting = _settings.RootUrl.IsEmpty() ? (ISerenityHosting)new KatanaHosting() : new ExternalHosting();
 
-                _application = _hosting.Start(_settings, runtime, browserLifecycle);
+                _application = _hosting.Start(_settings, _runtime, browserLifecycle);
                 _applicationAlterations.Each(x => x(_application));
 
                 _binding = _application.Services.GetInstance<BindingRegistry>();
@@ -292,23 +290,25 @@ namespace Serenity
 
                 configureApplication(_application, _binding);
 
-                _contextualProviders = runtime.Factory.GetAll<IContextualInfoProvider>();
+                _contextualProviders = _runtime.Factory.GetAll<IContextualInfoProvider>();
 
 
-                runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(_application));
+                _runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(_application));
             });
         }
 
         Task ISubSystem.Stop()
         {
             return Task.Factory.StartNew(() => {
+                _runtime.SafeDispose();
                 _application.Teardown();
                 _hosting.Shutdown();
             });
         }
 
 
-        private readonly IList<Action> _contextCreationActions = new List<Action>(); 
+        private readonly IList<Action> _contextCreationActions = new List<Action>();
+        private FubuRuntime _runtime;
 
         /// <summary>
         /// Perform an action immediately after a new execution context
