@@ -38,9 +38,10 @@ namespace Serenity.Testing
                 var message = new RemoteGo();
                 MessageHistory.Record(MessageTrack.ForSent(message));
 
-                MessageHistory.WaitForWorkToFinish(() => {
+                var waitForWorkToFinish = MessageHistory.WaitForWorkToFinish(() => {
                     system.RemoteSubSystemFor("Remote").Runner.SendRemotely(message);
-                }, timeoutMilliseconds:30000).ShouldBeTrue();
+                }, timeoutMilliseconds:30000);
+                waitForWorkToFinish.ShouldBeTrue();
             }
         }
     }

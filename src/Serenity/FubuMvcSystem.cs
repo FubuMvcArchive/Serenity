@@ -264,6 +264,11 @@ namespace Serenity
             Task.WaitAll(_subSystems.Select(x => x.Start()).ToArray());
         }
 
+        ~FubuMvcSystem()
+        {
+            this.SafeDispose();
+        }
+
         public void Recycle()
         {
             stopAll();
