@@ -3,9 +3,11 @@ using System.Linq;
 using FubuCore;
 using FubuCore.Util;
 using FubuMVC.Core;
+using FubuMVC.Core.Packaging;
 using FubuMVC.StructureMap;
 using FubuTestingSupport;
 using HtmlTags;
+using KayakTestApplication;
 using NUnit.Framework;
 using StoryTeller.Engine;
 using StructureMap;
@@ -51,6 +53,35 @@ namespace Serenity.Testing
                 system.CreateContext().As<IResultsExtension>()
                     .Tags().Select(x => x.Text())
                     .ShouldHaveTheSameElementsAs("red", "green", "blue", "orange");
+            }
+        }
+
+        [Test]
+        public void uses_explicit_physical_path_if_if_exists()
+        {
+            using (var system = new FubuMvcSystem<TargetApplication>(physicalPath:"c:\\foo"))
+            {
+                system.Settings.PhysicalPath.ShouldEqual("c:\\foo");
+            }
+        }
+
+        [Test]
+        public void use_default_physical_path_if_none_given()
+        {
+            using (var system = new FubuMvcSystem<KayakApplication>())
+            {
+                // assembly name
+                system.Settings.PhysicalPath.ShouldEndWith("KayakTestApplication");
+            }
+        }
+
+        [Test]
+        public void parallel_path()
+        {
+            using (var system = new FubuMvcSystem<KayakApplication>(parallelDirectory:"foo"))
+            {
+                // assembly name
+                system.Settings.PhysicalPath.ShouldEndWith("foo");
             }
         }
     }

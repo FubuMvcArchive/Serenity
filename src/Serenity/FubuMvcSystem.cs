@@ -300,9 +300,9 @@ namespace Serenity
         Task ISubSystem.Stop()
         {
             return Task.Factory.StartNew(() => {
-                _runtime.SafeDispose();
-                _application.Teardown();
-                _hosting.Shutdown();
+                if (_runtime != null) _runtime.SafeDispose();
+                if (_application != null) _application.Teardown();
+                if (_hosting != null) _hosting.Shutdown();
             });
         }
 
@@ -330,20 +330,35 @@ namespace Serenity
         {
             _contextCreationActions.Add(() => action(Application.Services.GetInstance<T>()));
         }
+
+        public ApplicationSettings Settings
+        {
+            get { return _settings; }
+        }
     }
 
 
 	public class FubuMvcSystem<T> : FubuMvcSystem where T : IApplicationSource, new()
     {
-        public FubuMvcSystem() : base(DetermineSettings(), () => new T().BuildApplication().Bootstrap())
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    /// <param name="parallelDirectory">Use to override the physical root path of the web application to a directory parallel to the testing project if it cannot be derived from the assembly name of the application source type.</param>
+        /// <param name="physicalPath">Use to override the physical root path of the web application if it cannot be derived from the assembly name of the application source type.</param>
+	    public FubuMvcSystem(string parallelDirectory = null, string physicalPath = null) : base(DetermineSettings(parallelDirectory, physicalPath), () => new T().BuildApplication().Bootstrap())
         {
         }
 
-        public static ApplicationSettings DetermineSettings()
+        public FubuMvcSystem(ApplicationSettings settings)
+            : base(settings, () => new T().BuildApplication().Bootstrap())
+	    {
+	    }
+
+	    public static ApplicationSettings DetermineSettings(string parallelDirectory = null, string physicalPath = null)
         {
             try
             {
-                return ApplicationSettings.ReadFor<T>() ?? DefaultSettings();
+                return ApplicationSettings.ReadFor<T>() ?? DefaultSettings(parallelDirectory, physicalPath);
             }
             // So wrong...
             catch(ArgumentOutOfRangeException)
@@ -352,15 +367,20 @@ namespace Serenity
             }
         }
 
-        private static ApplicationSettings DefaultSettings()
+        private static ApplicationSettings DefaultSettings(string parallelDirectory = null, string physicalPath = null)
         {
-            var sourceFolder = AppDomain.CurrentDomain.BaseDirectory.ParentDirectory().ParentDirectory().ParentDirectory();
-            var applicationFolder = sourceFolder.AppendPath(typeof (T).Assembly.GetName().Name);
+            if (physicalPath.IsEmpty())
+            {
+                var sourceFolder = AppDomain.CurrentDomain.BaseDirectory.ParentDirectory().ParentDirectory().ParentDirectory();
+                physicalPath = sourceFolder.AppendPath(parallelDirectory ?? typeof(T).Assembly.GetName().Name);
+            }
+
+
 
             return new ApplicationSettings
             {
                 ApplicationSourceName = typeof (T).AssemblyQualifiedName,
-                PhysicalPath = applicationFolder,
+                PhysicalPath = physicalPath,
                 Port = 5500 // just a starting point
             };
         }
