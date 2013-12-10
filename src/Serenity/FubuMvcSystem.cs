@@ -10,6 +10,7 @@ using FubuCore.Util;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Registration.ObjectGraph;
+using FubuMVC.OwinHost;
 using HtmlTags;
 using Serenity.Fixtures.Handlers;
 using StoryTeller;
@@ -381,7 +382,7 @@ namespace Serenity
             {
                 ApplicationSourceName = typeof (T).AssemblyQualifiedName,
                 PhysicalPath = physicalPath,
-                Port = 5500 // just a starting point
+                Port = PortFinder.FindPort(5500) // just a starting point
             };
         }
     }

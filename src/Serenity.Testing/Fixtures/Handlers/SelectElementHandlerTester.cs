@@ -20,7 +20,6 @@ namespace Serenity.Testing.Fixtures.Handlers
         private IWebElement select3;
         private SelectElementHandler theHandler = new SelectElementHandler();
         private IWebElement select4;
-        private IBrowserLifecycle _lifecycle;
 
         [TestFixtureSetUp]
         public void SetUp()
@@ -81,15 +80,8 @@ namespace Serenity.Testing.Fixtures.Handlers
 
         private void startDriver()
         {
-            _lifecycle = WebDriverSettings.GetBrowserLifecyle();
-            theDriver = _lifecycle.Driver;
+            theDriver = BrowserForTesting.Driver;
             theDriver.Navigate().GoToUrl("file:///" + "select.htm".ToFullPath());
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            _lifecycle.Dispose();
         }
 
         [Test]

@@ -37,21 +37,14 @@ namespace Serenity.Testing.Fixtures
 
         private void startDriver()
         {
-            theLifecycle = WebDriverSettings.GetBrowserLifecyle();
-            theDriver = theLifecycle.Driver;
-            theDriver.Navigate().GoToUrl("file:///" + "screenfixture.htm".ToFullPath());
-            theFixture = new StubScreenFixture(theDriver);
+            theDriver = BrowserForTesting.Driver;
+
+            BrowserForTesting.Driver.Navigate().GoToUrl("file:///" + "screenfixture.htm".ToFullPath());
+            theFixture = new StubScreenFixture(BrowserForTesting.Driver);
         }
 
-        [TearDown]
-        public void ShutDown()
-        {
-            theLifecycle.Dispose();
-        }
-
-        protected IWebDriver theDriver;
         protected StubScreenFixture theFixture;
-        private IBrowserLifecycle theLifecycle;
+        protected IWebDriver theDriver;
 
         protected abstract void configureDocument(HtmlDocument document);
     }

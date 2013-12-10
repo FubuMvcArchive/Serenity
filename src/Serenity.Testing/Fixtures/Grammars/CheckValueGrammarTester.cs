@@ -9,17 +9,6 @@ using StoryTeller.Domain;
 
 namespace Serenity.Testing.Fixtures.Grammars
 {
-
-    [TestFixture]
-    public class fake
-    {
-        [Test]
-        public void TESTNAME()
-        {
-            Debug.WriteLine(typeof(JsonSerializer).Assembly.FullName);
-        }
-    }
-
     [TestFixture]
     public class CheckValueGrammarTester : ScreenManipulationTester
     {

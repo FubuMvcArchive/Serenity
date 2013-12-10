@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrowserFixture.cs" />
+    <Compile Include="BrowserForTesting.cs" />
     <Compile Include="BrowserType_selection_tester.cs" />
     <Compile Include="debugging.cs" />
     <Compile Include="FakeSystem\SampleSystem.cs" />

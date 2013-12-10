@@ -6,6 +6,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
+using OpenQA.Selenium.PhantomJS;
 
 namespace Serenity.Testing
 {
@@ -58,6 +59,17 @@ namespace Serenity.Testing
             using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Chrome).Driver)
             {
                 browser.ShouldBeOfType<ChromeDriver>();
+                browser.Close();
+            }
+        }
+
+
+        [Test]
+        public void build_phantom_driver()
+        {
+            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Phantom).Driver)
+            {
+                browser.ShouldBeOfType<PhantomJSDriver>();
                 browser.Close();
             }
         }

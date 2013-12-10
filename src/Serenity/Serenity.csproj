@@ -125,16 +125,22 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="BrowserLifecycles.cs" />
+    <Compile Include="BrowserLifecycle.cs" />
+    <Compile Include="ChromeBrowser.cs" />
+    <Compile Include="FirefoxBrowser.cs" />
     <Compile Include="Fixtures\Handlers\CheckboxHandler.cs" />
     <Compile Include="Fixtures\Handlers\TextAreaElementHandler.cs" />
     <Compile Include="FubuMvcContext.cs" />
+    <Compile Include="IBrowserLifecycle.cs" />
+    <Compile Include="IBrowserSessionInitializer.cs" />
+    <Compile Include="InternetExplorerBrowser.cs" />
     <Compile Include="ISerenityHosting.cs" />
     <Compile Include="ISubSystem.cs" />
     <Compile Include="Jasmine\AssetFileWatcher.cs" />
     <Compile Include="Jasmine\IJasmineConfigLoader.cs" />
     <Compile Include="Jasmine\ISpecFileListener.cs" />
     <Compile Include="Jasmine\JasmineConfiguration.cs" />
+    <Compile Include="Kill.cs" />
     <Compile Include="NavigationDriver.cs" />
     <Compile Include="ApplicationUnderTest.cs" />
     <Compile Include="BrowserType.cs" />
@@ -170,6 +176,7 @@
     <Compile Include="Jasmine\SpecificationFolder.cs" />
     <Compile Include="Jasmine\SpecificationGraph.cs" />
     <Compile Include="Jasmine\SpecPath.cs" />
+    <Compile Include="PhantomBrowser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteSubSystem.cs" />
     <Compile Include="Retry.cs" />

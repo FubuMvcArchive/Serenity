@@ -13,9 +13,8 @@ namespace Serenity.Testing.Fixtures.Handlers
     [TestFixture]
     public class CheckboxHandlerTester
     {
-        private IWebDriver theDriver;
         private CheckboxHandler theHandler = new CheckboxHandler();
-        private IBrowserLifecycle _lifecycle;
+        private IWebDriver theDriver = BrowserForTesting.Driver;
 
         [SetUp]
         public void SetUp()
@@ -49,16 +48,9 @@ namespace Serenity.Testing.Fixtures.Handlers
 
         private void startDriver()
         {
-            _lifecycle = WebDriverSettings.GetBrowserLifecyle();
-            theDriver = _lifecycle.Driver;
-            theDriver.Navigate().GoToUrl("file:///" + "checkbox.htm".ToFullPath());
+            BrowserForTesting.Driver.Navigate().GoToUrl("file:///" + "checkbox.htm".ToFullPath());
         }
 
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            theDriver.Dispose();
-        }
 
         [Test]
         public void matches_negative()

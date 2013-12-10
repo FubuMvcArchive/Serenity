@@ -19,7 +19,6 @@ namespace Serenity.Testing.Fixtures.Handlers
         private IWebDriver theDriver;
         private IWebElement textarea1;
         private TextAreaElementHandler theHandler = new TextAreaElementHandler();
-        private IBrowserLifecycle _lifecycle;
         private string theText = "Test data within the textarea";
 
         [TestFixtureSetUp]
@@ -53,15 +52,8 @@ namespace Serenity.Testing.Fixtures.Handlers
 
         private void startDriver()
         {
-            _lifecycle = WebDriverSettings.GetBrowserLifecyle();
-            theDriver = _lifecycle.Driver;
+            theDriver = BrowserForTesting.Driver;
             theDriver.Navigate().GoToUrl("file:///" + "textarea.htm".ToFullPath());
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            _lifecycle.Dispose();
         }
 
         [Test]
