@@ -40,7 +40,7 @@ namespace Serenity.Testing
 
                 MessageHistory.WaitForWorkToFinish(() => {
                     system.RemoteSubSystemFor("Remote").Runner.SendRemotely(message);
-                }).ShouldBeTrue();
+                }, timeoutMilliseconds:30000).ShouldBeTrue();
             }
         }
     }
