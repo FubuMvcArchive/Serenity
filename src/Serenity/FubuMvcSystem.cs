@@ -232,10 +232,7 @@ namespace Serenity
 
         public void Dispose()
         {
-            if (_application == null)
-            {
-                stopAll();
-            }
+            stopAll();
         }
 
         protected virtual void stopAll()
