@@ -315,6 +315,7 @@ namespace Serenity
 
         private readonly IList<Action> _contextCreationActions = new List<Action>();
         private FubuRuntime _runtime;
+        private bool _isDisposed;
 
         /// <summary>
         /// Perform an action immediately after a new execution context
