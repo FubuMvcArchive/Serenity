@@ -25,7 +25,7 @@ using System.Linq;
 
 namespace Serenity.Testing.FakeSystem
 {
-    [TestFixture]
+    [TestFixture, Explicit]
     public class IntegratedTester
     {
         private ITestRunner theRunner;
