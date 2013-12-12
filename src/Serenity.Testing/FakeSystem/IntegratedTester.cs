@@ -70,7 +70,7 @@ namespace Serenity.Testing.FakeSystem
         }
 
 
-        [Test]
+        [Test,Explicit]
         public void run_more_complicated_test_negative()
         {
             var test = new Test("Try it");
