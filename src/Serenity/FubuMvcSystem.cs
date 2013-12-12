@@ -233,11 +233,12 @@ namespace Serenity
         public void Dispose()
         {
             stopAll();
+            _isDisposed = true;
         }
 
         protected virtual void stopAll()
         {
-            Task.WaitAll(_subSystems.Select(x => x.Stop()).ToArray());
+            Task.WaitAll(_subSystems.Select(x => x.Stop()).ToArray(), 10.Seconds());
         }
 
         public virtual IExecutionContext CreateContext()
@@ -263,6 +264,8 @@ namespace Serenity
 
         ~FubuMvcSystem()
         {
+            if (_isDisposed) return;
+
             this.SafeDispose();
         }
 
