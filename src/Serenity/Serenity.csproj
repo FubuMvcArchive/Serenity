@@ -125,12 +125,31 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ApplicationUnderTest.cs" />
     <Compile Include="BrowserLifecycle.cs" />
+    <Compile Include="BrowserType.cs" />
     <Compile Include="ChromeBrowser.cs" />
     <Compile Include="FirefoxBrowser.cs" />
+    <Compile Include="Fixtures\DateTimeExtensions.cs" />
+    <Compile Include="Fixtures\Grammars\CheckValueGrammar.cs" />
+    <Compile Include="Fixtures\Grammars\ClickGrammar.cs" />
+    <Compile Include="Fixtures\Grammars\EnterValueGrammar.cs" />
+    <Compile Include="Fixtures\Grammars\GestureConfig.cs" />
+    <Compile Include="Fixtures\Grammars\SimpleElementGesture.cs" />
+    <Compile Include="Fixtures\Handlers\BasicMatchingHandler.cs" />
     <Compile Include="Fixtures\Handlers\CheckboxHandler.cs" />
+    <Compile Include="Fixtures\Handlers\DefaultElementHandler.cs" />
+    <Compile Include="Fixtures\Handlers\ElementHandlers.cs" />
+    <Compile Include="Fixtures\Handlers\IElementHandler.cs" />
+    <Compile Include="Fixtures\Handlers\IMatchingHandler.cs" />
+    <Compile Include="Fixtures\Handlers\SelectElementHandler.cs" />
     <Compile Include="Fixtures\Handlers\TextAreaElementHandler.cs" />
+    <Compile Include="Fixtures\Handlers\TextboxElementHandler.cs" />
+    <Compile Include="Fixtures\ScreenFixture.cs" />
+    <Compile Include="Fixtures\WebDriverExtensions.cs" />
     <Compile Include="FubuMvcContext.cs" />
+    <Compile Include="FubuMvcSystem.cs" />
+    <Compile Include="IApplicationUnderTest.cs" />
     <Compile Include="IBrowserLifecycle.cs" />
     <Compile Include="IBrowserSessionInitializer.cs" />
     <Compile Include="InternetExplorerBrowser.cs" />
@@ -139,31 +158,11 @@
     <Compile Include="Jasmine\AssetFileWatcher.cs" />
     <Compile Include="Jasmine\IJasmineConfigLoader.cs" />
     <Compile Include="Jasmine\ISpecFileListener.cs" />
-    <Compile Include="Jasmine\JasmineConfiguration.cs" />
-    <Compile Include="Kill.cs" />
-    <Compile Include="NavigationDriver.cs" />
-    <Compile Include="ApplicationUnderTest.cs" />
-    <Compile Include="BrowserType.cs" />
-    <Compile Include="Fixtures\DateTimeExtensions.cs" />
-    <Compile Include="Fixtures\Grammars\GestureConfig.cs" />
-    <Compile Include="Fixtures\Handlers\BasicMatchingHandler.cs" />
-    <Compile Include="Fixtures\Grammars\CheckValueGrammar.cs" />
-    <Compile Include="Fixtures\Grammars\ClickGrammar.cs" />
-    <Compile Include="Fixtures\Grammars\EnterValueGrammar.cs" />
-    <Compile Include="Fixtures\Handlers\DefaultElementHandler.cs" />
-    <Compile Include="Fixtures\Handlers\ElementHandlers.cs" />
-    <Compile Include="Fixtures\Handlers\IElementHandler.cs" />
-    <Compile Include="Fixtures\Handlers\IMatchingHandler.cs" />
-    <Compile Include="Fixtures\Handlers\TextboxElementHandler.cs" />
-    <Compile Include="Fixtures\ScreenFixture.cs" />
-    <Compile Include="Fixtures\Handlers\SelectElementHandler.cs" />
-    <Compile Include="Fixtures\Grammars\SimpleElementGesture.cs" />
-    <Compile Include="Fixtures\WebDriverExtensions.cs" />
-    <Compile Include="IApplicationUnderTest.cs" />
-    <Compile Include="Jasmine\JasmineConfigurator.cs" />
     <Compile Include="Jasmine\ISpecNode.cs" />
     <Compile Include="Jasmine\ISpecVisitor.cs" />
     <Compile Include="Jasmine\JasmineCommand.cs" />
+    <Compile Include="Jasmine\JasmineConfiguration.cs" />
+    <Compile Include="Jasmine\JasmineConfigurator.cs" />
     <Compile Include="Jasmine\JasmineInput.cs" />
     <Compile Include="Jasmine\JasminePages.cs" />
     <Compile Include="Jasmine\JasmineRunner.cs" />
@@ -176,12 +175,13 @@
     <Compile Include="Jasmine\SpecificationFolder.cs" />
     <Compile Include="Jasmine\SpecificationGraph.cs" />
     <Compile Include="Jasmine\SpecPath.cs" />
+    <Compile Include="Kill.cs" />
+    <Compile Include="NavigationDriver.cs" />
     <Compile Include="PhantomBrowser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteSubSystem.cs" />
     <Compile Include="Retry.cs" />
     <Compile Include="SerenityEnvironment.cs" />
-    <Compile Include="FubuMvcSystem.cs" />
     <Compile Include="StoryTeller\StoryTellerCommand.cs" />
     <Compile Include="Wait.cs" />
     <Compile Include="WebDriverSettings.cs" />
@@ -212,7 +212,6 @@
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\jquery-ui.css" />
     <Content Include="Content\themes\base\jquery.ui.accordion.css" />
     <Content Include="Content\themes\base\jquery.ui.all.css" />
     <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
@@ -227,6 +226,7 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -240,7 +240,6 @@
     <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.all.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
@@ -255,37 +254,38 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="WebContent\content\scripts\images\ajax-loader.gif" />
-    <Content Include="WebContent\content\scripts\images\file.gif" />
-    <Content Include="WebContent\content\scripts\images\folder-closed.gif" />
-    <Content Include="WebContent\content\scripts\images\folder.gif" />
-    <Content Include="WebContent\content\scripts\images\minus.gif" />
-    <Content Include="WebContent\content\scripts\images\plus.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-black-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-black.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-default-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-default.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-famfamfam-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-famfamfam.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-gray-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-gray.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-red-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-red.gif" />
-    <Content Include="WebContent\content\scripts\jasmine.teamcity_reporter.js" />
-    <Content Include="WebContent\content\scripts\jquery.treeview.css" />
-    <Content Include="WebContent\content\scripts\jquery.treeview.js" />
-    <Content Include="WebContent\content\scripts\serenity-jasmine.js" />
-    <Content Include="WebContent\content\scripts\sinon-1.2.0.js" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
     <EmbeddedResource Include="Jasmine\Header.htm" />
     <Content Include="WebContent\content\images\fubu-project.png" />
     <Content Include="WebContent\content\images\jasmine_logo.png" />
-    <Content Include="WebContent\content\scripts\jasmine-jquery-1.3.1.js" />
-    <Content Include="WebContent\content\scripts\jasmine-runner.js" />
-    <Content Include="WebContent\content\scripts\jquery-1.7.min.js" />
-    <Content Include="WebContent\content\scripts\jasmine-html.js" />
+    <Content Include="WebContent\content\scripts\images\ajax-loader.gif" />
+    <Content Include="WebContent\content\scripts\images\file.gif" />
+    <Content Include="WebContent\content\scripts\images\folder.gif" />
+    <Content Include="WebContent\content\scripts\images\folder-closed.gif" />
+    <Content Include="WebContent\content\scripts\images\minus.gif" />
+    <Content Include="WebContent\content\scripts\images\plus.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-black.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-black-line.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-default.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-default-line.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-famfamfam.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-famfamfam-line.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-gray.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-gray-line.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-red.gif" />
+    <Content Include="WebContent\content\scripts\images\treeview-red-line.gif" />
     <Content Include="WebContent\content\scripts\jasmine.css" />
     <Content Include="WebContent\content\scripts\jasmine.js" />
+    <Content Include="WebContent\content\scripts\jasmine.teamcity_reporter.js" />
     <Content Include="WebContent\content\scripts\jasmine_favicon.png" />
+    <Content Include="WebContent\content\scripts\jasmine-html.js" />
+    <Content Include="WebContent\content\scripts\jasmine-jquery-1.3.1.js" />
+    <Content Include="WebContent\content\scripts\jasmine-runner.js" />
+    <Content Include="WebContent\content\scripts\jquery.treeview.css" />
+    <Content Include="WebContent\content\scripts\jquery.treeview.js" />
+    <Content Include="WebContent\content\scripts\jquery-1.7.min.js" />
+    <Content Include="WebContent\content\scripts\serenity-jasmine.js" />
+    <Content Include="WebContent\content\scripts\sinon-1.2.0.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -296,8 +296,6 @@
   </Target>
   -->
   <ItemGroup>
-    <EmbeddedResource Include="pak-Config.zip" />
-    <EmbeddedResource Include="pak-Data.zip" />
     <EmbeddedResource Include="pak-WebContent.zip" />
   </ItemGroup>
 </Project>
