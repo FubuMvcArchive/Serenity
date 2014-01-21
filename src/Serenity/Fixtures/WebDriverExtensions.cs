@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using FubuCore;
@@ -40,7 +41,17 @@ namespace Serenity.Fixtures
 
         public static IWebElement FindElementByData(this IWebDriver driver, string attribute, string value)
         {
-            return driver.FindElement(By.CssSelector("*[data-{0}={1}]".ToFormat(attribute, value)));
+            return driver.FindElement(By.CssSelector(CssSelectorByData(attribute, value)));
+        }
+
+        public static ReadOnlyCollection<IWebElement> FindElementsByData(this IWebDriver driver, string attribute, string value)
+        {
+            return driver.FindElements(By.CssSelector(CssSelectorByData(attribute, value)));
+        }
+
+        public static string CssSelectorByData(string attribute, string value)
+        {
+            return "*[data-{0}={1}]".ToFormat(attribute, value);
         }
 
         public static IWebElement WaitUntil(this IWebDriver driver, Func<IWebElement> condition, int timeoutSeconds = 10)
