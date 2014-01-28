@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FubuCore;
-using FubuCore.Util;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
 using FubuMVC.StructureMap;
@@ -25,6 +24,23 @@ namespace Serenity.Testing
 
             system.RemoteSubSystemFor("foo").ShouldNotBeNull();
             system.SubSystems.OfType<RemoteSubSystem>().Single().ShouldBeOfType<RemoteSubSystem>();
+        }
+
+        [Test]
+        public void registers_the_IRemoveSubsystems_with_the_container()
+        {
+            FubuMvcPackageFacility.PhysicalRootPath = ".".ToFullPath();
+
+            using (
+                var system = new FubuMvcSystem<TargetApplication>()
+                )
+            {
+                using (var context = system.CreateContext())
+                {
+                    context.Services.GetInstance<IRemoteSubsystems>()
+                        .ShouldBeTheSameAs(system);
+                }
+            }
         }
 
 
@@ -59,7 +75,7 @@ namespace Serenity.Testing
         [Test]
         public void uses_explicit_physical_path_if_if_exists()
         {
-            using (var system = new FubuMvcSystem<TargetApplication>(physicalPath:"c:\\foo"))
+            using (var system = new FubuMvcSystem<TargetApplication>(physicalPath: "c:\\foo"))
             {
                 system.Settings.PhysicalPath.ShouldEqual("c:\\foo");
             }
@@ -78,7 +94,7 @@ namespace Serenity.Testing
         [Test]
         public void parallel_path()
         {
-            using (var system = new FubuMvcSystem<KayakApplication>(parallelDirectory:"foo"))
+            using (var system = new FubuMvcSystem<KayakApplication>(parallelDirectory: "foo"))
             {
                 // assembly name
                 system.Settings.PhysicalPath.ShouldEndWith("foo");
@@ -97,7 +113,6 @@ namespace Serenity.Testing
 
         public void Reset()
         {
-            
         }
 
         public IEnumerable<HtmlTag> GenerateReports()
@@ -110,15 +125,21 @@ namespace Serenity.Testing
     {
         public FubuApplication BuildApplication()
         {
-            var container = new Container(x => {
-                x.For<IColor>().Use<Red>();
-            });
+            var container = new Container(x => { x.For<IColor>().Use<Red>(); });
 
             return FubuApplication.DefaultPolicies().StructureMap(container);
         }
     }
 
-    public interface IColor{}
-    public class Red : IColor{}
-    public class Green : IColor{}
+    public interface IColor
+    {
+    }
+
+    public class Red : IColor
+    {
+    }
+
+    public class Green : IColor
+    {
+    }
 }

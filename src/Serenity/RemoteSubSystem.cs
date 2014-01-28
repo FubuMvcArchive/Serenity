@@ -31,7 +31,21 @@ namespace Serenity
 
         public RemoteServiceRunner Runner
         {
-            get { return _runner; }
+            get
+            {
+                return _runner;
+            }
+        }
+
+        /// <summary>
+        /// Sends a message to a remote SubSystem w/ the 
+        /// Bottles EventAggregator
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="message"></param>
+        public void SendMessage<T>(T message)
+        {
+            _runner.SendRemotely(message);
         }
     }
 }

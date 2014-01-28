@@ -27,7 +27,13 @@ namespace Serenity
         IEnumerable<HtmlTag> GenerateReports();
     }
 
-    public class FubuMvcSystem : ISystem, ISubSystem
+    public interface IRemoteSubsystems
+    {
+        RemoteSubSystem RemoteSubSystemFor(string name);
+        IEnumerable<RemoteSubSystem> RemoteSubSystems { get; }
+    }
+
+    public class FubuMvcSystem : ISystem, ISubSystem, IRemoteSubsystems
     {
         private readonly ApplicationSettings _settings;
         private readonly Func<FubuRuntime> _runtimeSource;
@@ -300,6 +306,7 @@ namespace Serenity
 
 
                 _runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(_application));
+                _runtime.Facility.Register(typeof(IRemoteSubsystems), ObjectDef.ForValue(this));
             });
         }
 
