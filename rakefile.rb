@@ -11,21 +11,21 @@ end
 
 
 @solution = FubuRake::Solution.new do |sln|
-	sln.compile = {
-		:solutionfile => 'src/Serenity.sln'
-	}
-				 
-	sln.assembly_info = {
-		:product_name => "Serenity",
-		:copyright => 'Copyright 2011-2013 Jeremy D. Miller, Josh Arnold, et al. All rights reserved.'
-	}
-	
-	sln.ripple_enabled = true
-	sln.fubudocs_enabled = true
-	
-	sln.assembly_bottle 'Serenity'
-	
-	sln.defaults = [:run_jasmine]
+  sln.compile = {
+    :solutionfile => 'src/Serenity.sln'
+  }
+
+  sln.assembly_info = {
+    :product_name => "Serenity",
+    :copyright => "Copyright 2011-#{Time.now.year} Jeremy D. Miller, Josh Arnold, et al. All rights reserved."
+  }
+
+  sln.ripple_enabled = true
+  sln.fubudocs_enabled = true
+
+  sln.assembly_bottle 'Serenity'
+
+  sln.defaults = %w{run_jasmine st:chrome:run st:phantom:run}
 end
 
 FubuRake::Storyteller.new({
@@ -49,7 +49,7 @@ FubuRake::Storyteller.new({
 
 desc "Try out JasmineRunner"
 task :run_jasmine => [:compile] do
-	sh "src/SerenityRunner/bin/#{@solution.compilemode}/SerenityRunner.exe jasmine run src/JasmineTestApplication -b Firefox"
+  sh "src/SerenityRunner/bin/#{@solution.compilemode}/SerenityRunner.exe jasmine run src/JasmineTestApplication -b Firefox"
 end
 
 desc "Target used for the CI server (Mono)"

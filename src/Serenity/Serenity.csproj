@@ -147,6 +147,11 @@
     <Compile Include="Fixtures\Handlers\TextboxElementHandler.cs" />
     <Compile Include="Fixtures\ScreenFixture.cs" />
     <Compile Include="Fixtures\WebDriverExtensions.cs" />
+    <Compile Include="WebDriver\ISearchContextToJavaScriptExecutor.cs" />
+    <Compile Include="WebDriver\JavaScript.cs" />
+    <Compile Include="WebDriver\By.cs" />
+    <Compile Include="WebDriver\JavaScriptBy.cs" />
+    <Compile Include="WebDriver\SearchContextToJavaScriptExecutor.cs" />
     <Compile Include="FubuMvcContext.cs" />
     <Compile Include="FubuMvcSystem.cs" />
     <Compile Include="IApplicationUnderTest.cs" />

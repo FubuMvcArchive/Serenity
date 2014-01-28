@@ -157,6 +157,9 @@
     <Compile Include="debugging.cs" />
     <Compile Include="FakeSystem\SampleSystem.cs" />
     <Compile Include="Fixtures\BrowserIsAtTester.cs" />
+    <Compile Include="WebDriver\ByJqueryTester.cs" />
+    <Compile Include="WebDriver\JavaScriptTester.cs" />
+    <Compile Include="WebDriver\JavaScriptByFindTester.cs" />
     <Compile Include="Fixtures\Grammars\CheckValueGrammarTester.cs" />
     <Compile Include="Fixtures\Grammars\ClickGrammerTester.cs" />
     <Compile Include="Fixtures\Grammars\EnterValueGrammarTester.cs" />
@@ -230,6 +233,9 @@
     <Content Include="Jasmine\TestPackage2\content\scripts\specs\spec3.js" />
     <Content Include="Jasmine\TestPackage2\content\scripts\specs\spec2.js" />
     <Content Include="Jasmine\TestPackage2\content\scripts\specs\spec1.js" />
+    <None Include="jquery-2.0.3.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Jasmine\TestPackage3\" />

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Castle.DynamicProxy.Generators.Emitters;
 using FubuCore;
 using FubuCore.Reflection;
 using FubuLocalization;
@@ -93,6 +92,7 @@ namespace Serenity.Fixtures
         }
 
         // TODO -- UT this some how
+        // TODO -- Convert to use Serenity.WebDriver.JavaScript
         protected IGrammar JQueryClick(string template, string id = null, string className = null, string css = null, string tagName = null)
         {
             string command = buildJQuerySearch(css, id, className, tagName);
