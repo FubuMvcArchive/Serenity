@@ -30,12 +30,17 @@ namespace Serenity.WebDriver
 
         public T ExecuteAndGet<T>(IJavaScriptExecutor executor) where T : class
         {
-            return (T) ExecuteAndGet(executor);
+            return ExecuteAndGet(executor) as T;
         }
 
         public void Execute(IJavaScriptExecutor executor)
         {
             executor.ExecuteScript(Statement);
+        }
+
+        public dynamic ModifyStatement(string format)
+        {
+            return new JavaScript(format.ToFormat(Statement));
         }
 
         private string AppendFunction(string func, params object[] args)
@@ -59,6 +64,11 @@ namespace Serenity.WebDriver
                             return "\"{0}\"".ToFormat(pString);
                         }
 
+                        if (p is JavaScript)
+                        {
+                            return ((JavaScript) p).Statement;
+                        }
+
                         return p.ToString();
                     })
                     .Join(", ");
@@ -66,9 +76,27 @@ namespace Serenity.WebDriver
             return "{0}.{1}({2})".ToFormat(Statement, func, argsString);
         }
 
+        public static dynamic Create(string javaScript)
+        {
+            return new JavaScript(javaScript);
+        }
+
         public static dynamic CreateJQuery(string selector)
         {
             return new JavaScript("$(\"" + selector + "\")");
+        }
+
+        public static dynamic Function(JavaScript body)
+        {
+            return Function(Enumerable.Empty<string>(), body);
+        }
+
+        public static dynamic Function(IEnumerable<string> args, JavaScript body)
+        {
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return new JavaScript("function({0}) {{ {1} }}".ToFormat(args.Join(", "), body.Statement));
         }
 
         public static implicit operator By(JavaScript source)
@@ -89,24 +117,6 @@ namespace Serenity.WebDriver
         public static implicit operator JavaScript(JavaScriptBy source)
         {
             return (JavaScript) source.JavaScript;
-        }
-    }
-
-    public static class JavaScriptExtensionMethods
-    {
-        public static void Execute(this IWebDriver driver, JavaScript script)
-        {
-            script.Execute((IJavaScriptExecutor) driver);
-        }
-
-        public static object ExecuteAndGet(this IWebDriver driver, JavaScript script)
-        {
-            return script.ExecuteAndGet((IJavaScriptExecutor) driver);
-        }
-
-        public static T ExecuteAndGet<T>(this IWebDriver driver, JavaScript script) where T : class
-        {
-            return script.ExecuteAndGet<T>((IJavaScriptExecutor) driver);
         }
     }
 }

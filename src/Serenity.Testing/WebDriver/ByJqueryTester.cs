@@ -7,6 +7,7 @@ using HtmlTags;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Serenity.Testing.Fixtures;
+using Serenity.WebDriver;
 using By = Serenity.WebDriver.By;
 
 namespace Serenity.Testing.WebDriver
@@ -44,8 +45,45 @@ namespace Serenity.Testing.WebDriver
             By selector = By.jQuery(".depth-level-3-0-0-0").Parents(".depth-level").Children("span");
             var textForParents = theDriver.FindElements(selector).Select(x => x.Text).ToList();
 
-            textForParents.ShouldHaveTheSameElementsAs("--Div at depth 2 index 0", "-Div at depth 1 index 0",
+            textForParents.ShouldHaveTheSameElementsAs(
+                "--Div at depth 2 index 0",
+                "-Div at depth 1 index 0",
                 "Div at depth 0 index 0");
+        }
+
+        [Test]
+        public void JQueryFindByText()
+        {
+            By selector = By.jQuery(".depth-level-2 > span")
+                .Filter(JQuery.HasTextFilterFunction("--Div at depth 2 index 1"))
+                .Parent()
+                .Find(".depth-level-3 > span")
+                .Filter(JQuery.HasTextFilterFunction("---Div at depth 3 index 1"));
+
+            var textFromFoundElements = theDriver.FindElements(selector).Select(x => x.Text).ToList();
+
+            textFromFoundElements.ShouldHaveTheSameElementsAs(
+                "---Div at depth 3 index 1",
+                "---Div at depth 3 index 1",
+                "---Div at depth 3 index 1");
+        }
+
+        [Test]
+        public void JQueryFindByDoesNotHaveText()
+        {
+            By selector = By.jQuery(".depth-level-1-0 .depth-level-2 > span")
+                .Filter(JQuery.DoesNotHaveTextFilterFunction("--Div at depth 2 index 1"))
+                .Parent()
+                .Find(".depth-level-3 > span")
+                .Filter(JQuery.DoesNotHaveTextFilterFunction("---Div at depth 3 index 1"));
+
+            var textFromFoundElements = theDriver.FindElements(selector).Select(x => x.Text).ToList();
+
+            textFromFoundElements.ShouldHaveTheSameElementsAs(
+                "---Div at depth 3 index 0",
+                "---Div at depth 3 index 2",
+                "---Div at depth 3 index 0",
+                "---Div at depth 3 index 2");
         }
 
         private static DivTag BuildTestDiv(Stack<int> indexes, int depth)

@@ -181,6 +181,7 @@
     <Compile Include="Katana_System_Integrated_Tester.cs" />
     <Compile Include="WaitTester.cs" />
     <Compile Include="WebDriverSettingsTester.cs" />
+    <Compile Include="WebDriver\JQueryTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KayakTestApplication\KayakTestApplication.csproj">

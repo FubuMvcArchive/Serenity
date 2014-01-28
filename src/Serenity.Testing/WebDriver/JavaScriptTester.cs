@@ -1,3 +1,5 @@
+using FubuCore;
+using FubuCore.Descriptions;
 using FubuTestingSupport;
 using NUnit.Framework;
 using Serenity.WebDriver;
@@ -75,6 +77,17 @@ namespace Serenity.Testing.WebDriver
         {
             dynamic javaScript = new JavaScript("$(\".test\")");
             return (string) javaScript.Find(param1, param2).Statement;
+        }
+
+        [Test]
+        public void TestJavaScriptFunctionAsParameter()
+        {
+            var javaScript = JavaScript.Create("$(this)")
+                .Filter(JavaScript.Function(new[]{ "x" },
+                    JavaScript.Create("$(this)").Text().Trim().ModifyStatement("return {0} === x;")));
+
+            string raw = javaScript.Statement;
+            raw.ShouldEqual("$(this).filter(function(x) { return $(this).text().trim() === x; })");
         }
 
         [Test]
