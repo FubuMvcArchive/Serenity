@@ -182,6 +182,7 @@
     <Compile Include="WaitTester.cs" />
     <Compile Include="WebDriverSettingsTester.cs" />
     <Compile Include="WebDriver\JQueryTester.cs" />
+    <Compile Include="WebDriver\SearchContextToJavaScriptExecutorTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KayakTestApplication\KayakTestApplication.csproj">
