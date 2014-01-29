@@ -5,7 +5,7 @@ An additional `OpenQA.Selenium.By` selector that utilizes the jQuery library alr
 
 Usage
 -----
-It is a c# dynamic so you will need to explicitly cast the selector to `OpenQA.Selenium.By` otherwise you will see a `Microsoft.CSharp.RuntimeBinder.RuntimeBinderException`
+It is a c# dynamic so you will need to explicitly cast the selector to `OpenQA.Selenium.By` otherwise you will see a `Microsoft.CSharp.RuntimeBinder.RuntimeBinderException` The call to `By.jQuery(".some-string")` is equivalent to the jQuery call `$(".some-string")`, and since it is a dynamic you are open to call any jQuery method available to you, see the [jQuery documenation](http://api.jquery.com) for valid methods you can call. It will use the jQuery that is on your page so be mindful of what version of jQuery you are using.
 
 <Snippet name="simpleByJQuery" />
 
