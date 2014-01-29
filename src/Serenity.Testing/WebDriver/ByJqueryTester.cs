@@ -8,6 +8,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Serenity.Testing.Fixtures;
 using Serenity.WebDriver;
+using StoryTeller.Engine;
 using By = Serenity.WebDriver.By;
 
 namespace Serenity.Testing.WebDriver

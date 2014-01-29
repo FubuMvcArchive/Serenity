@@ -1,0 +1,34 @@
+<!--Title: By.jQuery-->
+
+<markdown>
+An additional `OpenQA.Selenium.By` selector that utilizes the jQuery library already loaded on the page to locate elements.
+
+Usage
+-----
+It is a c# dynamic so you will need to explicitly cast the selector to `OpenQA.Selenium.By` otherwise you will see a `Microsoft.CSharp.RuntimeBinder.RuntimeBinderException`
+
+<Snippet name="simpleByJQuery" />
+
+Why the new selector?
+---------------------
+The default `OpenQA.Seleniumn.By` selectors are great for simple element location. Things get complicated and brittle though when you are looking for an element based on another element in a different branch of the DOM tree. As an example using those default selectors you would need to:
+
+  1. Select a broad grouping of elements
+  2. Marshal them back to your .net process __(Slow!)__
+  3. Filter the elements
+  4. Find that element's parent
+  5. Marshal it back to your .net process __(Slow!)__
+  6. Find the child element(s) of interest
+  7. Marshal them back to your .net process __(Slow!)__
+  8. Do something with the element(s)
+
+With `By.jQuery` the same workflow would be: _(notice how many times elements are marshaled back and forth)_
+
+  1. Select a broad grouping of elements with jQuery
+  2. Filter those elements by some condition
+  3. Find the element's parent
+  4. Find the child element(s) of interest
+  7. Marshal them back to your .net process __(Slow!)__
+  8. Do something with the element(s)
+
+</markdown>

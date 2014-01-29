@@ -157,6 +157,7 @@
     <Compile Include="debugging.cs" />
     <Compile Include="FakeSystem\SampleSystem.cs" />
     <Compile Include="Fixtures\BrowserIsAtTester.cs" />
+    <Compile Include="WebDriver\ByJQuerySamples.cs" />
     <Compile Include="WebDriver\ByJqueryTester.cs" />
     <Compile Include="WebDriver\JavaScriptTester.cs" />
     <Compile Include="WebDriver\JavaScriptByFindTester.cs" />
