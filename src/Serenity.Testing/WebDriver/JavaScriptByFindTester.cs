@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using FubuTestingSupport;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -8,12 +9,12 @@ using By = Serenity.WebDriver.By;
 
 namespace Serenity.Testing.WebDriver
 {
-    public abstract class JavaScriptByFindTester<T> : InteractionContext<JavaScriptBy>
+    public abstract class JavaScriptByFindTester<TExpected, TActual> : InteractionContext<JavaScriptBy>
     {
         private ISearchContext _searchContext;
 
-        protected abstract T ExpectedResult { get; }
-        protected T FoundResult { get; private set; }
+        protected abstract TExpected ExpectedResult { get; }
+        protected TActual FoundResult { get; private set; }
         protected JavaScriptBy Selector { get; set; }
 
         protected bool ExecuteFind = true;
@@ -42,7 +43,7 @@ namespace Serenity.Testing.WebDriver
             FoundResult = Find(_searchContext);
         }
 
-        protected abstract T Find(ISearchContext context);
+        protected abstract TActual Find(ISearchContext context);
 
         [TestFixtureTearDown]
         public void ResetConverter()
@@ -50,6 +51,8 @@ namespace Serenity.Testing.WebDriver
             JavaScriptBy.ResetConverter();
         }
     }
+
+    public abstract class JavaScriptByFindTester<T> : JavaScriptByFindTester<T, T> { }
 
     public class JQueryByFindElementTester : JavaScriptByFindTester<IWebElement>
     {
@@ -102,11 +105,11 @@ namespace Serenity.Testing.WebDriver
         }
     }
 
-    public class JQueryByFindElementsNone : JavaScriptByFindTester<ReadOnlyCollection<IWebElement>>
+    public class JQueryByFindElementsNone : JavaScriptByFindTester<ReadOnlyCollection<object>, ReadOnlyCollection<IWebElement>>
     {
-        protected override ReadOnlyCollection<IWebElement> ExpectedResult
+        protected override ReadOnlyCollection<object> ExpectedResult
         {
-            get { return null; }
+            get { return new ReadOnlyCollection<object>(new List<object>()); }
         }
 
         protected override ReadOnlyCollection<IWebElement> Find(ISearchContext context)
