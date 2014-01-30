@@ -65,10 +65,10 @@ namespace Serenity.Testing.WebDriver
         [TestCase(123, null, Result="$(\".test\").find(123)")]
         [TestCase(123.45, null, Result="$(\".test\").find(123.45)")]
 
-        [TestCase(null, "", Result="$(\".test\").find(undefined, \"\")")]
-        [TestCase(null, ".child", Result="$(\".test\").find(undefined, \".child\")")]
-        [TestCase(null, 123, Result="$(\".test\").find(undefined, 123)")]
-        [TestCase(null, 123.45, Result="$(\".test\").find(undefined, 123.45)")]
+        [TestCase(null, "", Result="$(\".test\").find(null, \"\")")]
+        [TestCase(null, ".child", Result="$(\".test\").find(null, \".child\")")]
+        [TestCase(null, 123, Result="$(\".test\").find(null, 123)")]
+        [TestCase(null, 123.45, Result="$(\".test\").find(null, 123.45)")]
 
         [TestCase("", "", Result="$(\".test\").find(\"\", \"\")")]
         [TestCase(123, "", Result="$(\".test\").find(123, \"\")")]
@@ -102,11 +102,10 @@ namespace Serenity.Testing.WebDriver
         [Test]
         public void RegistersJavaScriptBuilders()
         {
-            TestJavaScript.Builders.Count.ShouldEqual(4);
+            TestJavaScript.Builders.Count.ShouldEqual(3);
             TestJavaScript.Builders[0].ShouldBeOfType<NullObjectJavaScriptBuilder>();
             TestJavaScript.Builders[1].ShouldBeOfType<StringJavaScriptBuilder>();
-            TestJavaScript.Builders[2].ShouldBeOfType<JavaScriptBuilder>();
-            TestJavaScript.Builders[3].ShouldBeOfType<DefaultJavaScriptBuilder>();
+            TestJavaScript.Builders[2].ShouldBeOfType<DefaultJavaScriptBuilder>();
         }
 
         public class TestJavaScript : JavaScript

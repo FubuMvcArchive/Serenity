@@ -11,7 +11,7 @@ namespace Serenity.WebDriver.JavaScriptBuilders
         {
             if (obj == null)
             {
-                return "undefined";
+                return "null";
             }
 
             return obj.ToString();

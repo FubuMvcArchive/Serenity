@@ -21,7 +21,6 @@ namespace Serenity.WebDriver
             {
                 new NullObjectJavaScriptBuilder(),
                 new StringJavaScriptBuilder(),
-                new JavaScriptBuilder(),
                 new DefaultJavaScriptBuilder()
             });
         }
@@ -56,6 +55,11 @@ namespace Serenity.WebDriver
         public dynamic ModifyStatement(string format)
         {
             return new JavaScript(format.ToFormat(Statement));
+        }
+
+        public override string ToString()
+        {
+            return Statement;
         }
 
         private string AppendFunction(string func, params object[] args)
@@ -113,6 +117,14 @@ namespace Serenity.WebDriver
         public static implicit operator JavaScript(JavaScriptBy source)
         {
             return (JavaScript) source.JavaScript;
+        }
+    }
+
+    public static class JavaScriptStringExtensions
+    {
+        public static dynamic ToJS(this string str)
+        {
+            return JavaScript.Create(str);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Serenity.Testing.WebDriver.JavaScriptBuilders
 
         public IEnumerable<TestCaseData> BuildTestCases()
         {
-            return TestCases().Cast<object>().Select<object, TestCaseData>(x => new TestCaseData(x).Returns(x == null ? "undefined" : x.ToString()));
+            return TestCases().Cast<object>().Select<object, TestCaseData>(x => new TestCaseData(x).Returns(x == null ? "null" : x.ToString()));
         }
 
         public class ToStringOverride

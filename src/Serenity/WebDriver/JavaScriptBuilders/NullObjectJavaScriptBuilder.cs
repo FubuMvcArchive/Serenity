@@ -9,7 +9,7 @@ namespace Serenity.WebDriver.JavaScriptBuilders
 
         public string Build(object obj)
         {
-            return "undefined";
+            return "null";
         }
     }
 }

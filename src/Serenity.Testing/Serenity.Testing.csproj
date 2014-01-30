@@ -160,7 +160,6 @@
     <Compile Include="WebDriver\ByJQuerySamples.cs" />
     <Compile Include="WebDriver\ByJqueryTester.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\DefaultJavaScriptBuilderTester.cs" />
-    <Compile Include="WebDriver\JavaScriptBuilders\JavaScriptBuilderTester.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\NullObjectJavaScriptBuilderTester.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\StringJavaScriptBuildertTester.cs" />
     <Compile Include="WebDriver\JavaScriptTester.cs" />
