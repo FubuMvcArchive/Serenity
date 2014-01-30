@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
 using FubuCore;
 using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
@@ -12,7 +8,13 @@ namespace Serenity
 {
     public class PhantomBrowser : BrowserLifecycle
     {
+        public const string Process = "phantomjs";
         public const string File = "phantomjs.exe";
+
+        protected override void preCleanUp()
+        {
+            Kill.Processes(Process, File);
+        }
 
         protected override IWebDriver buildDriver()
         {
@@ -29,7 +31,6 @@ namespace Serenity
 
         protected override void cleanUp(IWebDriver value)
         {
-
 
         }
     }

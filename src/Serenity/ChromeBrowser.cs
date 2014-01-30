@@ -7,7 +7,16 @@ namespace Serenity
 {
     public class ChromeBrowser : BrowserLifecycle
     {
+        public const string ChromeProcess = "chrome";
+        public const string DriverProcess = "chromedriver";
         public const string File = "chromedriver.exe";
+
+
+        protected override void preCleanUp()
+        {
+            cleanUp(null);
+            Kill.Processes(ChromeProcess);
+        }
 
         protected override IWebDriver buildDriver()
         {
@@ -24,7 +33,7 @@ namespace Serenity
 
         protected override void cleanUp(IWebDriver value)
         {
-            Kill.Processes("chromedriver", "chromedriver.exe");
+            Kill.Processes(DriverProcess, File);
         }
     }
 }
