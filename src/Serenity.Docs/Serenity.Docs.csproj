@@ -31,13 +31,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bottles">
+      <HintPath>..\packages\Bottles\lib\Bottles.dll</HintPath>
+    </Reference>
+    <Reference Include="FubuCore">
+      <HintPath>..\packages\FubuCore\lib\FubuCore.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlTags">
+      <HintPath>..\packages\HtmlTags\lib\4.0\HtmlTags.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="StoryTeller">
+      <HintPath>..\packages\Storyteller2\lib\net40\StoryTeller.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebDriver">
+      <HintPath>..\packages\Selenium.WebDriver\lib\net40\WebDriver.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,5 +69,42 @@
     <EmbeddedResource Include="pak-WebContent.zip" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".package-manifest" />
+    <None Include="1.starting.spark" />
+    <None Include="2.storyteller\1.working-with-fubumvcsystem\1.self-hosting-with-katana.spark" />
+    <None Include="2.storyteller\1.working-with-fubumvcsystem\2.externally-hosted-applications.spark" />
+    <None Include="2.storyteller\1.working-with-fubumvcsystem\3.multiple-appdomains-and-remote-subsystems.spark" />
+    <None Include="2.storyteller\1.working-with-fubumvcsystem\4.overriding-services-during-tests.spark" />
+    <None Include="2.storyteller\1.working-with-fubumvcsystem\5.startup-actions.spark" />
+    <None Include="2.storyteller\1.working-with-fubumvcsystem\6.adding-type-converters.spark" />
+    <None Include="2.storyteller\1.working-with-fubumvcsystem\7.adding-contextual-information-to-the-test-results.spark" />
+    <None Include="2.storyteller\1.working-with-fubumvcsystem\index.spark" />
+    <None Include="2.storyteller\2.screenfixture.spark" />
+    <None Include="2.storyteller\3.navigation.spark" />
+    <None Include="2.storyteller\4.webdriver\1.by-jquery.spark" />
+    <None Include="2.storyteller\4.webdriver\index.spark" />
+    <None Include="2.storyteller\5.retry.spark" />
+    <None Include="2.storyteller\6.asynch.spark" />
+    <None Include="2.storyteller\7.elementhandlers.spark" />
+    <None Include="2.storyteller\8.gestures.spark" />
+    <None Include="2.storyteller\index.spark" />
+    <None Include="3.jasmine\1.starting.spark" />
+    <None Include="3.jasmine\2.running.spark" />
+    <None Include="3.jasmine\3.authoring.spark" />
+    <None Include="3.jasmine\4.conventions.spark" />
+    <None Include="3.jasmine\5.defaults.spark" />
+    <None Include="3.jasmine\index.spark" />
+    <None Include="index.spark" />
+    <None Include="ripple.dependencies.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="project.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Serenity\Serenity.csproj">
+      <Project>{900A0419-3579-4DAE-85BE-71A3E4B34239}</Project>
+      <Name>Serenity</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

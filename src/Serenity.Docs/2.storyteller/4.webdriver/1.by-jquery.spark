@@ -1,0 +1,36 @@
+<!--Title: By.jQuery-->
+
+<markdown>
+An additional `OpenQA.Selenium.By` selector that utilizes the jQuery library already loaded on the page to locate elements.
+
+Usage
+-----
+The call to `By.jQuery(".some-string")` is converted to the jQuery call `$(".some-string")` when passed to `ISearchContext.FindElement()`. It is also a C# dynamic object which allows to call any jQuery method available, see the [jQuery documenation](http://api.jquery.com) for valid methods. It will use the jQuery that is on your page so be mindful of what version of jQuery you are using. It will lower case the first letter of any method you use so it appears more like C#, for example `By.jQuery(".marker").Parents(".parent")` would become `$(".marker").parents(".parent")` in JavaScript.
+
+It is a C# dynamic so you will need to explicitly cast the selector to `OpenQA.Selenium.By` otherwise you will see a `Microsoft.CSharp.RuntimeBinder.RuntimeBinderException`. This is a limitation when using dynamic objects.
+
+<Snippet name="simpleByJQuery" />
+
+Why the new selector?
+---------------------
+The default `OpenQA.Seleniumn.By` selectors are great for simple element location. Things get complicated and brittle though when you are looking for an element based on another element in a different branch of the DOM tree. As an example using those default selectors you would need to:
+
+  1. Select a broad grouping of elements
+  2. Marshal them back to your .net process __(Slow!)__
+  3. Filter the elements
+  4. Find that element's parent
+  5. Marshal it back to your .net process __(Slow!)__
+  6. Find the child element(s) of interest
+  7. Marshal them back to your .net process __(Slow!)__
+  8. Do something with the element(s)
+
+With `By.jQuery` the same workflow would be: _(notice how many times elements are marshaled back and forth)_
+
+  1. Select a broad grouping of elements with jQuery
+  2. Filter those elements by some condition
+  3. Find the element's parent
+  4. Find the child element(s) of interest
+  7. Marshal them back to your .net process __(Slow!)__
+  8. Do something with the element(s)
+
+</markdown>

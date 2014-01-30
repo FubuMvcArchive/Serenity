@@ -32,8 +32,6 @@ namespace Serenity.Testing.Fixtures
 
         }
 
-
-
         private IGrammar grammarNamed(string name)
         {
             var fixture = new FakeFixture(theDriver);
