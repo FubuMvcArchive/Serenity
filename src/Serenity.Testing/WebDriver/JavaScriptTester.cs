@@ -1,8 +1,9 @@
-using FubuCore;
-using FubuCore.Descriptions;
+using System.Collections;
+using System.Collections.Generic;
 using FubuTestingSupport;
 using NUnit.Framework;
 using Serenity.WebDriver;
+using Serenity.WebDriver.JavaScriptBuilders;
 
 namespace Serenity.Testing.WebDriver
 {
@@ -64,10 +65,10 @@ namespace Serenity.Testing.WebDriver
         [TestCase(123, null, Result="$(\".test\").find(123)")]
         [TestCase(123.45, null, Result="$(\".test\").find(123.45)")]
 
-        [TestCase(null, "", Result="$(\".test\").find(null, \"\")")]
-        [TestCase(null, ".child", Result="$(\".test\").find(null, \".child\")")]
-        [TestCase(null, 123, Result="$(\".test\").find(null, 123)")]
-        [TestCase(null, 123.45, Result="$(\".test\").find(null, 123.45)")]
+        [TestCase(null, "", Result="$(\".test\").find(undefined, \"\")")]
+        [TestCase(null, ".child", Result="$(\".test\").find(undefined, \".child\")")]
+        [TestCase(null, 123, Result="$(\".test\").find(undefined, 123)")]
+        [TestCase(null, 123.45, Result="$(\".test\").find(undefined, 123.45)")]
 
         [TestCase("", "", Result="$(\".test\").find(\"\", \"\")")]
         [TestCase(123, "", Result="$(\".test\").find(123, \"\")")]
@@ -96,6 +97,23 @@ namespace Serenity.Testing.WebDriver
             dynamic javaScript = new JavaScript("$(\".test\")");
             string selector = javaScript.CamelCaseWords().Statement;
             selector.ShouldEqual("$(\".test\").camelCaseWords()");
+        }
+
+        [Test]
+        public void RegistersJavaScriptBuilders()
+        {
+            TestJavaScript.Builders.Count.ShouldEqual(4);
+            TestJavaScript.Builders[0].ShouldBeOfType<NullObjectJavaScriptBuilder>();
+            TestJavaScript.Builders[1].ShouldBeOfType<StringJavaScriptBuilder>();
+            TestJavaScript.Builders[2].ShouldBeOfType<JavaScriptBuilder>();
+            TestJavaScript.Builders[3].ShouldBeOfType<DefaultJavaScriptBuilder>();
+        }
+
+        public class TestJavaScript : JavaScript
+        {
+            public TestJavaScript(string statement) : base(statement) { }
+
+            public static IList<IJavaScriptBuilder> Builders { get { return JavaScriptBuilders; } }
         }
     }
 }

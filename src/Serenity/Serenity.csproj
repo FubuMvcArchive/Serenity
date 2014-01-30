@@ -147,12 +147,16 @@
     <Compile Include="Fixtures\Handlers\TextboxElementHandler.cs" />
     <Compile Include="Fixtures\ScreenFixture.cs" />
     <Compile Include="Fixtures\WebDriverExtensions.cs" />
+    <Compile Include="WebDriver\JavaScriptBuilders\DefaultJavaScriptBuilder.cs" />
+    <Compile Include="WebDriver\JavaScriptBuilders\IJavaScriptBuilder.cs" />
     <Compile Include="WebDriver\ISearchContextToJavaScriptExecutor.cs" />
     <Compile Include="WebDriver\JavaScript.cs" />
     <Compile Include="WebDriver\By.cs" />
+    <Compile Include="WebDriver\JavaScriptBuilders\JavaScriptBuilder.cs" />
     <Compile Include="WebDriver\JavaScriptBy.cs" />
     <Compile Include="WebDriver\JavaScriptExtensionMethods.cs" />
     <Compile Include="WebDriver\JQuery.cs" />
+    <Compile Include="WebDriver\JavaScriptBuilders\NullObjectJavaScriptBuilder.cs" />
     <Compile Include="WebDriver\SearchContextToJavaScriptExecutor.cs" />
     <Compile Include="FubuMvcContext.cs" />
     <Compile Include="FubuMvcSystem.cs" />
@@ -192,6 +196,7 @@
     <Compile Include="StoryTeller\StoryTellerCommand.cs" />
     <Compile Include="Wait.cs" />
     <Compile Include="WebDriverSettings.cs" />
+    <Compile Include="WebDriver\JavaScriptBuilders\StringJavaScriptBuilder.cs" />
     <Compile Include="WebElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -305,4 +310,5 @@
   <ItemGroup>
     <EmbeddedResource Include="pak-WebContent.zip" />
   </ItemGroup>
+  <ItemGroup />
 </Project>

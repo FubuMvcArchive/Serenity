@@ -1,15 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
 using FubuCore;
 using OpenQA.Selenium;
+using Serenity.WebDriver.JavaScriptBuilders;
 
 namespace Serenity.WebDriver
 {
     public class JavaScript : DynamicObject
     {
         public string Statement { get; private set; }
+
+        protected static IList<IJavaScriptBuilder> JavaScriptBuilders { get; private set; }
+
+        static JavaScript()
+        {
+            JavaScriptBuilders = new ReadOnlyCollection<IJavaScriptBuilder>(new IJavaScriptBuilder[]
+            {
+                new NullObjectJavaScriptBuilder(),
+                new StringJavaScriptBuilder(),
+                new JavaScriptBuilder(),
+                new DefaultJavaScriptBuilder()
+            });
+        }
 
         public JavaScript(string statement)
         {
@@ -49,28 +64,9 @@ namespace Serenity.WebDriver
                 ? ""
                 : args
                     .Reverse()
-                    .SkipWhile(p => p == null)
+                    .SkipWhile(arg => arg == null)
                     .Reverse()
-                    .Select(p =>
-                    {
-                        if (p == null)
-                        {
-                            return "null";
-                        }
-
-                        if (p is string)
-                        {
-                            var pString = p as string;
-                            return "\"{0}\"".ToFormat(pString);
-                        }
-
-                        if (p is JavaScript)
-                        {
-                            return ((JavaScript) p).Statement;
-                        }
-
-                        return p.ToString();
-                    })
+                    .Select(arg => JavaScriptBuilders.First(x => x.Matches(arg)).Build(arg))
                     .Join(", ");
 
             return "{0}.{1}({2})".ToFormat(Statement, func, argsString);
