@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 
@@ -23,14 +21,24 @@ namespace Serenity
             _driver = new Lazy<IWebDriver>(initializeDriver);
         }
 
+        private bool cleanUpFlag()
+        {
+            bool cleanUp;
+            Boolean.TryParse(Environment.GetEnvironmentVariable("serenityci"), out cleanUp);
+            return cleanUp;
+        }
+
         private IWebDriver initializeDriver()
         {
+            if (cleanUpFlag()) { preCleanUp(); }
+
             var driver = buildDriver();
             _initializers.Each(x => x.InitializeSession(driver));
 
             return driver;
         }
 
+        protected abstract void preCleanUp();
         protected abstract IWebDriver buildDriver();
 
         public void Dispose()
