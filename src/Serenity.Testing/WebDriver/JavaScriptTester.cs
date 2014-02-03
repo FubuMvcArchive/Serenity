@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using FubuTestingSupport;
 using NUnit.Framework;
 using Serenity.WebDriver;
@@ -102,10 +102,11 @@ namespace Serenity.Testing.WebDriver
         [Test]
         public void RegistersJavaScriptBuilders()
         {
-            TestJavaScript.Builders.Count.ShouldEqual(3);
-            TestJavaScript.Builders[0].ShouldBeOfType<NullObjectJavaScriptBuilder>();
-            TestJavaScript.Builders[1].ShouldBeOfType<StringJavaScriptBuilder>();
-            TestJavaScript.Builders[2].ShouldBeOfType<DefaultJavaScriptBuilder>();
+            TestJavaScript.Builders.Select(x => x.GetType()).ShouldHaveTheSameElementsAs(
+                typeof(NullObjectJavaScriptBuilder),
+                typeof(StringJavaScriptBuilder),
+                typeof(WebElementJavaScriptBuilder),
+                typeof(DefaultJavaScriptBuilder));
         }
 
         public class TestJavaScript : JavaScript

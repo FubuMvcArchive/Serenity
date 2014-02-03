@@ -13,6 +13,8 @@ namespace Serenity.WebDriver
     {
         public string Statement { get; private set; }
 
+        private IList<IWebElement> Arguments { get; set; }
+
         protected static IList<IJavaScriptBuilder> JavaScriptBuilders { get; private set; }
 
         static JavaScript()
@@ -21,25 +23,30 @@ namespace Serenity.WebDriver
             {
                 new NullObjectJavaScriptBuilder(),
                 new StringJavaScriptBuilder(),
+                new WebElementJavaScriptBuilder(),
                 new DefaultJavaScriptBuilder()
             });
         }
 
-        public JavaScript(string statement)
+        public JavaScript(string statement) : this(statement, new IWebElement[0]) { }
+
+        public JavaScript(string statement, params IWebElement[] arguments)
         {
             Statement = statement;
+            Arguments = new List<IWebElement>(arguments);
         }
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
             var javascriptFriendlyName = char.ToLowerInvariant(binder.Name[0]) + binder.Name.Substring(1);
-            result = new JavaScript(AppendFunction(javascriptFriendlyName, args));
+            result = new JavaScript(AppendFunction(javascriptFriendlyName, args),
+                Arguments.Union(args.Where(x => x is IWebElement).Cast<IWebElement>()).ToArray());
             return true;
         }
 
         public object ExecuteAndGet(IJavaScriptExecutor executor)
         {
-            return executor.ExecuteScript("return {0};".ToFormat(Statement));
+            return executor.ExecuteScript("return {0};".ToFormat(StatementWithArguments(true)), Arguments.Cast<object>().ToArray());
         }
 
         public T ExecuteAndGet<T>(IJavaScriptExecutor executor) where T : class
@@ -49,7 +56,31 @@ namespace Serenity.WebDriver
 
         public void Execute(IJavaScriptExecutor executor)
         {
-            executor.ExecuteScript(Statement);
+            executor.ExecuteScript(StatementWithArguments(false), Arguments.Cast<object>().ToArray());
+        }
+
+        private string StatementWithArguments(bool returnValue)
+        {
+            if (Arguments == null || Arguments.Count == 0)
+            {
+                return Statement;
+            }
+
+            var argumentVariables = Arguments.Select((element, index) => new
+            {
+                ParameterName = "__element__argument__{0}".ToFormat(index),
+                ParameterRetrieval = "arguments[{0}]".ToFormat(index)
+            }).ToList();
+
+            var correctedStatement = argumentVariables
+                .Select(x => x.ParameterName)
+                .Aggregate(Statement, (statement, arg) => WebElementJavaScriptBuilder.MarkerRgx.Replace(statement, arg, 1));
+
+            return "(function({0}) {{ {1}{2} }})({3})".ToFormat(
+                argumentVariables.Select(x => x.ParameterName).Join(", "),
+                returnValue ? "return " : "",
+                correctedStatement,
+                argumentVariables.Select(x => x.ParameterRetrieval).Join(", "));
         }
 
         public dynamic ModifyStatement(string format)
@@ -86,6 +117,11 @@ namespace Serenity.WebDriver
             return new JavaScript("$(\"" + selector + "\")");
         }
 
+        public static dynamic JQueryFrom(IWebElement element)
+        {
+            return new JavaScript("$({0})".ToFormat(WebElementJavaScriptBuilder.Marker), element);
+        }
+
         public static dynamic Function(JavaScript body)
         {
             return Function(Enumerable.Empty<string>(), body);
@@ -117,14 +153,6 @@ namespace Serenity.WebDriver
         public static implicit operator JavaScript(JavaScriptBy source)
         {
             return (JavaScript) source.JavaScript;
-        }
-    }
-
-    public static class JavaScriptStringExtensions
-    {
-        public static dynamic ToJS(this string str)
-        {
-            return JavaScript.Create(str);
         }
     }
 }

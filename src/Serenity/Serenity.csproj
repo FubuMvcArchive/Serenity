@@ -152,8 +152,10 @@
     <Compile Include="WebDriver\ISearchContextToJavaScriptExecutor.cs" />
     <Compile Include="WebDriver\JavaScript.cs" />
     <Compile Include="WebDriver\By.cs" />
+    <Compile Include="WebDriver\JavaScriptBuilders\WebElementJavaScriptBuilder.cs" />
     <Compile Include="WebDriver\JavaScriptBy.cs" />
     <Compile Include="WebDriver\JavaScriptExtensionMethods.cs" />
+    <Compile Include="WebDriver\JavaScriptStringExtensions.cs" />
     <Compile Include="WebDriver\JQuery.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\NullObjectJavaScriptBuilder.cs" />
     <Compile Include="WebDriver\SearchContextToJavaScriptExecutor.cs" />

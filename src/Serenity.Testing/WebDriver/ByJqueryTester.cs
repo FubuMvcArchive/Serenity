@@ -87,6 +87,16 @@ namespace Serenity.Testing.WebDriver
                 "---Div at depth 3 index 2");
         }
 
+        [Test]
+        public void WebElementToJQuerySelector()
+        {
+            var element = theDriver.FindElement(By.CssSelector(".depth-level-2 > span"));
+
+            By selector = element.ToJQueryBy().Parent().Find(".depth-level-3 > span");
+
+            theDriver.FindElement(selector).Text.ShouldEqual("---Div at depth 3 index 0");
+        }
+
         private static DivTag BuildTestDiv(Stack<int> indexes, int depth)
         {
             var div = new DivTag();
