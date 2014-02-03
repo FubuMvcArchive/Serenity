@@ -98,6 +98,11 @@ namespace Serenity.Fixtures
                 .Contains(className);
         }
 
+        public static bool HasAttribute(this IWebElement element, string attributeName)
+        {
+            return element.GetAttribute(attributeName) != null;
+        }
+
         public static string Value(this IWebElement element)
         {
             return element.GetAttribute("value");
