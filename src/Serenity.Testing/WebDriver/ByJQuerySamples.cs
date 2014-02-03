@@ -1,5 +1,4 @@
-﻿using HtmlTags;
-using Serenity.Fixtures;
+﻿using Serenity.Fixtures;
 using Serenity.WebDriver;
 using StoryTeller.Engine;
 
@@ -24,6 +23,15 @@ namespace Serenity.Testing.WebDriver
                     .Parents(".parent-class")
                     .Find(".button-class"))
                 .Click();
+        }
+
+        [FormatAs("Use jQuery to to start your search from an IWebElement you have already retrieved")]
+        public void WebElementToSelector()
+        {
+            var element = Driver.FindElement(By.ClassName("some-class"));
+
+            // Generates JavaScript: return (function(__element__argument__1) { return $(__element__argument__1).sibling(".sibling-element") })(arguments[0]);
+            Driver.FindElement((By) element.ToJQueryBy().Sibling(".sibling-element"));
         }
     }
     // ENDSAMPLE
