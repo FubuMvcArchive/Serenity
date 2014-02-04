@@ -5,46 +5,46 @@ using FubuMVC.OwinHost;
 
 namespace Serenity
 {
-	public interface ISerenityHosting
-	{
-		IApplicationUnderTest Start(ApplicationSettings settings, FubuRuntime runtime, IBrowserLifecycle lifecycle);
-		void Shutdown();
-	}
+    public interface ISerenityHosting
+    {
+        IApplicationUnderTest Start(ApplicationSettings settings, FubuRuntime runtime, IBrowserLifecycle lifecycle);
+        void Shutdown();
+    }
 
-	public class ExternalHosting : ISerenityHosting
-	{
-		public IApplicationUnderTest Start(ApplicationSettings settings, FubuRuntime runtime, IBrowserLifecycle lifecycle)
-		{
-			var application = new ApplicationUnderTest(runtime, settings, lifecycle);
-			application.Ping();
+    public class ExternalHosting : ISerenityHosting
+    {
+        public IApplicationUnderTest Start(ApplicationSettings settings, FubuRuntime runtime, IBrowserLifecycle lifecycle)
+        {
+            var application = new ApplicationUnderTest(runtime, settings, lifecycle);
+            application.Ping();
 
-			return application;
-		}
+            return application;
+        }
 
-		public void Shutdown()
-		{
-			// Nothing
-		}
-	}
+        public void Shutdown()
+        {
+            // Nothing
+        }
+    }
 
-	public class KatanaHosting : ISerenityHosting
-	{
-		private EmbeddedFubuMvcServer _server;
+    public class KatanaHosting : ISerenityHosting
+    {
+        private EmbeddedFubuMvcServer _server;
 
-		public IApplicationUnderTest Start(ApplicationSettings settings, FubuRuntime runtime, IBrowserLifecycle lifecycle)
-		{
-		    var port = PortFinder.FindPort(settings.Port);
-			_server = new EmbeddedFubuMvcServer(runtime, settings.PhysicalPath, port);
+        public IApplicationUnderTest Start(ApplicationSettings settings, FubuRuntime runtime, IBrowserLifecycle lifecycle)
+        {
+            var port = PortFinder.FindPort(settings.Port);
+            _server = new EmbeddedFubuMvcServer(runtime, settings.PhysicalPath, port);
 
-			settings.RootUrl = _server.BaseAddress;
-			return new ApplicationUnderTest(runtime, settings, lifecycle);
-		}
+            settings.RootUrl = _server.BaseAddress;
+            return new ApplicationUnderTest(runtime, settings, lifecycle);
+        }
 
-		public void Shutdown()
-		{
-			if (_server != null) _server.SafeDispose();
+        public void Shutdown()
+        {
+            if (_server != null) _server.SafeDispose();
 
-			_server = null;
-		}
-	}
+            _server = null;
+        }
+    }
 }
