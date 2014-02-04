@@ -38,9 +38,16 @@ namespace Serenity.WebDriver
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            var javascriptFriendlyName = char.ToLowerInvariant(binder.Name[0]) + binder.Name.Substring(1);
+            var javascriptFriendlyName = JavaScriptFriendlyName(binder.Name);
             result = new JavaScript(AppendFunction(javascriptFriendlyName, args),
                 Arguments.Union(args.Where(x => x is IWebElement).Cast<IWebElement>()).ToArray());
+            return true;
+        }
+
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            var javascriptFriendlyName = JavaScriptFriendlyName(binder.Name);
+            result = new JavaScript("{0}.{1}".ToFormat(Statement, javascriptFriendlyName));
             return true;
         }
 
@@ -106,6 +113,11 @@ namespace Serenity.WebDriver
         public override string ToString()
         {
             return Statement;
+        }
+
+        private string JavaScriptFriendlyName(string name)
+        {
+            return char.ToLowerInvariant(name[0]) + name.Substring(1);
         }
 
         private string AppendFunction(string func, params object[] args)

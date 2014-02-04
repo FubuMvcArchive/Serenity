@@ -92,6 +92,14 @@ namespace Serenity.Testing.WebDriver
         }
 
         [Test]
+        public void TestGetProperty()
+        {
+            string script = JavaScript.Create("$('.test')").Length.Statement;
+            script.ShouldEqual("$('.test').length");
+        }
+
+
+        [Test]
         public void LowerCasesFirstLetterOnly()
         {
             dynamic javaScript = new JavaScript("$(\".test\")");
