@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using FubuCore;
 using FubuCore.Reflection;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.UI;
 using Serenity.Fixtures.Handlers;
 using SeleniumBy = OpenQA.Selenium.By;
@@ -57,11 +58,19 @@ namespace Serenity.Fixtures
 
         public static IWebElement WaitUntil(this IWebDriver driver, Func<IWebElement> condition, int timeoutSeconds = 10)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutSeconds));
-            return wait.Until<IWebElement>((d) =>
-            {
-                return condition();
-            });
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutSeconds));
+            return wait.Until(d => condition());
+        }
+
+        private static readonly Type[] WaitForElementIgnoreExceptions =
+        {
+            typeof(NoSuchElementException),
+            typeof(NotFoundException)
+        };
+
+        public static IWebElement WaitForElement(this ISearchContext context, By selector, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            return Wait.For(() => context.FindElement(selector), pollingInterval: pollingInterval, timeout: timeout, ignoreExceptions: WaitForElementIgnoreExceptions);
         }
 
         public static IWebElement InputFor<T>(this ISearchContext context, Expression<Func<T, object>> property)

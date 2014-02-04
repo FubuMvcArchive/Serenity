@@ -1,6 +1,7 @@
 ﻿using System;
 using FubuTestingSupport;
 using NUnit.Framework;
+using OpenQA.Selenium;
 
 namespace Serenity.Testing
 {
@@ -98,6 +99,58 @@ namespace Serenity.Testing
             }).ShouldBeFalse();
 
             i.ShouldBeGreaterThan(4);
+        }
+
+        [Test]
+        public void immediately_true_generic()
+        {
+            var obj = new object();
+            Wait.For(() => obj).ShouldBeTheSameAs(obj);
+        }
+
+        [Test]
+        public void throws_timeout_exception_generic()
+        {
+            var result = new object();
+            Exception<WebDriverTimeoutException>.ShouldBeThrownBy(() =>
+            {
+                result = Wait.For<object>(() => null, timeout: TimeSpan.FromSeconds(1));
+            });
+
+            result.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void eventually_true_generic()
+        {
+            var i = 0;
+            var obj = new object();
+
+            Wait.For(() => {
+                i++;
+                return i > 4 ? obj : null;
+            }).ShouldBeTheSameAs(obj);
+
+            i.ShouldBeGreaterThan(4);
+        }
+
+        [Test]
+        public void not_true_within_timeout_generic()
+        {
+            var i = 0;
+            var result = new object();
+
+            Exception<WebDriverTimeoutException>.ShouldBeThrownBy(() =>
+            {
+                result = Wait.For(() =>
+                {
+                    i++;
+                    return i > 4 ? new object() : null;
+                }, timeout: TimeSpan.FromSeconds(1));
+            });
+
+            i.ShouldBeGreaterThan(1);
+            result.ShouldNotBeNull();
         }
     }
 }

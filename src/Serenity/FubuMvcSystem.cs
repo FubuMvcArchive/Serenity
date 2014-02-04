@@ -292,7 +292,7 @@ namespace Serenity
 
 
                 var browserLifecycle = WebDriverSettings.GetBrowserLifecyle(ChooseBrowserType());
-                _hosting = _settings.RootUrl.IsEmpty() ? (ISerenityHosting)new KatanaHosting() : new ExternalHosting();
+                _hosting = _settings.RootUrl.IsEmpty() ? (ISerenityHosting) new KatanaHosting() : new ExternalHosting();
 
                 _application = _hosting.Start(_settings, _runtime, browserLifecycle);
                 _applicationAlterations.Each(x => x(_application));
