@@ -47,7 +47,7 @@ namespace Serenity.WebDriver
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             var javascriptFriendlyName = JavaScriptFriendlyName(binder.Name);
-            result = new JavaScript("{0}.{1}".ToFormat(Statement, javascriptFriendlyName));
+            result = new JavaScript("{0}.{1}".ToFormat(Statement, javascriptFriendlyName), Arguments.ToArray());
             return true;
         }
 

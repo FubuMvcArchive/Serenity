@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using FubuCore;
 using FubuTestingSupport;
 using HtmlTags;
@@ -101,6 +102,14 @@ namespace Serenity.Testing.WebDriver
         public void CanRetrievePrimitiveTypeData()
         {
             JavaScript selector = By.jQuery(".depth-level-3-0-0-0").Parents(".depth-level").Children("span").Length;
+            selector.ExecuteAndGet<long>(theDriver).ShouldEqual(3);
+        }
+
+        [Test]
+        public void JQueryByFromElementCanRetrievePrimitiveTypeData()
+        {
+            var element = theDriver.FindElement((By) By.jQuery(".depth-level-3-0-0-0"));
+            JavaScript selector = element.ToJQueryBy().Parents(".depth-level").Children("span").Length;
             selector.ExecuteAndGet<long>(theDriver).ShouldEqual(3);
         }
 
