@@ -61,14 +61,14 @@ namespace Serenity.WebDriver
             return executor.ExecuteScript("return {0};".ToFormat(StatementWithArguments(true)), Arguments.Cast<object>().ToArray());
         }
 
-        public T ExecuteAndGet<T>(IWebDriver driver) where T : class
+        public T ExecuteAndGet<T>(IWebDriver driver)
         {
             return ExecuteAndGet<T>((IJavaScriptExecutor) driver);
         }
 
-        public T ExecuteAndGet<T>(IJavaScriptExecutor executor) where T : class
+        public T ExecuteAndGet<T>(IJavaScriptExecutor executor)
         {
-            return ExecuteAndGet(executor) as T;
+            return (T) ExecuteAndGet(executor);
         }
 
         public void Execute(IWebDriver driver)

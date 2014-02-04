@@ -97,6 +97,13 @@ namespace Serenity.Testing.WebDriver
             theDriver.FindElement(selector).Text.ShouldEqual("---Div at depth 3 index 0");
         }
 
+        [Test]
+        public void CanRetrievePrimitiveTypeData()
+        {
+            JavaScript selector = By.jQuery(".depth-level-3-0-0-0").Parents(".depth-level").Children("span").Length;
+            selector.ExecuteAndGet<long>(theDriver).ShouldEqual(3);
+        }
+
         private static DivTag BuildTestDiv(Stack<int> indexes, int depth)
         {
             var div = new DivTag();

@@ -130,14 +130,14 @@ namespace Serenity.Testing.WebDriver
         }
     }
 
-    public class JQueryByFindElementsWithResults : JavaScriptByFindTester<ReadOnlyCollection<IWebElement>>
+    public class JQueryByFindElementsWithResults : JavaScriptByFindTester<ReadOnlyCollection<IWebElement>, ReadOnlyCollection<IWebElement>>
     {
         private ReadOnlyCollection<IWebElement> _expectedResult; 
         protected override ReadOnlyCollection<IWebElement> ExpectedResult
         {
             get
             {
-                return _expectedResult ?? (_expectedResult = new ReadOnlyCollection<IWebElement>(new[]
+                return _expectedResult ?? (_expectedResult = new ReadOnlyCollection<IWebElement>(new []
                 {
                     Services.AddAdditionalMockFor<IWebElement>(),
                     Services.AddAdditionalMockFor<IWebElement>()

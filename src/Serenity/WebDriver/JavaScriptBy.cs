@@ -40,7 +40,9 @@ namespace Serenity.WebDriver
 
         public override ReadOnlyCollection<IWebElement> FindElements(ISearchContext context)
         {
-            var collection = Execute<ReadOnlyCollection<IWebElement>>(context, JavaScript.Get());
+            var rawCollection = Execute<object>(context, JavaScript.Get());
+
+            var collection = rawCollection as ReadOnlyCollection<IWebElement>;
 
             //Unlike FindElement, FindElements does not throw an exception if no elements are found
             //and instead returns an empty list
