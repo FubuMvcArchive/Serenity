@@ -23,6 +23,7 @@ namespace Serenity.Fixtures.Handlers
                 if (option.Text == data.ToString())
                 {
                     option.Click();
+                    element.SendKeys(Keys.Tab);
                     return;
                 }
             }
@@ -32,6 +33,7 @@ namespace Serenity.Fixtures.Handlers
                 if (option.GetAttribute("value") == data.ToString())
                 {
                     option.Click();
+                    element.SendKeys(Keys.Tab);
                     return;
                 }
             }
