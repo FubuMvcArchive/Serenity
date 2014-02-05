@@ -11,12 +11,16 @@ namespace Serenity.Fixtures.Handlers
             return element.TagName.ToLower() == "input" && element.GetAttribute("type").ToLower() == "text";
         }
 
+        public void EraseData(ISearchContext context, IWebElement element)
+        {
+            if (element.GetAttribute("value").IsNotEmpty())
+                element.SendKeys(Keys.Home + Keys.Shift + Keys.End + Keys.Delete);
+        }
+
         public void EnterData(ISearchContext context, IWebElement element, object data)
         {
-            while (element.GetAttribute("value").IsNotEmpty())
-            {
-                element.SendKeys(Keys.Backspace);
-            }
+            if (element.GetAttribute("value").IsNotEmpty())
+                EraseData(context, element);
 
             element.SendKeys(data as string ?? string.Empty);
         }
