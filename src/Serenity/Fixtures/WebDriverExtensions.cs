@@ -62,7 +62,7 @@ namespace Serenity.Fixtures
             return wait.Until(d => condition());
         }
 
-        private static readonly Type[] WaitForElementIgnoreExceptions =
+        public static readonly Type[] WaitForElementIgnoreExceptions =
         {
             typeof(NoSuchElementException),
             typeof(NotFoundException)
