@@ -70,7 +70,17 @@ namespace Serenity.Fixtures
 
         public static IWebElement WaitForElement(this ISearchContext context, By selector, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            return Wait.For(() => context.FindElement(selector), pollingInterval: pollingInterval, timeout: timeout, ignoreExceptions: WaitForElementIgnoreExceptions);
+            try
+            {
+                return Wait.For(() => context.FindElement(selector),
+                    pollingInterval: pollingInterval,
+                    timeout: timeout,
+                    ignoreExceptions: WaitForElementIgnoreExceptions);
+            }
+            catch (WebDriverTimeoutException timeoutException)
+            {
+                throw new NoSuchElementException("Unable to locate element: {0}".ToFormat(selector), timeoutException);
+            }
         }
 
         public static IWebElement InputFor<T>(this ISearchContext context, Expression<Func<T, object>> property)

@@ -62,7 +62,7 @@ namespace Serenity.Testing.WebDriver
         [Test]
         public void WaitForElementWaitsForElementToBeOnTheDomNeverShowsUp()
         {
-            Exception<WebDriverTimeoutException>.ShouldBeThrownBy(() =>
+            Exception<NoSuchElementException>.ShouldBeThrownBy(() =>
             {
                 theDriver.WaitForElement(By.CssSelector(".there-is-no-element".ToFormat(AddedElementsClass)), timeout: TimeSpan.FromSeconds(2));
             });
