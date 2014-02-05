@@ -73,7 +73,6 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void should_be_able_to_get_text_from_field()
         {
-            Debug.WriteLine(theHandler.GetData(null, textbox1));
             theHandler.GetData(null, textbox1).ShouldEqual(theText);
         }
 
