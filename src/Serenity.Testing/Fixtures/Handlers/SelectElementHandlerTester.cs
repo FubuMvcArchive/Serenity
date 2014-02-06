@@ -1,132 +1,142 @@
-using System;
-using System.Threading;
-using FubuCore;
 using FubuTestingSupport;
 using HtmlTags;
 using HtmlTags.Extended.Attributes;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Serenity.Fixtures.Handlers;
-using Serenity.Testing.Fixtures.Grammars;
 
 namespace Serenity.Testing.Fixtures.Handlers
 {
-    [TestFixture]
-    public class SelectElementHandlerTester
+    public class SelectElementHandlerTester : ScreenManipulationTester
     {
-        private IWebDriver theDriver;
-        private IWebElement select1;
-        private IWebElement nothingSelectedElement;
-        private IWebElement select3;
-        private SelectElementHandler theHandler = new SelectElementHandler();
-        private IWebElement select4;
+        private readonly SelectElementHandler _handler = new SelectElementHandler();
 
-        [TestFixtureSetUp]
-        public void SetUp()
+        private const string A = "a";
+        private const string B = "b";
+        private const string C = "c";
+
+        private const string Select1Id = "select1";
+        private const string Select2Id = "select2";
+        private const string Select3Id = "select3";
+        private const string Select4Id = "select4";
+
+        private readonly By _select1ById = By.Id(Select1Id);
+        private readonly By _select2ById = By.Id(Select2Id);
+        private readonly By _select3ById = By.Id(Select3Id);
+        private readonly By _select4ById = By.Id(Select4Id);
+
+        protected override void configureDocument(HtmlDocument document)
         {
-            var document = new HtmlDocument();
-            document.Add(new SelectTag(tag =>
-            {
-                tag.Option("a", "a");
-                tag.Option("b", "2").Id("b");
-                tag.Option("c", 3).Id("c");
+            const string option = "option";
+            const string selected = "selected";
+            const string valueAttr = "value";
 
-                tag.SelectByValue("2");
-            }).Name("select1").Id("select1"));
+            const int two = 2;
+            const int three = 3;
 
             document.Add(new SelectTag(tag =>
             {
-                tag.Option("a", "a");
-                tag.Option("b", 2).Id("b");
-                tag.Option("c", 3).Id("c");
+                tag.Option(A, A);
+                tag.Option(B, two.ToString()).Id(B);
+                tag.Option(C, three).Id(C);
 
-            }).Name("select2").Id("select2"));
-
-            document.Add(new SelectTag(tag =>
-            {
-                tag.Add("option").Text("a");
-                tag.Add("option").Text("b").Attr("selected", "selected");
-                tag.Add("option").Text("c");
-
-            }).Name("select3").Id("select3"));
+                tag.SelectByValue(two.ToString());
+            }).Name(Select1Id).Id(Select1Id));
 
             document.Add(new SelectTag(tag =>
             {
-                tag.Option("a", "a");
-                tag.Option("b", 2).Id("b");
-                tag.Option("c", 3).Id("c");
-                tag.Option("value", "b").Id("c");
+                tag.Option(A, A);
+                tag.Option(B, two).Id(B);
+                tag.Option(C, three).Id(C);
 
-                tag.SelectByValue(2);
-            }).Name("select4").Id("select4"));
-        
-            document.WriteToFile("select.htm");
+            }).Name(Select2Id).Id(Select2Id));
 
-            try
+            document.Add(new SelectTag(tag =>
             {
-                startDriver();
-            }
-            catch (Exception)
+                tag.Add(option).Text(A);
+                tag.Add(option).Text(B).Attr(selected, selected);
+                tag.Add(option).Text(C);
+
+            }).Name(Select3Id).Id(Select3Id));
+
+            document.Add(new SelectTag(tag =>
             {
-                Thread.Sleep(2000);
-                startDriver();
-            }
+                tag.Option(A, A);
+                tag.Option(B, two).Id(B);
+                tag.Option(C, three).Id(C);
+                tag.Option(valueAttr, B).Id(C);
 
-            select1 = theDriver.FindElement(By.Id("select1"));
-            nothingSelectedElement = theDriver.FindElement(By.Id("select2"));
-            select3 = theDriver.FindElement(By.Id("select3"));
-            select4 = theDriver.FindElement(By.Id("select4"));
-        }
-
-        private void startDriver()
-        {
-            theDriver = BrowserForTesting.Driver;
-            theDriver.Navigate().GoToUrl("file:///" + "select.htm".ToFullPath());
+                tag.SelectByValue(two);
+            }).Name(Select4Id).Id(Select4Id));
         }
 
         [Test]
         public void get_data_with_selected_option_with_both_value_and_text()
         {
-            theHandler.GetData(null, select1).ShouldEqual("b=2");
+            var select1 = theDriver.FindElement(_select1ById);
+            const string result = "b=2";
+
+            _handler.GetData(null, select1).ShouldEqual(result);
         }
 
         [Test]
         public void get_data_with_selected_option_that_has_only_text()
         {
-            theHandler.GetData(null, select3).ShouldEqual("b=b");
+            var select3 = theDriver.FindElement(_select3ById);
+            const string result = "b=b";
+
+            _handler.GetData(null, select3).ShouldEqual(result);
         }
 
         [Test]
         public void match_against_value_is_default()
         {
-            theHandler.MatchesData(select1, 2).ShouldBeTrue();
-            theHandler.MatchesData(select1, 3).ShouldBeFalse();
+            var select1 = theDriver.FindElement(_select1ById);
+            const int expectTrue = 2;
+            const int expectFalse = 3;
+
+            _handler.MatchesData(select1, expectTrue).ShouldBeTrue();
+            _handler.MatchesData(select1, expectFalse).ShouldBeFalse();
         }
 
         [Test]
         public void can_fall_thru_to_checking_against_display_if_value_does_not_exist()
         {
-            theHandler.MatchesData(select1, "b").ShouldBeTrue();
-            theHandler.MatchesData(select1, "c").ShouldBeFalse();
+            var select1 = theDriver.FindElement(_select1ById);
+            const string expectTrue = "b";
+            const string expectFalse = "c";
+
+            _handler.MatchesData(select1, expectTrue).ShouldBeTrue();
+            _handler.MatchesData(select1, expectFalse).ShouldBeFalse();
         }
 
         [Test]
         public void match_by_display_if_value_does_not_exist()
         {
-            theHandler.MatchesData(select1, "b").ShouldBeTrue();
-            theHandler.MatchesData(select1, "c").ShouldBeFalse();
+            var select1 = theDriver.FindElement(_select1ById);
+            const string expectTrue = "b";
+            const string expectFalse = "c";
+
+            _handler.MatchesData(select1, expectTrue).ShouldBeTrue();
+            _handler.MatchesData(select1, expectFalse).ShouldBeFalse();
         }
 
         [Test]
         public void does_not_fall_thru_to_display_if_the_expected_value_is_a_value()
         {
-            theHandler.MatchesData(select4, "b").ShouldBeFalse();
+            var select4 = theDriver.FindElement(_select4ById);
+            const string expectFalse = "b";
+
+            _handler.MatchesData(select4, expectFalse).ShouldBeFalse();
         }
 
         [Test]
         public void matches_has_to_be_false_when_nothing_is_selected()
         {
-            theHandler.MatchesData(nothingSelectedElement, "anything").ShouldBeFalse();
+            var nothingSelectedElement = theDriver.FindElement(_select2ById);
+            const string expectFalse = "anything";
+
+            _handler.MatchesData(nothingSelectedElement, expectFalse).ShouldBeFalse();
         }
     }
 }
