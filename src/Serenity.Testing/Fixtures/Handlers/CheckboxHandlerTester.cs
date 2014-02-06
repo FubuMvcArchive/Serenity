@@ -5,98 +5,99 @@ using HtmlTags;
 using HtmlTags.Extended.Attributes;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using Rhino.Mocks.Constraints;
 using Serenity.Fixtures.Handlers;
 using FubuTestingSupport;
 
 namespace Serenity.Testing.Fixtures.Handlers
 {
-    [TestFixture]
-    public class CheckboxHandlerTester
+    public class CheckboxHandlerTester : ScreenManipulationTester
     {
-        private CheckboxHandler theHandler = new CheckboxHandler();
-        private IWebDriver theDriver = BrowserForTesting.Driver;
+        private readonly CheckboxHandler _handler = new CheckboxHandler();
 
-        [SetUp]
-        public void SetUp()
+        private const string Disabled = "disabled";
+        private const string CheckedAttr = "checked";
+        private const string Enabled = "enabled";
+        private const string NotChecked = "not-checked";
+
+        private const string Target1 = "tartget1";
+        private const string Target2 = "tartget2";
+        private const string Target3 = "tartget3";
+        private const string Target4 = "tartget4";
+        private const string Div1 = "div1";
+        private const string Text1 = "text1";
+
+        private readonly By _disabledById = By.Id(Disabled);
+        private readonly By _checkedById = By.Id(CheckedAttr);
+        private readonly By _enabledById = By.Id(Enabled);
+        private readonly By _notCheckedById = By.Id(NotChecked);
+        private readonly By _div1ById = By.Id(Div1);
+        private readonly By _text1ById = By.Id(Text1);
+        
+        private readonly By _target1ById = By.Id(Target1);
+        private readonly By _target2ById = By.Id(Target2);
+        private readonly By _target3ById = By.Id(Target3);
+        private readonly By _target4ById = By.Id(Target4);
+
+        protected override void configureDocument(HtmlDocument document)
         {
-            var document = new HtmlDocument();
-            document.Add(new CheckboxTag(true).Id("checked"));
-            document.Add(new CheckboxTag(false).Id("not-checked"));
-            document.Add(new CheckboxTag(false).Attr("disabled", "disabled").Id("disabled"));
-            document.Add(new CheckboxTag(true).Id("enabled"));
-            document.Add(new CheckboxTag(false).Id("target1"));
-            document.Add(new CheckboxTag(false).Id("target2"));
-            document.Add(new CheckboxTag(true).Id("target3"));
-            document.Add(new CheckboxTag(false).Id("target4"));
-            document.Add(new DivTag("div1"));
-            document.Add(new TextboxTag().Id("txt1"));
-
-            document.WriteToFile("checkbox.htm");
-
-            try
-            {
-                startDriver();
-            }
-            catch (Exception)
-            {
-                Thread.Sleep(2000);
-                startDriver();
-            }
-
-
+            document.Add(new CheckboxTag(true).Id(CheckedAttr));
+            document.Add(new CheckboxTag(false).Id(NotChecked));
+            document.Add(new CheckboxTag(false).Attr(Disabled, Disabled).Id(Disabled));
+            document.Add(new CheckboxTag(true).Id(Enabled));
+            document.Add(new CheckboxTag(false).Id(Target1));
+            document.Add(new CheckboxTag(false).Id(Target2));
+            document.Add(new CheckboxTag(true).Id(Target3));
+            document.Add(new CheckboxTag(false).Id(Target4));
+            document.Add(new DivTag(Div1));
+            document.Add(new TextboxTag().Id(Text1));
         }
-
-        private void startDriver()
-        {
-            BrowserForTesting.Driver.Navigate().GoToUrl("file:///" + "checkbox.htm".ToFullPath());
-        }
-
 
         [Test]
         public void matches_negative()
         {
-            theHandler.Matches(theDriver.FindElement(By.Id("txt1"))).ShouldBeFalse();
-            theHandler.Matches(theDriver.FindElement(By.Id("div1"))).ShouldBeFalse();
+            _handler.Matches(theDriver.FindElement(_text1ById)).ShouldBeFalse();
+            _handler.Matches(theDriver.FindElement(_div1ById)).ShouldBeFalse();
         }
 
         [Test]
         public void matches_positive()
         {
-            theHandler.Matches(theDriver.FindElement(By.Id("checked"))).ShouldBeTrue();
+            _handler.Matches(theDriver.FindElement(_checkedById)).ShouldBeTrue();
         }
 
         [Test]
         public void enabled_positive()
         {
-            CheckboxHandler.IsEnabled(theDriver.FindElement(By.Id("enabled")))
+            CheckboxHandler.IsEnabled(theDriver.FindElement(_enabledById))
                 .ShouldBeTrue();
         }
 
         [Test]
         public void enabled_negative()
         {
-            CheckboxHandler.IsEnabled(theDriver.FindElement(By.Id("disabled")))
+            CheckboxHandler.IsEnabled(theDriver.FindElement(_disabledById))
                 .ShouldBeFalse();
         }
 
         [Test]
         public void is_checked_negative()
         {
-            CheckboxHandler.IsChecked(theDriver.FindElement(By.Id("not-checked")))
+            CheckboxHandler.IsChecked(theDriver.FindElement(_notCheckedById))
                 .ShouldBeFalse();
         }
 
         [Test]
         public void is_checked_positive()
         {
-            CheckboxHandler.IsChecked(theDriver.FindElement(By.Id("checked")))
+            CheckboxHandler.IsChecked(theDriver.FindElement(_checkedById))
                 .ShouldBeTrue();
         }
 
         [Test]
         public void check_a_checkbox()
         {
-            var target = theDriver.FindElement(By.Id("target1"));
+            var target = theDriver.FindElement(_target1ById);
             CheckboxHandler.IsChecked(target).ShouldBeFalse();
             
             CheckboxHandler.Check(target);
@@ -107,75 +108,75 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void enter_data_true()
         {
-            var target = theDriver.FindElement(By.Id("target2"));
+            var target = theDriver.FindElement(_target2ById);
 
             CheckboxHandler.IsChecked(target).ShouldBeFalse();
 
-            theHandler.EnterData(null, target, true);
+            _handler.EnterData(null, target, true);
             CheckboxHandler.IsChecked(target).ShouldBeTrue();
 
-            theHandler.EnterData(null, target, true);
+            _handler.EnterData(null, target, true);
             CheckboxHandler.IsChecked(target).ShouldBeTrue();
         }
 
         [Test]
         public void enter_data_false()
         {
-            var target = theDriver.FindElement(By.Id("target3"));
+            var target = theDriver.FindElement(_target3ById);
 
             CheckboxHandler.IsChecked(target).ShouldBeTrue();
 
-            theHandler.EnterData(null, target, false);
+            _handler.EnterData(null, target, false);
             CheckboxHandler.IsChecked(target).ShouldBeFalse();
 
-            theHandler.EnterData(null, target, false);
+            _handler.EnterData(null, target, false);
             CheckboxHandler.IsChecked(target).ShouldBeFalse();
         }
 
         [Test]
         public void enter_data_true_string()
         {
-            var target = theDriver.FindElement(By.Id("target2"));
+            var target = theDriver.FindElement(_target2ById);
 
             CheckboxHandler.IsChecked(target).ShouldBeFalse();
 
-            theHandler.EnterData(null, target, "true");
+            _handler.EnterData(null, target, "true");
             CheckboxHandler.IsChecked(target).ShouldBeTrue();
 
-            theHandler.EnterData(null, target, "True");
+            _handler.EnterData(null, target, "True");
             CheckboxHandler.IsChecked(target).ShouldBeTrue();
         }
 
         [Test]
         public void enter_data_false_string()
         {
-            var target = theDriver.FindElement(By.Id("target3"));
+            var target = theDriver.FindElement(_target3ById);
 
             CheckboxHandler.IsChecked(target).ShouldBeTrue();
 
-            theHandler.EnterData(null, target, "false");
+            _handler.EnterData(null, target, "false");
             CheckboxHandler.IsChecked(target).ShouldBeFalse();
 
-            theHandler.EnterData(null, target, "False");
+            _handler.EnterData(null, target, "False");
             CheckboxHandler.IsChecked(target).ShouldBeFalse();
         }
 
         [Test]
         public void enter_data_empty_string()
         {
-            var target = theDriver.FindElement(By.Id("target3"));
+            var target = theDriver.FindElement(_target3ById);
 
             CheckboxHandler.IsChecked(target).ShouldBeTrue();
 
-            theHandler.EnterData(null, target, string.Empty);
+            _handler.EnterData(null, target, string.Empty);
             CheckboxHandler.IsChecked(target).ShouldBeFalse();
         }
 
         [Test]
         public void get_data()
         {
-            theHandler.GetData(theDriver, theDriver.FindElement(By.Id("checked"))).ShouldEqual(true.ToString());
-            theHandler.GetData(theDriver, theDriver.FindElement(By.Id("not-checked"))).ShouldEqual(false.ToString());
+            _handler.GetData(theDriver, theDriver.FindElement(_checkedById)).ShouldEqual(true.ToString());
+            _handler.GetData(theDriver, theDriver.FindElement(_notCheckedById)).ShouldEqual(false.ToString());
         }
     }
 }
