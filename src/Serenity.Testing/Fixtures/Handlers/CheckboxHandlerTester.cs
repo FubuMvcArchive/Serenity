@@ -15,10 +15,10 @@ namespace Serenity.Testing.Fixtures.Handlers
         private const string Enabled = "enabled";
         private const string NotChecked = "not-checked";
 
-        private const string Target1 = "tartget1";
-        private const string Target2 = "tartget2";
-        private const string Target3 = "tartget3";
-        private const string Target4 = "tartget4";
+        private const string Target1 = "target1";
+        private const string Target2 = "target2";
+        private const string Target3 = "target3";
+        private const string Target4 = "target4";
         private const string Div1 = "div1";
         private const string Text1 = "text1";
 
