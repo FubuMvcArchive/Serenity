@@ -13,7 +13,6 @@ using Serenity.Fixtures.Handlers;
 
 namespace Serenity.Testing.Fixtures.Handlers
 {
-    [TestFixture]
     public class TextAreaElementHandlerTester : ScreenManipulationTester
     {
         private readonly TextAreaElementHandler _handler = new TextAreaElementHandler();
