@@ -7,14 +7,20 @@ namespace Serenity
     {
         public const string Process = "IEXPLORE";
 
-        protected override void preCleanUp()
-        {
-            Kill.Processes(Process);
-        }
-
         protected override IWebDriver buildDriver()
         {
             return new InternetExplorerDriver();
+        }
+
+        protected override void cleanUp(IWebDriver driver)
+        {
+            driver.Close();
+            driver.Dispose();
+        }
+
+        protected override void aggressiveCleanup()
+        {
+            Kill.Processes(Process);
         }
     }
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Threading;
 using FubuCore;
 using HtmlTags;
 using NUnit.Framework;
@@ -12,8 +10,22 @@ using TestContext = StoryTeller.Engine.TestContext;
 
 namespace Serenity.Testing.Fixtures
 {
-    public abstract class ScreenManipulationTester : ScreenFixture
+    [TestFixture(typeof(FirefoxBrowser))]
+    [TestFixture(typeof(ChromeBrowser))]
+    // TODO: Uncomment when we setup the IE Browser
+    // [TestFixture(typeof(InternetExplorerBrowser))]
+    [TestFixture(typeof(PhantomBrowser))]
+    public abstract class ScreenManipulationTester<TBrowser> : ScreenFixture where TBrowser : IBrowserLifecycle, new()
     {
+        private IBrowserLifecycle _browserLifecycle;
+
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            BrowserForTesting.Use<TBrowser>();
+            theDriver = BrowserForTesting.Driver;
+        }
+
         [SetUp]
         public void SetUp()
         {
@@ -24,31 +36,15 @@ namespace Serenity.Testing.Fixtures
 
             document.WriteToFile("screenfixture.htm");
 
-            try
-            {
-                startDriver();
-            }
-            catch (Exception)
-            {
-                Thread.Sleep(2000);
-                startDriver();
-            }
-        }
-
-        private void startDriver()
-        {
-            theDriver = BrowserForTesting.Driver;
-
-            BrowserForTesting.Driver.Navigate().GoToUrl("file:///" + "screenfixture.htm".ToFullPath());
-            theFixture = new StubScreenFixture(BrowserForTesting.Driver);
+            theDriver.Navigate().GoToUrl("file:///" + "screenfixture.htm".ToFullPath());
+            theFixture = new StubScreenFixture(theDriver);
         }
 
         protected StubScreenFixture theFixture;
-        protected IWebDriver theDriver;
+        protected IWebDriver theDriver { get; private set; }
 
         protected abstract void configureDocument(HtmlDocument document);
     }
-
 
 
     public class StubScreenFixture : ScreenFixture

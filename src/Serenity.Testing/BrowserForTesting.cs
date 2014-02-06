@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using FubuCore.Util;
+using NUnit.Framework;
 using OpenQA.Selenium;
 
 namespace Serenity.Testing
@@ -6,17 +8,27 @@ namespace Serenity.Testing
     [SetUpFixture]
     public class BrowserForTesting
     {
-        private static readonly FirefoxBrowser _browser = new FirefoxBrowser();
+        private static readonly Cache<Type, IBrowserLifecycle> Browsers = new Cache<Type, IBrowserLifecycle>();
 
-        public static IWebDriver Driver
+        public static IWebDriver Driver { get; private set; }
+
+        public static void Use<TBrowser>() where TBrowser : IBrowserLifecycle, new()
         {
-            get { return _browser.Driver; }
+            var type = typeof (TBrowser);
+
+            if (!Browsers.Has(type))
+            {
+                Browsers.Fill(type, key => new TBrowser());
+            }
+
+            Driver = Browsers[type].Driver;
         }
 
         [TearDown]
         public void Teardown()
         {
-            _browser.Dispose();
+            Browsers.Each(x => x.Dispose());
+            Browsers.ClearAll();
         }
     }
 }

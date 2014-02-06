@@ -6,7 +6,7 @@ using FubuTestingSupport;
 
 namespace Serenity.Testing.Fixtures.Handlers
 {
-    public class CheckboxHandlerTester : ScreenManipulationTester
+    public class CheckboxHandlerTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
         private readonly CheckboxHandler _handler = new CheckboxHandler();
 

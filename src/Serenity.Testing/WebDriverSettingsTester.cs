@@ -45,21 +45,18 @@ namespace Serenity.Testing
         [Test]
         public void build_firefox_driver()
         {
-            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Firefox).Driver)
+            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Firefox))
             {
-                browser.ShouldBeOfType<FirefoxDriver>();
-                browser.Close();
+                browser.ShouldBeOfType<FirefoxBrowser>();
             }
-            
         }
 
         [Test]
         public void build_chrome_driver()
         {
-            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Chrome).Driver)
+            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Chrome))
             {
-                browser.ShouldBeOfType<ChromeDriver>();
-                browser.Close();
+                browser.ShouldBeOfType<ChromeBrowser>();
             }
         }
 
@@ -67,10 +64,9 @@ namespace Serenity.Testing
         [Test]
         public void build_phantom_driver()
         {
-            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Phantom).Driver)
+            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.Phantom))
             {
-                browser.ShouldBeOfType<PhantomJSDriver>();
-                browser.Close();
+                browser.ShouldBeOfType<PhantomBrowser>();
             }
         }
 
@@ -79,10 +75,9 @@ namespace Serenity.Testing
         [Test, Ignore("Need to do the IE Driver thing like Chrome")]
         public void build_IE_driver_because_you_know_you_will_have_to_do_this_at_some_point()
         {
-            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.IE).Driver)
+            using (var browser = WebDriverSettings.GetBrowserLifecyle(BrowserType.IE))
             {
                 browser.ShouldBeOfType<InternetExplorerDriver>();
-                browser.Close();
             }
 
         }

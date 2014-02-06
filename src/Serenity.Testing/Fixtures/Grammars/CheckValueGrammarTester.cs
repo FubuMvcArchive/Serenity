@@ -1,7 +1,5 @@
-using System.Diagnostics;
 using HtmlTags;
 using HtmlTags.Extended.Attributes;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Serenity.Fixtures.Grammars;
@@ -9,8 +7,7 @@ using StoryTeller.Domain;
 
 namespace Serenity.Testing.Fixtures.Grammars
 {
-    [TestFixture]
-    public class CheckValueGrammarTester : ScreenManipulationTester
+    public class CheckValueGrammarTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
         protected override void configureDocument(HtmlDocument document)
         {

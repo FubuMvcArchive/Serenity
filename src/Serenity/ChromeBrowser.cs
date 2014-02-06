@@ -11,29 +11,26 @@ namespace Serenity
         public const string DriverProcess = "chromedriver";
         public const string File = "chromedriver.exe";
 
-
-        protected override void preCleanUp()
-        {
-            cleanUp(null);
-            Kill.Processes(ChromeProcess);
-        }
-
         protected override IWebDriver buildDriver()
         {
             var fileSystem = new FileSystem();
             var settings = StoryTellerEnvironment.Get<SerenityEnvironment>();
 
-            if (fileSystem.FileExists(settings.WorkingDir, File))
-            {
-                return new ChromeDriver(settings.WorkingDir);
-            }
-
-            return new ChromeDriver();
+            return fileSystem.FileExists(settings.WorkingDir, File)
+                ? new ChromeDriver(settings.WorkingDir)
+                : new ChromeDriver();
         }
 
         protected override void cleanUp(IWebDriver value)
         {
-            Kill.Processes(DriverProcess, File);
+            value.Quit();
+            value.Close();
+            value.Dispose();
+        }
+
+        protected override void aggressiveCleanup()
+        {
+            Kill.Processes(DriverProcess, File, ChromeProcess);
         }
     }
 }

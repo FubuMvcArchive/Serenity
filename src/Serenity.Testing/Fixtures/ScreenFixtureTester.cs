@@ -16,8 +16,7 @@ using StoryTeller.Domain;
 
 namespace Serenity.Testing.Fixtures
 {
-    [TestFixture]
-    public class ScreenFixtureIntegratedTester : ScreenManipulationTester
+    public class ScreenFixtureIntegratedTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
         private IGrammar theGrammar;
 

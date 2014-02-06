@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 
@@ -10,15 +11,18 @@ namespace Serenity
         private Lazy<IWebDriver> _driver;
         private readonly IList<IBrowserSessionInitializer> _initializers = new List<IBrowserSessionInitializer>();
 
+        // This is a stop gap to deal with instantiating multiple instances of any BrowserLifecycle within one process concurrently.
+        // Ideally we should create the different WebDriverService instances in singleton scope, then create WebDrivers pointing at 
+        // the existing service. The Serenity.Test project is an example consumer of this need. 
+        // Chrome See: https://sites.google.com/a/chromium.org/chromedriver/getting-started for setup with Chrome specifically 
+        //             the Controlling ChromeDriver's lifetime section - Note the ChromeDriverService usage
+        // Firefox need to investigate best approach for this.
+        private static readonly object _runningLifecyclesLock = new object();
+        private static readonly IDictionary<Type, int> _runningLifecycles = new Dictionary<Type, int>();
 
         protected BrowserLifecycle()
         {
-            reset();
-        }
-
-        private void reset()
-        {
-            _driver = new Lazy<IWebDriver>(initializeDriver);
+            Recycle();
         }
 
         private bool cleanUpFlag()
@@ -30,37 +34,61 @@ namespace Serenity
 
         private IWebDriver initializeDriver()
         {
-            if (cleanUpFlag()) { preCleanUp(); }
+            if (cleanUpFlag()) { aggressiveCleanup(); }
 
-            var driver = buildDriver();
+            var driver = BuildDriverAndIncrementLifecycleCount();
             _initializers.Each(x => x.InitializeSession(driver));
 
             return driver;
         }
 
-        protected abstract void preCleanUp();
         protected abstract IWebDriver buildDriver();
 
         public void Dispose()
         {
-            if (_driver.IsValueCreated)
+            if (_driver == null || !_driver.IsValueCreated)
+                return;
+
+            lock (_runningLifecyclesLock)
             {
+                var type = GetType();
+                if (!_runningLifecycles.ContainsKey(type))
+                {
+                    throw new Exception("Should never happen, but if you try to decrement the lifecycle and the key does not exist");
+                }
+
+                _runningLifecycles[type]--;
+
                 var task = Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        _driver.Value.Close();
+                        cleanUp(_driver.Value);
+                        _driver = null;
+                        return true;
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
+                        return false;
                     }
                 });
 
-                task.Wait(2000);
-                
-                cleanUp(_driver.Value);
-                _driver.Value.Dispose();
+                var timedout = !task.Wait(TimeSpan.FromSeconds(10));
+
+                var failed = task.IsCompleted && task.Result;
+
+                if (_runningLifecycles[type] < 0)
+                {
+                    throw new Exception("Decrement has been called too many times?");
+                }
+
+                if (_runningLifecycles[type] == 0 && (timedout || failed))
+                {
+                    Console.WriteLine("Cleanup either failed or timed out after 10 seconds proceeding with aggressive cleanup (Killing Processes)");
+                    aggressiveCleanup();
+                    _driver = null;
+                }
             }
         }
 
@@ -69,10 +97,8 @@ namespace Serenity
             Dispose();
         }
 
-        protected virtual void cleanUp(IWebDriver value)
-        {
-            // do nothing for most browsers
-        }
+        protected abstract void cleanUp(IWebDriver value);
+        protected abstract void aggressiveCleanup();
 
         public void UseInitializer(IBrowserSessionInitializer initializer)
         {
@@ -87,12 +113,32 @@ namespace Serenity
         public void Recycle()
         {
             Dispose();
-            reset();
+            _driver = new Lazy<IWebDriver>(initializeDriver, LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         public bool HasBeenStarted()
         {
             return _driver.IsValueCreated;
+        }
+
+        private IWebDriver BuildDriverAndIncrementLifecycleCount()
+        {
+            lock (_runningLifecyclesLock)
+            {
+                var type = GetType();
+                if (!_runningLifecycles.ContainsKey(type))
+                {
+                    _runningLifecycles[type] = 0;
+                }
+
+                _runningLifecycles[type]++;
+
+                return buildDriver();
+            }
+        }
+
+        private void DecrementLifecycleCount()
+        {
         }
     }
 }

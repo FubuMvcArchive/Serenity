@@ -7,14 +7,19 @@ namespace Serenity
     {
         public const string Process = "firefox";
 
-        protected override void preCleanUp()
-        {
-            Kill.Processes(Process);
-        }
-
         protected override IWebDriver buildDriver()
         {
             return new FirefoxDriver();
+        }
+
+        protected override void cleanUp(IWebDriver value)
+        {
+            value.Dispose();
+        }
+
+        protected override void aggressiveCleanup()
+        {
+            Kill.Processes(Process);
         }
     }
 }

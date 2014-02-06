@@ -9,8 +9,7 @@ using HtmlTags.Extended.Attributes;
 
 namespace Serenity.Testing.Fixtures.Grammars
 {
-    [TestFixture]
-    public class EnterValueGrammarTester : ScreenManipulationTester
+    public class EnterValueGrammarTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
         protected override void configureDocument(HtmlDocument document)
         {

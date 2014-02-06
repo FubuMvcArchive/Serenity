@@ -12,7 +12,7 @@ using By = Serenity.WebDriver.By;
 
 namespace Serenity.Testing.WebDriver
 {
-    public class ByJqueryPageTester : ScreenManipulationTester
+    public class ByJqueryPageTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
         private const string RootText = "Welcome to WebDriver jQuery selectors.";
 
@@ -144,7 +144,7 @@ namespace Serenity.Testing.WebDriver
         }
     }
 
-    public class ByJqueryWithNoJQueryOnPageTester : ScreenManipulationTester
+    public class ByJqueryWithNoJQueryOnPageTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
         private const string RootText = "Welcome to WebDriver jQuery selectors. (No JQuery Here)";
 

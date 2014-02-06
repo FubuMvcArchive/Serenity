@@ -11,11 +11,6 @@ namespace Serenity
         public const string Process = "phantomjs";
         public const string File = "phantomjs.exe";
 
-        protected override void preCleanUp()
-        {
-            Kill.Processes(Process, File);
-        }
-
         protected override IWebDriver buildDriver()
         {
             var fileSystem = new FileSystem();
@@ -31,7 +26,13 @@ namespace Serenity
 
         protected override void cleanUp(IWebDriver value)
         {
+            value.Close();
+            value.Dispose();
+        }
 
+        protected override void aggressiveCleanup()
+        {
+            Kill.Processes(Process, File);
         }
     }
 }

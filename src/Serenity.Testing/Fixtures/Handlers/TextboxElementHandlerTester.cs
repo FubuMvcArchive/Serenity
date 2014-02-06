@@ -7,7 +7,7 @@ using Serenity.Fixtures.Handlers;
 
 namespace Serenity.Testing.Fixtures.Handlers
 {
-    public class TextboxElementHandlerTester : ScreenManipulationTester
+    public class TextboxElementHandlerTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
         private readonly TextboxElementHandler _handler = new TextboxElementHandler();
 

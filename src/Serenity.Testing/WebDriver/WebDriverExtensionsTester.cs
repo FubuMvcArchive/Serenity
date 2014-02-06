@@ -9,7 +9,7 @@ using Serenity.Testing.Fixtures;
 
 namespace Serenity.Testing.WebDriver
 {
-    public class WebDriverExtensionsTester : ScreenManipulationTester
+    public class WebDriverExtensionsTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
         private const string EmptyTextboxId = "emptytextboxid";
         private const string EmptyTextboxName = "emptytextboxname";

@@ -9,8 +9,7 @@ using StoryTeller.Assertions;
 
 namespace Serenity.Testing.Fixtures.Grammars
 {
-    [TestFixture]
-    public class ClickGrammerTester : ScreenManipulationTester
+    public class ClickGrammerTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
         protected override void configureDocument(HtmlDocument doc)
         {
