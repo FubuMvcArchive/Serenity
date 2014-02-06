@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using FubuCore;
-using FubuTestingSupport;
+﻿using FubuTestingSupport;
 using HtmlTags;
-using HtmlTags.Extended.Attributes;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Serenity.Fixtures.Handlers;
