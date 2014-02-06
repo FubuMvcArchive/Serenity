@@ -1,13 +1,9 @@
-using System;
-using System.Threading;
-using FubuCore;
 using FubuTestingSupport;
 using HtmlTags;
 using HtmlTags.Extended.Attributes;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Serenity.Fixtures.Handlers;
-using Serenity.Testing.Fixtures.Grammars;
 
 namespace Serenity.Testing.Fixtures.Handlers
 {

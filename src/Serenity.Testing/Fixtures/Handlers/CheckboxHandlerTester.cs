@@ -1,11 +1,6 @@
-﻿using System;
-using System.Threading;
-using FubuCore;
-using HtmlTags;
-using HtmlTags.Extended.Attributes;
+﻿using HtmlTags;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Rhino.Mocks.Constraints;
 using Serenity.Fixtures.Handlers;
 using FubuTestingSupport;
 
