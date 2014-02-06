@@ -15,6 +15,10 @@ namespace Serenity.Testing.Fixtures.Handlers
     {
         private readonly SelectElementHandler _handler = new SelectElementHandler();
 
+        private const string A = "a";
+        private const string B = "b";
+        private const string C = "c";
+
         private const string Select1Id = "select1";
         private const string Select2Id = "select2";
         private const string Select3Id = "select3";
@@ -27,40 +31,47 @@ namespace Serenity.Testing.Fixtures.Handlers
 
         protected override void configureDocument(HtmlDocument document)
         {
-            document.Add(new SelectTag(tag =>
-            {
-                tag.Option("a", "a");
-                tag.Option("b", "2").Id("b");
-                tag.Option("c", 3).Id("c");
+            const string option = "option";
+            const string selected = "selected";
+            const string valueAttr = "value";
 
-                tag.SelectByValue("2");
-            }).Name("select1").Id("select1"));
+            const int two = 2;
+            const int three = 3;
 
             document.Add(new SelectTag(tag =>
             {
-                tag.Option("a", "a");
-                tag.Option("b", 2).Id("b");
-                tag.Option("c", 3).Id("c");
+                tag.Option(A, A);
+                tag.Option(B, two.ToString()).Id(B);
+                tag.Option(C, three).Id(C);
 
-            }).Name("select2").Id("select2"));
-
-            document.Add(new SelectTag(tag =>
-            {
-                tag.Add("option").Text("a");
-                tag.Add("option").Text("b").Attr("selected", "selected");
-                tag.Add("option").Text("c");
-
-            }).Name("select3").Id("select3"));
+                tag.SelectByValue(two.ToString());
+            }).Name(Select1Id).Id(Select1Id));
 
             document.Add(new SelectTag(tag =>
             {
-                tag.Option("a", "a");
-                tag.Option("b", 2).Id("b");
-                tag.Option("c", 3).Id("c");
-                tag.Option("value", "b").Id("c");
+                tag.Option(A, A);
+                tag.Option(B, two).Id(B);
+                tag.Option(C, three).Id(C);
 
-                tag.SelectByValue(2);
-            }).Name("select4").Id("select4"));
+            }).Name(Select2Id).Id(Select2Id));
+
+            document.Add(new SelectTag(tag =>
+            {
+                tag.Add(option).Text(A);
+                tag.Add(option).Text(B).Attr(selected, selected);
+                tag.Add(option).Text(C);
+
+            }).Name(Select3Id).Id(Select3Id));
+
+            document.Add(new SelectTag(tag =>
+            {
+                tag.Option(A, A);
+                tag.Option(B, two).Id(B);
+                tag.Option(C, three).Id(C);
+                tag.Option(valueAttr, B).Id(C);
+
+                tag.SelectByValue(two);
+            }).Name(Select4Id).Id(Select4Id));
         }
 
         [Test]
