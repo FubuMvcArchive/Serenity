@@ -158,6 +158,8 @@
     <Compile Include="Fixtures\BrowserIsAtTester.cs" />
     <Compile Include="Fixtures\Handlers\ElementHandlerWrapperTester.cs" />
     <Compile Include="Fixtures\Handlers\TextboxElementHandlerTester.cs" />
+    <Compile Include="WebDriver\Benchmarks\WebDriverBenchmarkFiveElementTests.cs" />
+    <Compile Include="WebDriver\Benchmarks\WebDriverBenchmarkGetAttributeTests.cs" />
     <Compile Include="WebDriver\ByJQuerySamples.cs" />
     <Compile Include="WebDriver\ByJqueryTester.cs" />
     <Compile Include="WebDriver\EmbeddedDrivers\EmbeddedDriverExtractorTester.cs" />
@@ -190,6 +192,8 @@
     <Compile Include="WebDriverSettingsTester.cs" />
     <Compile Include="WebDriver\JQueryTester.cs" />
     <Compile Include="WebDriver\SearchContextToJavaScriptExecutorTester.cs" />
+    <Compile Include="WebDriver\Benchmarks\WebDriverBenchmarkBase.cs" />
+    <Compile Include="WebDriver\Benchmarks\WebDriverBenchmarkOneElementTests.cs" />
     <Compile Include="WebDriver\WebDriverExtensionsTester.cs" />
   </ItemGroup>
   <ItemGroup>
