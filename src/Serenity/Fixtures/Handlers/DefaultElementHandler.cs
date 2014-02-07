@@ -12,8 +12,7 @@ namespace Serenity.Fixtures.Handlers
 
         public void EnterData(ISearchContext context, IWebElement element, object data)
         {
-
-            throw new NotImplementedException();
+            throw new NotSupportedException("Failed to match a better handler");
         }
 
         public string GetData(ISearchContext context, IWebElement element)
