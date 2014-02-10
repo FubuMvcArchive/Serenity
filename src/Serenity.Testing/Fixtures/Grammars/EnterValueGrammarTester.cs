@@ -11,7 +11,7 @@ namespace Serenity.Testing.Fixtures.Grammars
 {
     public class EnterValueGrammarTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             document.Add(new TextboxTag("emptytextbox", string.Empty));
             document.Add(new TextboxTag("textbox", "initial"));
@@ -31,7 +31,7 @@ namespace Serenity.Testing.Fixtures.Grammars
         {
             var def = new GestureConfig{
                 Template = "enter {data} for textbox",
-                Finder = () => theDriver.FindElement(By.Name(name)),
+                Finder = () => Driver.FindElement(By.Name(name)),
                 FinderDescription = "name=" + name,
                 Description = "Enter data for blah",
                 CellName = "data",
@@ -46,10 +46,10 @@ namespace Serenity.Testing.Fixtures.Grammars
         {
             grammarForName("select1").Execute(new Step().With("data", "b"));
 
-            theDriver.FindElement(By.Name("select1")).FindElement(By.Id("b")).Selected.ShouldBeTrue();
+            Driver.FindElement(By.Name("select1")).FindElement(By.Id("b")).Selected.ShouldBeTrue();
 
             grammarForName("select1").Execute(new Step().With("data", "c"));
-            theDriver.FindElement(By.Name("select1")).FindElement(By.Id("c")).Selected.ShouldBeTrue();
+            Driver.FindElement(By.Name("select1")).FindElement(By.Id("c")).Selected.ShouldBeTrue();
         }
 
         [Test]
@@ -66,10 +66,10 @@ namespace Serenity.Testing.Fixtures.Grammars
         {
             grammarForName("select1").Execute(new Step().With("data", "2"));
 
-            theDriver.FindElement(By.Name("select1")).FindElement(By.Id("b")).Selected.ShouldBeTrue();
+            Driver.FindElement(By.Name("select1")).FindElement(By.Id("b")).Selected.ShouldBeTrue();
 
             grammarForName("select1").Execute(new Step().With("data", "3"));
-            theDriver.FindElement(By.Name("select1")).FindElement(By.Id("c")).Selected.ShouldBeTrue();
+            Driver.FindElement(By.Name("select1")).FindElement(By.Id("c")).Selected.ShouldBeTrue();
         }
 
         [Test]
@@ -95,14 +95,14 @@ namespace Serenity.Testing.Fixtures.Grammars
         {
             grammarForName("emptytextbox").Execute(new Step().With("data", "some text"));
 
-            theDriver.FindElement(By.Name("emptytextbox")).GetAttribute("value").ShouldEqual("some text");
+            Driver.FindElement(By.Name("emptytextbox")).GetAttribute("value").ShouldEqual("some text");
         }
 
         [Test]
         public void enter_text_for_a_textbox_that_is_not_initially_empty()
         {
             grammarForName("textbox").Execute(new Step().With("data", "different"));
-            theDriver.FindElement(By.Name("textbox")).GetAttribute("value").ShouldEqual("different");
+            Driver.FindElement(By.Name("textbox")).GetAttribute("value").ShouldEqual("different");
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Serenity.Testing.WebDriver
     {
         private const string RootText = "Welcome to WebDriver jQuery selectors.";
 
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             document.Add("h1").AddClass("root-marker").Text(RootText);
 
@@ -30,20 +30,20 @@ namespace Serenity.Testing.WebDriver
         [TestCase(".depth-level-2:nth-of-type(2) > span", Result = "--Div at depth 2 index 1")]
         public string CanRetrieveElementBySelectorWithJQuery(string selector)
         {
-            return theDriver.FindElement((By) By.jQuery(selector)).Text;
+            return Driver.FindElement((By) By.jQuery(selector)).Text;
         }
 
         [Test, ExpectedException(typeof (NoSuchElementException))]
         public void NoElementFoundWithJQuery()
         {
-            theDriver.FindElement((By) By.jQuery(".no-such-element"));
+            Driver.FindElement((By) By.jQuery(".no-such-element"));
         }
 
         [Test]
         public void CanRetrieveElementsComplex()
         {
             By selector = By.jQuery(".depth-level-3-0-0-0").Parents(".depth-level").Children("span");
-            var textForParents = theDriver.FindElements(selector).Select(x => x.Text).ToList();
+            var textForParents = Driver.FindElements(selector).Select(x => x.Text).ToList();
 
             textForParents.ShouldHaveTheSameElementsAs(
                 "--Div at depth 2 index 0",
@@ -60,7 +60,7 @@ namespace Serenity.Testing.WebDriver
                 .Find(".depth-level-3 > span")
                 .Filter(JQuery.HasTextFilterFunction("---Div at depth 3 index 1"));
 
-            var textFromFoundElements = theDriver.FindElements(selector).Select(x => x.Text).ToList();
+            var textFromFoundElements = Driver.FindElements(selector).Select(x => x.Text).ToList();
 
             textFromFoundElements.ShouldHaveTheSameElementsAs(
                 "---Div at depth 3 index 1",
@@ -77,7 +77,7 @@ namespace Serenity.Testing.WebDriver
                 .Find(".depth-level-3 > span")
                 .Filter(JQuery.DoesNotHaveTextFilterFunction("---Div at depth 3 index 1"));
 
-            var textFromFoundElements = theDriver.FindElements(selector).Select(x => x.Text).ToList();
+            var textFromFoundElements = Driver.FindElements(selector).Select(x => x.Text).ToList();
 
             textFromFoundElements.ShouldHaveTheSameElementsAs(
                 "---Div at depth 3 index 0",
@@ -89,26 +89,26 @@ namespace Serenity.Testing.WebDriver
         [Test]
         public void WebElementToJQuerySelector()
         {
-            var element = theDriver.FindElement(By.CssSelector(".depth-level-2 > span"));
+            var element = Driver.FindElement(By.CssSelector(".depth-level-2 > span"));
 
             By selector = element.ToJQueryBy().Parent().Find(".depth-level-3 > span");
 
-            theDriver.FindElement(selector).Text.ShouldEqual("---Div at depth 3 index 0");
+            Driver.FindElement(selector).Text.ShouldEqual("---Div at depth 3 index 0");
         }
 
         [Test]
         public void CanRetrievePrimitiveTypeData()
         {
             JavaScript selector = By.jQuery(".depth-level-3-0-0-0").Parents(".depth-level").Children("span").Length;
-            selector.ExecuteAndGet<long>(theDriver).ShouldEqual(3);
+            selector.ExecuteAndGet<long>(Driver).ShouldEqual(3);
         }
 
         [Test]
         public void JQueryByFromElementCanRetrievePrimitiveTypeData()
         {
-            var element = theDriver.FindElement((By) By.jQuery(".depth-level-3-0-0-0"));
+            var element = Driver.FindElement((By) By.jQuery(".depth-level-3-0-0-0"));
             JavaScript selector = element.ToJQueryBy().Parents(".depth-level").Children("span").Length;
-            selector.ExecuteAndGet<long>(theDriver).ShouldEqual(3);
+            selector.ExecuteAndGet<long>(Driver).ShouldEqual(3);
         }
 
         private static DivTag BuildTestDiv(Stack<int> indexes, int depth)
@@ -148,7 +148,7 @@ namespace Serenity.Testing.WebDriver
     {
         private const string RootText = "Welcome to WebDriver jQuery selectors. (No JQuery Here)";
 
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             document.Add("h1").AddClass("root-marker").Text(RootText);
         }
@@ -156,7 +156,7 @@ namespace Serenity.Testing.WebDriver
         [Test, ExpectedException(typeof (InvalidOperationException))]
         public void NoJQueryOnPageThrows()
         {
-            theDriver.FindElement((By) By.jQuery(".root-marker"));
+            Driver.FindElement((By) By.jQuery(".root-marker"));
         }
     }
 }

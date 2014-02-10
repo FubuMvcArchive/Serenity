@@ -21,7 +21,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         private readonly By _selectById = By.Id(SelectId);
         private readonly By _submitById = By.Id(SubmitId);
 
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             document.Add(new HtmlTag("input", tag =>
             {
@@ -45,7 +45,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void should_be_able_to_clear_original_text()
         {
-            var textbox1 = theDriver.FindElement(_textboxById);
+            var textbox1 = Driver.FindElement(_textboxById);
             _handler.EraseData(null, textbox1);
             _handler.GetData(null, textbox1).ShouldBeEmpty();
         }
@@ -53,7 +53,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void should_be_able_to_get_text_from_field()
         {
-            var textbox1 = theDriver.FindElement(_textboxById);
+            var textbox1 = Driver.FindElement(_textboxById);
             _handler.GetData(null, textbox1).ShouldEqual(TheText);
         }
 
@@ -61,7 +61,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         public void should_be_able_to_write_to_a_clean_field()
         {
             const string input = "Hello There";
-            var textbox1 = theDriver.FindElement(_textboxById);
+            var textbox1 = Driver.FindElement(_textboxById);
             _handler.EnterData(null, textbox1, input);
             _handler.GetData(null, textbox1).ShouldEqual(input);
         }
@@ -69,21 +69,21 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void should_match_textbox()
         {
-            var element = theDriver.FindElement(_textboxById);
+            var element = Driver.FindElement(_textboxById);
             _handler.Matches(element).ShouldBeTrue();
         }
 
         [Test]
         public void should_not_match_select()
         {
-            var element = theDriver.FindElement(_selectById);
+            var element = Driver.FindElement(_selectById);
             _handler.Matches(element).ShouldBeFalse();
         }
 
         [Test]
         public void should_not_match_submit()
         {
-            var element = theDriver.FindElement(_submitById);
+            var element = Driver.FindElement(_submitById);
             _handler.Matches(element).ShouldBeFalse();
         }
     }

@@ -17,7 +17,7 @@ namespace Serenity.Testing.WebDriver
         private const string DelayAddElementButtonId = "delayAddButton";
         private const string AddedElementsClass = "added-elements";
 
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             var textbox = new TextboxTag(EmptyTextboxName, string.Empty)
                 .Id(EmptyTextboxId)
@@ -43,20 +43,20 @@ namespace Serenity.Testing.WebDriver
         [Test]
         public void HasAttributeReturnsTrue()
         {
-            theDriver.FindElement(By.Id(EmptyTextboxId)).HasAttribute("data-value").ShouldBeTrue();
+            Driver.FindElement(By.Id(EmptyTextboxId)).HasAttribute("data-value").ShouldBeTrue();
         }
 
         [Test]
         public void HasAttributeReturnsFalse()
         {
-            theDriver.FindElement(By.Id(EmptyTextboxId)).HasAttribute("data-is-not-there").ShouldBeFalse();
+            Driver.FindElement(By.Id(EmptyTextboxId)).HasAttribute("data-is-not-there").ShouldBeFalse();
         }
 
         [Test]
         public void WaitForElementWaitsForElementToBeOnTheDom()
         {
-            theDriver.FindElement(By.Id(DelayAddElementButtonId)).Click();
-            theDriver.WaitForElement(By.CssSelector(".{0} p".ToFormat(AddedElementsClass))).ShouldNotBeNull();
+            Driver.FindElement(By.Id(DelayAddElementButtonId)).Click();
+            Driver.WaitForElement(By.CssSelector(".{0} p".ToFormat(AddedElementsClass))).ShouldNotBeNull();
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Serenity.Testing.WebDriver
         {
             Exception<NoSuchElementException>.ShouldBeThrownBy(() =>
             {
-                theDriver.WaitForElement(By.CssSelector(".there-is-no-element".ToFormat(AddedElementsClass)), timeout: TimeSpan.FromSeconds(2));
+                Driver.WaitForElement(By.CssSelector(".there-is-no-element".ToFormat(AddedElementsClass)), timeout: TimeSpan.FromSeconds(2));
             });
         }
     }

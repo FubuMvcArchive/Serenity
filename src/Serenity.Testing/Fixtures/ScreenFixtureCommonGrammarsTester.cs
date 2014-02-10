@@ -1,4 +1,6 @@
 using FubuCore;
+using FubuMVC.Core.Endpoints;
+using FubuMVC.Core.Urls;
 using HtmlTags;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -17,13 +19,21 @@ namespace Serenity.Testing.Fixtures
     [TestFixture(typeof(PhantomBrowser))]
     public abstract class ScreenManipulationTester<TBrowser> : ScreenFixture where TBrowser : IBrowserLifecycle, new()
     {
-        private IBrowserLifecycle _browserLifecycle;
-
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            BrowserForTesting.Use<TBrowser>();
-            theDriver = BrowserForTesting.Driver;
+            var lifecycle = BrowserForTesting.Use<TBrowser>();
+
+            var context = new TestContext();
+
+            var applicationUnderTest = new StubbedApplicationUnderTest
+            {
+                Browser = lifecycle
+            };
+
+            context.Store<IApplicationUnderTest>(applicationUnderTest);
+
+            SetUp(context);
         }
 
         [SetUp]
@@ -32,26 +42,44 @@ namespace Serenity.Testing.Fixtures
             new FileSystem().DeleteFile("screenfixture.htm");
 
             var document = new HtmlDocument();
-            configureDocument(document);
+            ConfigureDocument(document);
 
             document.WriteToFile("screenfixture.htm");
 
-            theDriver.Navigate().GoToUrl("file:///" + "screenfixture.htm".ToFullPath());
-            theFixture = new StubScreenFixture(theDriver);
+            Driver.Navigate().GoToUrl("file:///" + "screenfixture.htm".ToFullPath());
+            BeforeEach();
         }
 
-        protected StubScreenFixture theFixture;
-        protected IWebDriver theDriver { get; private set; }
+        protected abstract void ConfigureDocument(HtmlDocument document);
+        protected virtual void BeforeEach() { }
 
-        protected abstract void configureDocument(HtmlDocument document);
-    }
-
-
-    public class StubScreenFixture : ScreenFixture
-    {
-        public StubScreenFixture(IWebDriver driver)
+        private class StubbedApplicationUnderTest : IApplicationUnderTest
         {
-            PushElementContext(driver);
+            public string Name { get; set; }
+            public IUrlRegistry Urls { get; set; }
+
+            public IWebDriver Driver { get { return Browser.Driver; } }
+
+            public string RootUrl { get; set; }
+            public IServiceLocator Services { get; set; }
+            public IBrowserLifecycle Browser { get; set; }
+
+            public void Ping()
+            {
+                throw new System.NotSupportedException();
+            }
+
+            public void Teardown()
+            {
+                throw new System.NotSupportedException();
+            }
+
+            public NavigationDriver Navigation { get; set; }
+
+            public EndpointDriver Endpoints()
+            {
+                throw new System.NotSupportedException();
+            }
         }
     }
 

@@ -11,7 +11,7 @@ namespace Serenity.Testing.Fixtures.Grammars
 {
     public class ClickGrammerTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
-        protected override void configureDocument(HtmlDocument doc)
+        protected override void ConfigureDocument(HtmlDocument doc)
         {
             doc.Add("div").Id("clickTarget");
             doc.Add("button").Id("happyPath").Text("Hey there!").Attr("onclick", "document.getElementById('clickTarget').innerHTML = 'clicked'");
@@ -24,7 +24,7 @@ namespace Serenity.Testing.Fixtures.Grammars
         private ClickGrammar grammarForId(string id)
         {
             var config = new GestureConfig{
-                Finder = () => theDriver.FindElement(By.Id(id)),
+                Finder = () => Driver.FindElement(By.Id(id)),
                 FinderDescription = "#" + id,
                 Template = "Clicking " + id
             };
@@ -78,13 +78,13 @@ namespace Serenity.Testing.Fixtures.Grammars
 
             grammar.Execute().Counts.ShouldEqual(0, 0, 0, 0);
 
-            theDriver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
+            Driver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
         }
 
         [Test]
         public void calls_the_action_after_a_successful_click()
         {
-            Action action = () => theDriver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
+            Action action = () => Driver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
 
             var grammar = grammarForId("happyPath");
             grammar.Config.AfterClick = action;
@@ -100,7 +100,7 @@ namespace Serenity.Testing.Fixtures.Grammars
             grammar.Config.BeforeClick = () =>
             {
                 wasCalled = true;
-                theDriver.FindElement(By.Id("clickTarget")).Text.ShouldBeEmpty();
+                Driver.FindElement(By.Id("clickTarget")).Text.ShouldBeEmpty();
             };
 
             grammar.Execute();

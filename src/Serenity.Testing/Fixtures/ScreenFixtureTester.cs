@@ -20,7 +20,7 @@ namespace Serenity.Testing.Fixtures
     {
         private IGrammar theGrammar;
 
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             document.Add("input").Attr("type", "text").Name("Direction");
             document.Add("input").Attr("type", "text").Name("Blank")
@@ -33,7 +33,7 @@ namespace Serenity.Testing.Fixtures
 
         private IGrammar grammarNamed(string name)
         {
-            var fixture = new FakeFixture(theDriver);
+            var fixture = new FakeFixture(Driver);
             return fixture[name];
         }
 
@@ -43,7 +43,7 @@ namespace Serenity.Testing.Fixtures
             var grammar = grammarNamed("selector");
             grammar.Execute().Counts.ShouldEqual(0, 0, 0, 0);
 
-            theDriver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
+            Driver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace Serenity.Testing.Fixtures
             var grammar = grammarNamed("id");
             grammar.Execute().Counts.ShouldEqual(0, 0, 0, 0);
 
-            theDriver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
+            Driver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Serenity.Testing.Fixtures
             var grammar = grammarNamed("name");
             grammar.Execute().Counts.ShouldEqual(0, 0, 0, 0);
 
-            theDriver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
+            Driver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Serenity.Testing.Fixtures
             var grammar = grammarNamed("css");
             grammar.Execute().Counts.ShouldEqual(0, 0, 0, 0);
 
-            theDriver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
+            Driver.FindElement(By.Id("clickTarget")).Text.ShouldEqual("clicked");
         }
 
 
@@ -85,7 +85,7 @@ namespace Serenity.Testing.Fixtures
 
             theGrammar.Execute(new Step().With("Direction", "North"));
 
-            theDriver.FindElement(By.Name("Direction"))
+            Driver.FindElement(By.Name("Direction"))
                 .GetAttribute("value").ShouldEqual("North");
         }
 
@@ -96,7 +96,7 @@ namespace Serenity.Testing.Fixtures
 
             theGrammar.Execute(new Step().With("dir", "North"));
 
-            theDriver.FindElement(By.Name("Direction"))
+            Driver.FindElement(By.Name("Direction"))
                 .GetAttribute("value").ShouldEqual("North");
         }
 
@@ -121,7 +121,7 @@ namespace Serenity.Testing.Fixtures
         [Test]
         public void exercise_check_value_grammar()
         {
-            new TextboxElementHandler().EnterData(null, theDriver.FindElement(By.Name("Direction")), "South");
+            new TextboxElementHandler().EnterData(null, Driver.FindElement(By.Name("Direction")), "South");
 
             var grammar = grammarNamed("CheckDirection");
 

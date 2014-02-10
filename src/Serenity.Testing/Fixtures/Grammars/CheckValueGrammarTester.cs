@@ -9,7 +9,7 @@ namespace Serenity.Testing.Fixtures.Grammars
 {
     public class CheckValueGrammarTester<TBrowser> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             document.Add(new TextboxTag("emptytextbox", string.Empty).Id("emptytextbox"));
             document.Add(new TextboxTag("textbox", "initial").Id("textbox"));
@@ -29,7 +29,7 @@ namespace Serenity.Testing.Fixtures.Grammars
         private CheckValueGrammar grammarForId(string id)
         {
             var config = new GestureConfig{
-                Finder = () => theDriver.FindElement(By.Id(id)),
+                Finder = () => Driver.FindElement(By.Id(id)),
                 FinderDescription = "#" + id,
                 CellName = "data"
             };

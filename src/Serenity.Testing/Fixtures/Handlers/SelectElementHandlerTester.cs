@@ -25,7 +25,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         private readonly By _select3ById = By.Id(Select3Id);
         private readonly By _select4ById = By.Id(Select4Id);
 
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             const string option = "option";
             const string selected = "selected";
@@ -73,7 +73,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void get_data_with_selected_option_with_both_value_and_text()
         {
-            var select1 = theDriver.FindElement(_select1ById);
+            var select1 = Driver.FindElement(_select1ById);
             const string result = "b=2";
 
             _handler.GetData(null, select1).ShouldEqual(result);
@@ -82,7 +82,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void get_data_with_selected_option_that_has_only_text()
         {
-            var select3 = theDriver.FindElement(_select3ById);
+            var select3 = Driver.FindElement(_select3ById);
             const string result = "b=b";
 
             _handler.GetData(null, select3).ShouldEqual(result);
@@ -91,7 +91,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void match_against_value_is_default()
         {
-            var select1 = theDriver.FindElement(_select1ById);
+            var select1 = Driver.FindElement(_select1ById);
             const int expectTrue = 2;
             const int expectFalse = 3;
 
@@ -102,7 +102,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void can_fall_thru_to_checking_against_display_if_value_does_not_exist()
         {
-            var select1 = theDriver.FindElement(_select1ById);
+            var select1 = Driver.FindElement(_select1ById);
             const string expectTrue = "b";
             const string expectFalse = "c";
 
@@ -113,7 +113,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void match_by_display_if_value_does_not_exist()
         {
-            var select1 = theDriver.FindElement(_select1ById);
+            var select1 = Driver.FindElement(_select1ById);
             const string expectTrue = "b";
             const string expectFalse = "c";
 
@@ -124,7 +124,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void does_not_fall_thru_to_display_if_the_expected_value_is_a_value()
         {
-            var select4 = theDriver.FindElement(_select4ById);
+            var select4 = Driver.FindElement(_select4ById);
             const string expectFalse = "b";
 
             _handler.MatchesData(select4, expectFalse).ShouldBeFalse();
@@ -133,7 +133,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void matches_has_to_be_false_when_nothing_is_selected()
         {
-            var nothingSelectedElement = theDriver.FindElement(_select2ById);
+            var nothingSelectedElement = Driver.FindElement(_select2ById);
             const string expectFalse = "anything";
 
             _handler.MatchesData(nothingSelectedElement, expectFalse).ShouldBeFalse();

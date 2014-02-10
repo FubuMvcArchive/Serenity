@@ -14,7 +14,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         private const string Id = "textbox1";
         private readonly By _byId = By.Id(Id);
 
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             document.Add(new HtmlTag("textarea", tag =>
             {
@@ -26,7 +26,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void should_be_able_to_read_write()
         {
-            var textarea1 = theDriver.FindElement(_byId);
+            var textarea1 = Driver.FindElement(_byId);
             _handler.EnterData(null, textarea1, "New Data");
             _handler.GetData(null, textarea1).ShouldEqual("New Data");
         }
@@ -34,7 +34,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void clearing_data_should_return_clear_and_not_original_text()
         {
-            var textarea1 = theDriver.FindElement(_byId);
+            var textarea1 = Driver.FindElement(_byId);
             _handler.EnterData(null, textarea1, "");
             _handler.GetData(null, textarea1).ShouldEqual("");
         }

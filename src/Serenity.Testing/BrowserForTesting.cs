@@ -12,7 +12,7 @@ namespace Serenity.Testing
 
         public static IWebDriver Driver { get; private set; }
 
-        public static void Use<TBrowser>() where TBrowser : IBrowserLifecycle, new()
+        public static IBrowserLifecycle Use<TBrowser>() where TBrowser : IBrowserLifecycle, new()
         {
             var type = typeof (TBrowser);
 
@@ -21,7 +21,10 @@ namespace Serenity.Testing
                 Browsers.Fill(type, key => new TBrowser());
             }
 
-            Driver = Browsers[type].Driver;
+            var lifecycle = Browsers[type];
+
+            Driver = lifecycle.Driver;
+            return lifecycle;
         }
 
         [TearDown]
