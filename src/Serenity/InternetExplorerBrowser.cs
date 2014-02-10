@@ -12,12 +12,6 @@ namespace Serenity
             return new InternetExplorerDriver();
         }
 
-        protected override void cleanUp(IWebDriver driver)
-        {
-            driver.Close();
-            driver.Dispose();
-        }
-
         protected override void aggressiveCleanup()
         {
             Kill.Processes(Process);

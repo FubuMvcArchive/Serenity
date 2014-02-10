@@ -21,13 +21,6 @@ namespace Serenity
                 : new ChromeDriver();
         }
 
-        protected override void cleanUp(IWebDriver value)
-        {
-            value.Quit();
-            value.Close();
-            value.Dispose();
-        }
-
         protected override void aggressiveCleanup()
         {
             Kill.Processes(DriverProcess, File, ChromeProcess);

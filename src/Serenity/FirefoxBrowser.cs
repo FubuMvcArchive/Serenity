@@ -12,11 +12,6 @@ namespace Serenity
             return new FirefoxDriver();
         }
 
-        protected override void cleanUp(IWebDriver value)
-        {
-            value.Dispose();
-        }
-
         protected override void aggressiveCleanup()
         {
             Kill.Processes(Process);

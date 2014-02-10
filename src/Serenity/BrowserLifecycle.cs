@@ -63,7 +63,8 @@ namespace Serenity
                 {
                     try
                     {
-                        cleanUp(_driver.Value);
+                        _driver.Value.Quit();
+                        _driver.Value.Dispose();
                         _driver = null;
                         return true;
                     }
@@ -74,7 +75,7 @@ namespace Serenity
                     }
                 });
 
-                var timedout = !task.Wait(TimeSpan.FromSeconds(10));
+                var timedout = !task.Wait(TimeSpan.FromMinutes(1));
 
                 var failed = task.IsCompleted && task.Result;
 
@@ -97,7 +98,6 @@ namespace Serenity
             Dispose();
         }
 
-        protected abstract void cleanUp(IWebDriver value);
         protected abstract void aggressiveCleanup();
 
         public void UseInitializer(IBrowserSessionInitializer initializer)
@@ -135,10 +135,6 @@ namespace Serenity
 
                 return buildDriver();
             }
-        }
-
-        private void DecrementLifecycleCount()
-        {
         }
     }
 }

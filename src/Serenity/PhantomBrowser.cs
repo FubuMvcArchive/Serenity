@@ -24,12 +24,6 @@ namespace Serenity
             return new PhantomJSDriver(AppDomain.CurrentDomain.BaseDirectory);
         }
 
-        protected override void cleanUp(IWebDriver value)
-        {
-            value.Close();
-            value.Dispose();
-        }
-
         protected override void aggressiveCleanup()
         {
             Kill.Processes(Process, File);
