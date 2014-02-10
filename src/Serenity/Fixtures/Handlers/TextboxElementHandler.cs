@@ -19,9 +19,7 @@ namespace Serenity.Fixtures.Handlers
 
         public virtual void EnterData(ISearchContext context, IWebElement element, object data)
         {
-            if (element.GetAttribute("value").IsNotEmpty())
-                EraseData(context, element);
-
+            EraseData(context, element);
             element.SendKeys(data as string ?? string.Empty);
         }
 
