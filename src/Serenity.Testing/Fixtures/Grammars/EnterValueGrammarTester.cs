@@ -19,6 +19,8 @@ namespace Serenity.Testing.Fixtures.Grammars
             document.Add(new TextboxTag("disabled", "something").Attr("disabled", true));
             document.Add(new TextboxTag("hidden", "something").Style("display", "none"));
 
+            document.Add(new TextboxTag("passwordTextbox", "something").Attr("type", "password"));
+
             document.Add(new SelectTag(tag =>
             {
                 tag.Option("a", "a");
@@ -103,6 +105,20 @@ namespace Serenity.Testing.Fixtures.Grammars
         {
             grammarForName("textbox").Execute(new Step().With("data", "different"));
             Driver.FindElement(By.Name("textbox")).GetAttribute("value").ShouldEqual("different");
+        }
+
+        [Test]
+        public void enter_empty_text_into_a_password_textbox()
+        {
+            grammarForName("passwordTextbox").Execute(new Step().With("data", "EMPTY"));
+            Driver.FindElement(By.Name("passwordTextbox")).GetAttribute("value").ShouldBeEmpty();
+        }
+
+        [Test]
+        public void enter_text_into_a_password_textbox()
+        {
+            grammarForName("passwordTextbox").Execute(new Step().With("data", "abc"));
+            Driver.FindElement(By.Name("passwordTextbox")).GetAttribute("value").ShouldEqual("abc");
         }
     }
 }

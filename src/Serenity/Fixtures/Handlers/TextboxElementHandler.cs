@@ -8,13 +8,16 @@ namespace Serenity.Fixtures.Handlers
         public virtual bool Matches(IWebElement element)
         {
             // TODO --- Change to psuedo CSS class?  Less repeated logic
-            return element.TagName.ToLower() == "input" && element.GetAttribute("type").ToLower() == "text";
-        }
+            var tagName = element.TagName.ToLower();
+            var type = element.GetAttribute("type");
+            type = type == null ? null : type.ToLower();
+            return tagName == "input" && (type == "text" || type == "password");
+       }
 
         public virtual void EraseData(ISearchContext context, IWebElement element)
         {
             if (element.GetAttribute("value").IsNotEmpty())
-                element.SendKeys(Keys.Home + Keys.Shift + Keys.End + Keys.Delete);
+                element.SendKeys(Keys.Home + Keys.Shift + Keys.End + Keys.Backspace);
         }
 
         public virtual void EnterData(ISearchContext context, IWebElement element, object data)
