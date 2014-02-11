@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using FubuCore;
 using OpenQA.Selenium;
 
 namespace Serenity
@@ -19,6 +20,8 @@ namespace Serenity
         // Firefox need to investigate best approach for this.
         private static readonly object _runningLifecyclesLock = new object();
         private static readonly IDictionary<Type, int> _runningLifecycles = new Dictionary<Type, int>();
+
+        public abstract string BrowserName { get; }
 
         protected BrowserLifecycle()
         {
@@ -75,9 +78,15 @@ namespace Serenity
                     }
                 });
 
-                var timedout = !task.Wait(TimeSpan.FromMinutes(1));
+                var timeout = TimeSpan.FromMinutes(1);
 
-                var failed = task.IsCompleted && task.Result;
+                var timedout = !task.Wait(timeout);
+                var failed = false;
+
+                if (!timedout)
+                {
+                    failed = !task.Result;
+                }
 
                 if (_runningLifecycles[type] < 0)
                 {
@@ -86,7 +95,11 @@ namespace Serenity
 
                 if (_runningLifecycles[type] == 0 && (timedout || failed))
                 {
-                    Console.WriteLine("Cleanup either failed or timed out after 10 seconds proceeding with aggressive cleanup (Killing Processes)");
+                    Console.WriteLine("{0} Cleanup {1} proceeding with aggressive cleanup (Killing Processes)",
+                        BrowserName,
+                        timedout
+                            ? "timed out after {0:c}".ToFormat(timeout)
+                            : "failed");
                     aggressiveCleanup();
                     _driver = null;
                 }

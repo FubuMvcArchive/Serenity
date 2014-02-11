@@ -7,6 +7,8 @@ namespace Serenity
     {
         public const string Process = "IEXPLORE";
 
+        public override string BrowserName { get { return "Internet Explorer"; } }
+
         protected override IWebDriver buildDriver()
         {
             return new InternetExplorerDriver();

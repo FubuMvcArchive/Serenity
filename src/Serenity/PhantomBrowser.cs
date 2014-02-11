@@ -11,6 +11,8 @@ namespace Serenity
         public const string Process = "phantomjs";
         public const string File = "phantomjs.exe";
 
+        public override string BrowserName { get { return "Phantom"; } }
+
         protected override IWebDriver buildDriver()
         {
             var fileSystem = new FileSystem();

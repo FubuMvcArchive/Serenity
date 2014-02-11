@@ -11,6 +11,8 @@ namespace Serenity
         public const string DriverProcess = "chromedriver";
         public const string File = "chromedriver.exe";
 
+        public override string BrowserName { get { return "Chrome"; } }
+
         protected override IWebDriver buildDriver()
         {
             var fileSystem = new FileSystem();
