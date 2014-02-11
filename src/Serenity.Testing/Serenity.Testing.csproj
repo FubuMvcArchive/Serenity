@@ -159,6 +159,7 @@
     <Compile Include="Fixtures\Handlers\TextboxElementHandlerTester.cs" />
     <Compile Include="WebDriver\ByJQuerySamples.cs" />
     <Compile Include="WebDriver\ByJqueryTester.cs" />
+    <Compile Include="WebDriver\EmbeddedDrivers\EmbeddedDriverExtractorTester.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\DefaultJavaScriptBuilderTester.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\NullObjectJavaScriptBuilderTester.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\StringJavaScriptBuildertTester.cs" />
@@ -215,10 +216,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\lib\chromedriver.exe">
-      <Link>chromedriver.exe</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="content\scripts\Player.js" />
     <Content Include="content\scripts\Song.js" />
     <Content Include="content\scripts\specs\PlayerSpec.js" />
