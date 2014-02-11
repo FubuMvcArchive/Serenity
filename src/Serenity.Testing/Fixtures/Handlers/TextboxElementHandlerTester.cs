@@ -16,10 +16,12 @@ namespace Serenity.Testing.Fixtures.Handlers
         private const string TextboxId = "textbox1";
         private const string SelectId = "select1";
         private const string SubmitId = "submit1";
+        private const string PasswordTextboxId = "pwdtextbox1";
 
         private readonly By _textboxById = By.Id(TextboxId);
         private readonly By _selectById = By.Id(SelectId);
         private readonly By _submitById = By.Id(SubmitId);
+        private readonly By _passwordTextboxById = By.Id(PasswordTextboxId);
 
         protected override void ConfigureDocument(HtmlDocument document)
         {
@@ -40,12 +42,27 @@ namespace Serenity.Testing.Fixtures.Handlers
                 tag.Id(SubmitId);
                 tag.Attr("type", "submit");
             }));
+
+            document.Add(new HtmlTag("input", tag =>
+            {
+                tag.Value(TheText);
+                tag.Id(PasswordTextboxId);
+                tag.Attr("type", "password");
+            }));
         }
 
         [Test]
         public void should_be_able_to_clear_original_text()
         {
             var textbox1 = Driver.FindElement(_textboxById);
+            _handler.EraseData(null, textbox1);
+            _handler.GetData(null, textbox1).ShouldBeEmpty();
+        }
+
+        [Test]
+        public void should_be_able_to_clear_original_text_password()
+        {
+            var textbox1 = Driver.FindElement(_passwordTextboxById);
             _handler.EraseData(null, textbox1);
             _handler.GetData(null, textbox1).ShouldBeEmpty();
         }
@@ -58,10 +75,26 @@ namespace Serenity.Testing.Fixtures.Handlers
         }
 
         [Test]
+        public void should_be_able_to_get_text_from_field_password()
+        {
+            var textbox1 = Driver.FindElement(_passwordTextboxById);
+            _handler.GetData(null, textbox1).ShouldEqual(TheText);
+        }
+
+        [Test]
         public void should_be_able_to_write_to_a_clean_field()
         {
             const string input = "Hello There";
             var textbox1 = Driver.FindElement(_textboxById);
+            _handler.EnterData(null, textbox1, input);
+            _handler.GetData(null, textbox1).ShouldEqual(input);
+        }
+
+        [Test]
+        public void should_be_able_to_write_to_a_clean_field_password()
+        {
+            const string input = "Hello There";
+            var textbox1 = Driver.FindElement(_passwordTextboxById);
             _handler.EnterData(null, textbox1, input);
             _handler.GetData(null, textbox1).ShouldEqual(input);
         }
@@ -85,6 +118,13 @@ namespace Serenity.Testing.Fixtures.Handlers
         {
             var element = Driver.FindElement(_submitById);
             _handler.Matches(element).ShouldBeFalse();
+        }
+
+        [Test]
+        public void should_match_password_textbox()
+        {
+            var element = Driver.FindElement(_passwordTextboxById);
+            _handler.Matches(element).ShouldBeTrue();
         }
     }
 }
