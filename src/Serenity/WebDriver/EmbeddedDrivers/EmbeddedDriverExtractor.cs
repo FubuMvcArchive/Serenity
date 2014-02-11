@@ -38,10 +38,12 @@ namespace Serenity.WebDriver.EmbeddedDrivers
             _fileSystem.DeleteFile(PathToVersionDeclarationFile);
 
             var type = GetType();
-            var driverStream = type.Assembly.GetManifestResourceStream(type, _embeddedDriver.ResourceName);
 
-            _fileSystem.WriteStreamToFile(PathToDriver, driverStream);
-            _fileSystem.WriteStringToFile(PathToVersionDeclarationFile, _embeddedDriver.Version.ToString());
+            using (var driverStream = type.Assembly.GetManifestResourceStream(type, _embeddedDriver.ResourceName))
+            {
+                _fileSystem.WriteStreamToFile(PathToDriver, driverStream);
+                _fileSystem.WriteStringToFile(PathToVersionDeclarationFile, _embeddedDriver.Version.ToString());
+            }
         }
     }
 }
