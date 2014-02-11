@@ -19,7 +19,7 @@ namespace Serenity.Fixtures.Handlers
             if (element.GetAttribute("value").IsNotEmpty())
             {
                 element.Click();
-                element.SendKeys(Keys.Home + Keys.Shift + Keys.End + Keys.Delete);
+                element.SendKeys(Keys.Home + Keys.Shift + Keys.End + Keys.Backspace);
             }
         }
 
