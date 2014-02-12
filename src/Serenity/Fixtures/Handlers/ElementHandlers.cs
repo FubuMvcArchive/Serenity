@@ -14,9 +14,14 @@ namespace Serenity.Fixtures.Handlers
             get { return _handlers; }
         }
 
+        public static IEnumerable<IElementHandler> AllHandlers
+        {
+            get { return _handlers.Union(_defaultHandlers); }
+        } 
+
         public static IElementHandler FindHandler(IWebElement element)
         {
-            return _handlers.Union(_defaultHandlers).First(x => x.Matches(element));
+            return AllHandlers.First(x => x.Matches(element));
         }
     }
 }

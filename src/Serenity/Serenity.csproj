@@ -140,6 +140,7 @@
     <Compile Include="Fixtures\Handlers\CheckboxHandler.cs" />
     <Compile Include="Fixtures\Handlers\DefaultElementHandler.cs" />
     <Compile Include="Fixtures\Handlers\ElementHandlers.cs" />
+    <Compile Include="Fixtures\Handlers\ElementHandlerWrapper.cs" />
     <Compile Include="Fixtures\Handlers\IElementHandler.cs" />
     <Compile Include="Fixtures\Handlers\IMatchingHandler.cs" />
     <Compile Include="Fixtures\Handlers\SelectElementHandler.cs" />
