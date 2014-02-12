@@ -96,10 +96,12 @@ namespace Serenity.Testing.WebDriver.EmbeddedDrivers
         [Test]
         public void ExtractingWritesDriverStreamToFile()
         {
-            ClassUnderTest.Extract();
-            MockFor<IFileSystem>().AssertWasCalled(x => x.WriteStreamToFile(
+            MockFor<IFileSystem>().Expect(x => x.WriteStreamToFile(
                 Arg<string>.Matches(path => path == ClassUnderTest.PathToDriver),
                 Arg<Stream>.Matches(stream => stream.Length > 0)));
+            ClassUnderTest.Extract();
+
+            MockFor<IFileSystem>().VerifyAllExpectations();
         }
 
         [Test]
