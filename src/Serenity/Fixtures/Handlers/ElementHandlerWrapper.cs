@@ -31,27 +31,18 @@ namespace Serenity.Fixtures.Handlers
 
         protected abstract bool WrapperMatches(IWebElement element);
 
-        public void EnterData(ISearchContext context, IWebElement element, object data)
+        public abstract void EnterData(ISearchContext context, IWebElement element, object data);
+
+        protected void EnterDataNested(ISearchContext context, IWebElement element, object data)
         {
-            EnterDataBeforeNested(context, element, data);
             FollowOnHandlers.First(x => x.Matches(element)).EnterData(context, element, data);
-            EnterDataAfterNested(context, element, data);
         }
 
-        protected virtual void EnterDataBeforeNested(ISearchContext context, IWebElement element, object data) { }
+        public abstract string GetData(ISearchContext context, IWebElement element);
 
-        protected virtual void EnterDataAfterNested(ISearchContext context, IWebElement element, object data) { }
-
-        public string GetData(ISearchContext context, IWebElement element)
+        protected string GetDataNested(ISearchContext context, IWebElement element)
         {
-            GetDataBeforeNested(context, element);
-            var value = FollowOnHandlers.First(x => x.Matches(element)).GetData(context, element);
-            GetDataAfterNested(context, element);
-            return value;
+            return FollowOnHandlers.First(x => x.Matches(element)).GetData(context, element);
         }
-
-        protected virtual void GetDataBeforeNested(ISearchContext context, IWebElement element) { }
-
-        protected virtual void GetDataAfterNested(ISearchContext context, IWebElement element) { }
     }
 }
