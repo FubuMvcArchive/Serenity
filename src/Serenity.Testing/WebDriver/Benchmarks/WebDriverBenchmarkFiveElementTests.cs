@@ -11,7 +11,7 @@ namespace Serenity.Testing.WebDriver.Benchmarks
         private const string InputClass = "some-input-class";
         private const string InputName = "somename";
 
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             for (var i = 0; i < 5; i++)
             {
@@ -27,7 +27,7 @@ namespace Serenity.Testing.WebDriver.Benchmarks
 
         protected override void ActionToBenchmark(By selector)
         {
-            var elements = theDriver.FindElements(selector);
+            var elements = Driver.FindElements(selector);
         }
 
         public override IEnumerable<TestCaseData> Cases()

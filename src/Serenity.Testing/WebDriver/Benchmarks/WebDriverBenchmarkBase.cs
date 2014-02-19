@@ -7,9 +7,9 @@ using Serenity.Testing.Fixtures;
 
 namespace Serenity.Testing.WebDriver.Benchmarks
 {
-    [Explicit]
     public abstract class WebDriverBenchmarkBase<TBrowser, TData> : ScreenManipulationTester<TBrowser> where TBrowser : IBrowserLifecycle, new()
     {
+        [Explicit]
         [TestCaseSource("Cases")]
         public void Benchmark(object data)
         {

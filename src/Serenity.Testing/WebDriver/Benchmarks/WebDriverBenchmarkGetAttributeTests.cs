@@ -13,7 +13,7 @@ namespace Serenity.Testing.WebDriver.Benchmarks
         private const string InputName = "somename";
         private const string Attribute = "data-interesting";
 
-        protected override void configureDocument(HtmlDocument document)
+        protected override void ConfigureDocument(HtmlDocument document)
         {
             document.Add(new HtmlTag("input", tag =>
             {
@@ -28,7 +28,7 @@ namespace Serenity.Testing.WebDriver.Benchmarks
 
         protected override void ActionToBenchmark(By selector)
         {
-            var attribute = theDriver.FindElement(selector).GetAttribute(Attribute);
+            var attribute = Driver.FindElement(selector).GetAttribute(Attribute);
         }
 
         public override IEnumerable<TestCaseData> Cases()
