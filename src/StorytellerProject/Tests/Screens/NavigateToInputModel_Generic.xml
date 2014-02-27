@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<Test name="NavigateToInputModel Generic" lifecycle="Regression" retryAttemptNumber="0">
+  <NavigationGeneric>
+    <NavigateToInputModel isStep="True" />
+    <IsOnNavigationGenericEndpoint isStep="True" />
+  </NavigationGeneric>
+</Test>
