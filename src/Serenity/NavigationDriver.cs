@@ -42,6 +42,12 @@ namespace Serenity
             set { _afterNavigation = value; }
         }
 
+        public void NavigateTo<TInputModel>() where TInputModel : class
+        {
+            var url = _application.Urls.UrlFor<TInputModel>();
+            NavigateToUrl(url);
+        }
+
         public void NavigateTo(object target)
         {
             var url = _application.Urls.UrlFor(target, categoryOrHttpMethod:"GET");
@@ -66,6 +72,11 @@ namespace Serenity
         public string AssetUrlFor(string file)
         {
             return _application.RootUrl + ("/_content/" + file).Replace("//", "/");
+        }
+
+        public string GetCurrentUrl()
+        {
+            return Driver.Url;
         }
 
         public void NavigateToHome()

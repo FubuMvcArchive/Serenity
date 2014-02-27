@@ -86,7 +86,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Endpoints\HomeEndpoint.cs" />
+    <Compile Include="Endpoints\NavigationGenericEndpoint.cs" />
+    <Compile Include="Endpoints\NavigationGenericInputModel.cs" />
     <Compile Include="Fixtures\HomeScreenFixture.cs" />
+    <Compile Include="Fixtures\NavigationGenericFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StorytellerApplication.cs" />
   </ItemGroup>
