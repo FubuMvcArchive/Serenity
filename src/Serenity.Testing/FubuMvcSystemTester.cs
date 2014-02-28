@@ -110,6 +110,13 @@ namespace Serenity.Testing
                     system.Recycle();
                     context.Services.GetInstance<IApplicationUnderTest>().ShouldNotBeNull();
                 }
+
+                using (var context = system.CreateContext())
+                {
+                    context.Services.GetInstance<IApplicationUnderTest>().ShouldNotBeNull();
+                    system.Recycle();
+                    context.Services.GetInstance<IApplicationUnderTest>().ShouldNotBeNull();
+                }
             }
         }
     }
