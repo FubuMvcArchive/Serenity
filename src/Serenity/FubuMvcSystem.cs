@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Bottles.Services.Messaging.Tracking;
 using Bottles.Services.Remote;
 using FubuCore.Binding;
+using FubuCore.CommandLine;
 using FubuCore.Conversion;
 using FubuCore.Util;
 using FubuMVC.Core;
@@ -244,7 +245,13 @@ namespace Serenity
 
         protected virtual void stopAll()
         {
-            Task.WaitAll(_subSystems.Select(x => x.Stop()).ToArray(), 10.Seconds());
+            var succeeded = Task.WaitAll(_subSystems.Select(x => x.Stop()).ToArray(), TimeSpan.FromMinutes(1));
+
+            if (!succeeded)
+            {
+                // TODO: Replace with a logger
+                ConsoleWriter.Write(ConsoleColor.Yellow, "WARNING: Failed to stop FubuMvcSystem and/or registered subsystems");
+            }
         }
 
         public virtual IExecutionContext CreateContext()
@@ -253,8 +260,6 @@ namespace Serenity
             {
                 startAll();
             }
-
-            
 
             var context = new FubuMvcContext(_application, _binding, _contextualProviders);
 
