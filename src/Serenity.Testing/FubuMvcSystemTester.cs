@@ -31,9 +31,7 @@ namespace Serenity.Testing
         {
             FubuMvcPackageFacility.PhysicalRootPath = ".".ToFullPath();
 
-            using (
-                var system = new FubuMvcSystem<TargetApplication>()
-                )
+            using (var system = new FubuMvcSystem<TargetApplication>())
             {
                 using (var context = system.CreateContext())
                 {
@@ -98,6 +96,20 @@ namespace Serenity.Testing
             {
                 // assembly name
                 system.Settings.PhysicalPath.ShouldEndWith("foo");
+            }
+        }
+
+        [Test]
+        public void can_recycle()
+        {
+            using (var system = new FubuMvcSystem<TargetApplication>())
+            {
+                using (var context = system.CreateContext())
+                {
+                    context.Services.GetInstance<IApplicationUnderTest>().ShouldNotBeNull();
+                    system.Recycle();
+                    context.Services.GetInstance<IApplicationUnderTest>().ShouldNotBeNull();
+                }
             }
         }
     }
