@@ -34,7 +34,14 @@ namespace Serenity
         IEnumerable<RemoteSubSystem> RemoteSubSystems { get; }
     }
 
-    public class FubuMvcSystem : ISystem, ISubSystem, IRemoteSubsystems
+    public interface IFubuMvcSystem
+    {
+        BindingRegistry Binding { get; }
+        IApplicationUnderTest Application { get; }
+        IEnumerable<IContextualInfoProvider> ContextualProviders { get; }
+    }
+
+    public class FubuMvcSystem : ISystem, ISubSystem, IRemoteSubsystems, IFubuMvcSystem
     {
         private readonly ApplicationSettings _settings;
         private readonly Func<FubuRuntime> _runtimeSource;
@@ -261,7 +268,7 @@ namespace Serenity
                 startAll();
             }
 
-            var context = new FubuMvcContext(_application, _binding, _contextualProviders);
+            var context = new FubuMvcContext(this);
 
             _contextCreationActions.Each(x => x());
 
@@ -354,6 +361,17 @@ namespace Serenity
         {
             get { return _settings; }
         }
+
+        BindingRegistry IFubuMvcSystem.Binding
+        {
+            get { return _binding; }
+        }
+
+        IEnumerable<IContextualInfoProvider> IFubuMvcSystem.ContextualProviders
+        {
+            get { return _contextualProviders; }
+        }
+
     }
 
 

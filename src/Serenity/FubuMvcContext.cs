@@ -9,18 +9,14 @@ namespace Serenity
 {
     public class FubuMvcContext : IExecutionContext, IResultsExtension
     {
-        private readonly IApplicationUnderTest _application;
-        private readonly BindingRegistry _binding;
+        private readonly IFubuMvcSystem _system;
         private readonly IEnumerable<IContextualInfoProvider> _contextualProviders;
 
-        public FubuMvcContext(IApplicationUnderTest application, BindingRegistry binding,
-            IEnumerable<IContextualInfoProvider> contextualProviders)
+        public FubuMvcContext(IFubuMvcSystem system)
         {
-            _application = application;
-            _binding = binding;
+            _system = system;
 
-            _contextualProviders = contextualProviders ?? new IContextualInfoProvider[0];
-
+            _contextualProviders = system.ContextualProviders ?? new IContextualInfoProvider[0];
             _contextualProviders.Each(x => x.Reset());
         }
 
@@ -31,12 +27,12 @@ namespace Serenity
 
         public IServiceLocator Services
         {
-            get { return _application.Services; }
+            get { return _system.Application.Services; }
         }
 
         public BindingRegistry BindingRegistry
         {
-            get { return _binding; }
+            get { return _system.Binding; }
         }
 
         public IEnumerable<HtmlTag> Tags()
