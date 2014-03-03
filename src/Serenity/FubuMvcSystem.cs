@@ -46,6 +46,7 @@ namespace Serenity
         private readonly ApplicationSettings _settings;
         private readonly Func<FubuRuntime> _runtimeSource;
         private BindingRegistry _binding;
+        private bool? _externalHosting;
 
         // TODO -- this reoccurs so often that we might as well put something in FubuCore for it
         private readonly IList<Action<BindingRegistry>> _bindingRegistrations = new List<Action<BindingRegistry>>();
@@ -302,9 +303,8 @@ namespace Serenity
                 FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
                 _runtime = _runtimeSource();
 
-
                 var browserLifecycle = WebDriverSettings.GetBrowserLifecyle(ChooseBrowserType());
-                _hosting = _settings.RootUrl.IsEmpty() ? (ISerenityHosting) new KatanaHosting() : new ExternalHosting();
+                SetupApplicationHost();
 
                 _application = _hosting.Start(_settings, _runtime, browserLifecycle);
                 _applicationAlterations.Each(x => x(_application));
@@ -319,6 +319,16 @@ namespace Serenity
                 _runtime.Facility.Register(typeof (IApplicationUnderTest), ObjectDef.ForValue(_application));
                 _runtime.Facility.Register(typeof (IRemoteSubsystems), ObjectDef.ForValue(this));
             });
+        }
+
+        private void SetupApplicationHost()
+        {
+            if (_externalHosting == null)
+            {
+                _externalHosting = !_settings.RootUrl.IsEmpty();
+            }
+
+            _hosting = _externalHosting.Value ? (ISerenityHosting) new ExternalHosting() : new KatanaHosting();
         }
 
         Task ISubSystem.Stop()
