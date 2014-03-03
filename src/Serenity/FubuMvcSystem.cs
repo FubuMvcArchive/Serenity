@@ -325,9 +325,21 @@ namespace Serenity
         {
             return Task.Factory.StartNew(() =>
             {
-                if (_runtime != null) _runtime.SafeDispose();
-                if (_application != null) _application.Teardown();
-                if (_hosting != null) _hosting.Shutdown();
+                if (_runtime != null)
+                {
+                    _runtime.SafeDispose();
+                    _runtime = null;
+                }
+                if (_application != null)
+                {
+                    _application.Teardown();
+                    _application = null;
+                }
+                if (_hosting != null)
+                {
+                    _hosting.Shutdown();
+                    _hosting = null;
+                }
             });
         }
 
