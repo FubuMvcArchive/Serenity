@@ -48,9 +48,12 @@ namespace Serenity
         private BindingRegistry _binding;
 
         // TODO -- this reoccurs so often that we might as well put something in FubuCore for it
-        private readonly IList<Action<BindingRegistry>> _bindingRegistrations = new List<Action<BindingRegistry>>(); 
-        private readonly IList<Action<IApplicationUnderTest>> _applicationAlterations = new List<Action<IApplicationUnderTest>>();
-        private readonly IList<ISubSystem> _subSystems = new List<ISubSystem>(); 
+        private readonly IList<Action<BindingRegistry>> _bindingRegistrations = new List<Action<BindingRegistry>>();
+
+        private readonly IList<Action<IApplicationUnderTest>> _applicationAlterations =
+            new List<Action<IApplicationUnderTest>>();
+
+        private readonly IList<ISubSystem> _subSystems = new List<ISubSystem>();
 
         public FubuMvcSystem(ApplicationSettings settings, Func<FubuRuntime> runtimeSource)
         {
@@ -76,7 +79,8 @@ namespace Serenity
         /// <param name="configuration"></param>
         public void ModifyContainer(Action<ConfigurationExpression> configuration)
         {
-            _applicationAlterations.Add(app => {
+            _applicationAlterations.Add(app =>
+            {
                 var container = app.Services.GetInstance<IContainer>();
                 container.Configure(configuration);
             });
@@ -89,7 +93,8 @@ namespace Serenity
 
         public void AddRemoteSubSystem(string name, Action<RemoteDomainExpression> configuration)
         {
-            var system = new RemoteSubSystem(() => new RemoteServiceRunner(x => {
+            var system = new RemoteSubSystem(() => new RemoteServiceRunner(x =>
+            {
                 x.Properties[FubuMode.Testing] = true.ToString();
                 configuration(x);
             }));
@@ -147,11 +152,8 @@ namespace Serenity
 
         public IEnumerable<RemoteSubSystem> RemoteSubSystems
         {
-            get
-            {
-                return _subSystems.OfType<RemoteSubSystem>();
-            }
-        } 
+            get { return _subSystems.OfType<RemoteSubSystem>(); }
+        }
 
         /// <summary>
         /// Register a policy about what to do after navigating the browser to handle issues
@@ -159,10 +161,7 @@ namespace Serenity
         /// </summary>
         public IAfterNavigation AfterNavigation
         {
-            set
-            {
-                _applicationAlterations.Add(aut => aut.Navigation.AfterNavigation = value);
-            }
+            set { _applicationAlterations.Add(aut => aut.Navigation.AfterNavigation = value); }
         }
 
         /// <summary>
@@ -177,7 +176,7 @@ namespace Serenity
         /// <summary>
         /// Be aware that this will ONLY work with StructureMap as the underlying container
         /// </summary>
-        public void AddContextualProvider(IContextualInfoProvider provider) 
+        public void AddContextualProvider(IContextualInfoProvider provider)
         {
             ModifyContainer(x => x.For<IContextualInfoProvider>().Add(provider));
         }
@@ -241,7 +240,7 @@ namespace Serenity
         [Obsolete("This method should not NEED to be used.  Please favor the OnStartup registrations instead")]
         protected virtual void configureApplication(IApplicationUnderTest application, BindingRegistry binding)
         {
-            
+
         }
 
         public void Dispose()
@@ -295,7 +294,8 @@ namespace Serenity
 
         Task ISubSystem.Start()
         {
-            return Task.Factory.StartNew(() => {
+            return Task.Factory.StartNew(() =>
+            {
                 var settings = StoryTellerEnvironment.Get<SerenityEnvironment>();
                 WebDriverSettings.Import(settings);
 
@@ -316,15 +316,15 @@ namespace Serenity
 
                 _contextualProviders = _runtime.Factory.GetAll<IContextualInfoProvider>();
 
-
-                _runtime.Facility.Register(typeof(IApplicationUnderTest), ObjectDef.ForValue(_application));
-                _runtime.Facility.Register(typeof(IRemoteSubsystems), ObjectDef.ForValue(this));
+                _runtime.Facility.Register(typeof (IApplicationUnderTest), ObjectDef.ForValue(_application));
+                _runtime.Facility.Register(typeof (IRemoteSubsystems), ObjectDef.ForValue(this));
             });
         }
 
         Task ISubSystem.Stop()
         {
-            return Task.Factory.StartNew(() => {
+            return Task.Factory.StartNew(() =>
+            {
                 if (_runtime != null) _runtime.SafeDispose();
                 if (_application != null) _application.Teardown();
                 if (_hosting != null) _hosting.Shutdown();
@@ -371,34 +371,33 @@ namespace Serenity
         {
             get { return _contextualProviders; }
         }
-
     }
 
-
-	public class FubuMvcSystem<T> : FubuMvcSystem where T : IApplicationSource, new()
+    public class FubuMvcSystem<T> : FubuMvcSystem where T : IApplicationSource, new()
     {
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    /// <param name="parallelDirectory">Use to override the physical root path of the web application to a directory parallel to the testing project if it cannot be derived from the assembly name of the application source type.</param>
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parallelDirectory">Use to override the physical root path of the web application to a directory parallel to the testing project if it cannot be derived from the assembly name of the application source type.</param>
         /// <param name="physicalPath">Use to override the physical root path of the web application if it cannot be derived from the assembly name of the application source type.</param>
-	    public FubuMvcSystem(string parallelDirectory = null, string physicalPath = null) : base(DetermineSettings(parallelDirectory, physicalPath), () => new T().BuildApplication().Bootstrap())
+        public FubuMvcSystem(string parallelDirectory = null, string physicalPath = null)
+            : base(DetermineSettings(parallelDirectory, physicalPath), () => new T().BuildApplication().Bootstrap())
         {
         }
 
         public FubuMvcSystem(ApplicationSettings settings)
             : base(settings, () => new T().BuildApplication().Bootstrap())
-	    {
-	    }
+        {
+        }
 
-	    public static ApplicationSettings DetermineSettings(string parallelDirectory = null, string physicalPath = null)
+        public static ApplicationSettings DetermineSettings(string parallelDirectory = null, string physicalPath = null)
         {
             try
             {
                 return ApplicationSettings.ReadFor<T>() ?? DefaultSettings(parallelDirectory, physicalPath);
             }
-            // So wrong...
-            catch(ArgumentOutOfRangeException)
+                // So wrong...
+            catch (ArgumentOutOfRangeException)
             {
                 return DefaultSettings();
             }
