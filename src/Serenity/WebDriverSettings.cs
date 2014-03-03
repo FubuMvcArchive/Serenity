@@ -1,15 +1,11 @@
 using System;
 using FubuCore.Configuration;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
 
 namespace Serenity
 {
     public class WebDriverSettings
     {
-        public static readonly string Filename = "browser.settings.config"; 
+        public static readonly string Filename = "browser.settings.config";
         private static readonly Lazy<WebDriverSettings> _settings = new Lazy<WebDriverSettings>(Read);
 
         public WebDriverSettings()
@@ -28,10 +24,7 @@ namespace Serenity
 
         public static WebDriverSettings Current
         {
-            get
-            {
-                return _settings.Value;
-            }
+            get { return _settings.Value; }
         }
 
         public static IBrowserLifecycle GetBrowserLifecyle()
@@ -52,17 +45,17 @@ namespace Serenity
                 case BrowserType.Firefox:
                     return new FirefoxBrowser();
 
-				case BrowserType.Phantom:
-					return new PhantomBrowser();
+                case BrowserType.Phantom:
+                    return new PhantomBrowser();
 
                 default:
                     throw new ArgumentOutOfRangeException("Unrecognized browser");
             }
         }
 
-		public static void Import(SerenityEnvironment settings)
-		{
-			Current.Browser = settings.Browser;
-		}
+        public static void Import(SerenityEnvironment settings)
+        {
+            Current.Browser = settings.Browser;
+        }
     }
 }
