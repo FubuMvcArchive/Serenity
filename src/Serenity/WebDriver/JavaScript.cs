@@ -107,7 +107,7 @@ namespace Serenity.WebDriver
 
         public dynamic ModifyStatement(string format)
         {
-            return new JavaScript(format.ToFormat(Statement));
+            return new JavaScript(format.ToFormat(Statement), Arguments.ToArray());
         }
 
         public override string ToString()
