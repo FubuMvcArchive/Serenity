@@ -367,7 +367,7 @@ namespace Serenity
             get { return _binding; }
         }
 
-        IEnumerable<IContextualInfoProvider> IFubuMvcSystem.ContextualProviders
+        public virtual IEnumerable<IContextualInfoProvider> ContextualProviders
         {
             get { return _contextualProviders; }
         }
