@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Test name="App Recycles on Test Retries" lifecycle="Regression" retryAttemptNumber="0">
+  <HomeScreen>
+    <GoToHome isStep="True" />
+    <CanFindElements isStep="True" />
+    <OnlyPassOnAttempt isStep="True" attempt="2" />
+  </HomeScreen>
+</Test>
