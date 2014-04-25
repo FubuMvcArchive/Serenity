@@ -46,15 +46,6 @@
     <Reference Include="FubuMVC.Core">
       <HintPath>..\packages\FubuMVC.Core\lib\net40\FubuMVC.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FubuMVC.Core.Assets">
-      <HintPath>..\packages\FubuMVC.Core.Assets\lib\net40\FubuMVC.Core.Assets.dll</HintPath>
-    </Reference>
-    <Reference Include="FubuMVC.Core.UI">
-      <HintPath>..\packages\FubuMVC.Core.UI\lib\net40\FubuMVC.Core.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="FubuMVC.Core.View">
-      <HintPath>..\packages\FubuMVC.Core.View\lib\net40\FubuMVC.Core.View.dll</HintPath>
-    </Reference>
     <Reference Include="FubuMVC.Katana">
       <HintPath>..\packages\FubuMVC.Katana\lib\net40\FubuMVC.Katana.dll</HintPath>
     </Reference>
@@ -97,9 +88,6 @@
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin\lib\net40\Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Owin.Extensions">
-      <HintPath>..\packages\Owin.Extensions\lib\net40\Owin.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="pnunit.framework">
       <HintPath>..\packages\NUnit\lib\pnunit.framework.dll</HintPath>
@@ -181,12 +169,6 @@
     <Compile Include="Fixtures\Handlers\SelectElementHandlerTester.cs" />
     <Compile Include="Fixtures\ScreenFixtureTester.cs" />
     <Compile Include="FubuMvcSystemTester.cs" />
-    <Compile Include="Jasmine\JasmineConfigLoaderTester.cs" />
-    <Compile Include="Jasmine\JasmineRunner_IntegratedTester.cs" />
-    <Compile Include="Jasmine\PackageSpecificationsTester.cs" />
-    <Compile Include="Jasmine\SpecificationGraphIntegratedTester.cs" />
-    <Compile Include="Jasmine\SpecificationGraphTester.cs" />
-    <Compile Include="Jasmine\SpecificationTester.cs" />
     <Compile Include="MessageWatching_over_remote_AppDomain_integration_tester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Katana_System_Integrated_Tester.cs" />
@@ -213,10 +195,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Jasmine\TestPackage1\player.asset.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Jasmine\TestPackage2\fake.asset.config" />
     <None Include="Serenity.Testing.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -228,30 +206,11 @@
     <Content Include="content\scripts\specs\PlayerSpec.js" />
     <Content Include="HTMLPage1.htm" />
     <Content Include="jasmine.txt" />
-    <Content Include="Jasmine\TestPackage1\content\scripts\Player.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Jasmine\TestPackage1\content\scripts\Song.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Jasmine\TestPackage1\content\scripts\specs\PlayerSpec.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Jasmine\TestPackage2\content\scripts\specs\folder1\folder2\spec7.js" />
-    <Content Include="Jasmine\TestPackage2\content\scripts\specs\folder1\folder2\spec8.js" />
-    <Content Include="Jasmine\TestPackage2\content\scripts\specs\folder1\folder2\spec6.js" />
-    <Content Include="Jasmine\TestPackage2\content\scripts\specs\folder1\spec4.js" />
-    <Content Include="Jasmine\TestPackage2\content\scripts\specs\folder1\spec5.js" />
-    <Content Include="Jasmine\TestPackage2\content\scripts\specs\spec3.js" />
-    <Content Include="Jasmine\TestPackage2\content\scripts\specs\spec2.js" />
-    <Content Include="Jasmine\TestPackage2\content\scripts\specs\spec1.js" />
     <None Include="jquery-2.0.3.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Jasmine\TestPackage3\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

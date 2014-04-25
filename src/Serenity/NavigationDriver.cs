@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using FubuMVC.Core.Assets.Http;
 using FubuMVC.Core.Endpoints;
 using OpenQA.Selenium;
 

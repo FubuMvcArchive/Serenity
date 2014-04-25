@@ -52,15 +52,6 @@
     <Reference Include="FubuMVC.Core">
       <HintPath>..\packages\FubuMVC.Core\lib\net40\FubuMVC.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FubuMVC.Core.Assets">
-      <HintPath>..\packages\FubuMVC.Core.Assets\lib\net40\FubuMVC.Core.Assets.dll</HintPath>
-    </Reference>
-    <Reference Include="FubuMVC.Core.UI">
-      <HintPath>..\packages\FubuMVC.Core.UI\lib\net40\FubuMVC.Core.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="FubuMVC.Core.View">
-      <HintPath>..\packages\FubuMVC.Core.View\lib\net40\FubuMVC.Core.View.dll</HintPath>
-    </Reference>
     <Reference Include="FubuMVC.Katana">
       <HintPath>..\packages\FubuMVC.Katana\lib\net40\FubuMVC.Katana.dll</HintPath>
     </Reference>
@@ -88,9 +79,6 @@
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin\lib\net40\Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Owin.Extensions">
-      <HintPath>..\packages\Owin.Extensions\lib\net40\Owin.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium">
       <HintPath>..\packages\Selenium.WebDriverBackedSelenium\lib\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
@@ -174,26 +162,6 @@
     <Compile Include="InternetExplorerBrowser.cs" />
     <Compile Include="ISerenityHosting.cs" />
     <Compile Include="ISubSystem.cs" />
-    <Compile Include="Jasmine\AssetFileWatcher.cs" />
-    <Compile Include="Jasmine\IJasmineConfigLoader.cs" />
-    <Compile Include="Jasmine\ISpecFileListener.cs" />
-    <Compile Include="Jasmine\ISpecNode.cs" />
-    <Compile Include="Jasmine\ISpecVisitor.cs" />
-    <Compile Include="Jasmine\JasmineCommand.cs" />
-    <Compile Include="Jasmine\JasmineConfiguration.cs" />
-    <Compile Include="Jasmine\JasmineConfigurator.cs" />
-    <Compile Include="Jasmine\JasmineInput.cs" />
-    <Compile Include="Jasmine\JasminePages.cs" />
-    <Compile Include="Jasmine\JasmineRunner.cs" />
-    <Compile Include="Jasmine\NulloCombinationDeterminationService.cs" />
-    <Compile Include="Jasmine\SerenityJasmineApplication.cs" />
-    <Compile Include="Jasmine\SerenityJasmineRegistry.cs" />
-    <Compile Include="Jasmine\SpecAssetRequirements.cs" />
-    <Compile Include="Jasmine\SpecHierarchyBuilder.cs" />
-    <Compile Include="Jasmine\Specification.cs" />
-    <Compile Include="Jasmine\SpecificationFolder.cs" />
-    <Compile Include="Jasmine\SpecificationGraph.cs" />
-    <Compile Include="Jasmine\SpecPath.cs" />
     <Compile Include="Kill.cs" />
     <Compile Include="NavigationDriver.cs" />
     <Compile Include="PhantomBrowser.cs" />
@@ -206,9 +174,6 @@
     <Compile Include="WebDriverSettings.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\StringJavaScriptBuilder.cs" />
     <Compile Include="WebElementExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="WebContent\jasmine.asset.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\lib\chromedriver.exe">
@@ -273,37 +238,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
-    <EmbeddedResource Include="Jasmine\Header.htm" />
-    <Content Include="WebContent\content\images\fubu-project.png" />
-    <Content Include="WebContent\content\images\jasmine_logo.png" />
-    <Content Include="WebContent\content\scripts\images\ajax-loader.gif" />
-    <Content Include="WebContent\content\scripts\images\file.gif" />
-    <Content Include="WebContent\content\scripts\images\folder.gif" />
-    <Content Include="WebContent\content\scripts\images\folder-closed.gif" />
-    <Content Include="WebContent\content\scripts\images\minus.gif" />
-    <Content Include="WebContent\content\scripts\images\plus.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-black.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-black-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-default.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-default-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-famfamfam.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-famfamfam-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-gray.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-gray-line.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-red.gif" />
-    <Content Include="WebContent\content\scripts\images\treeview-red-line.gif" />
-    <Content Include="WebContent\content\scripts\jasmine.css" />
-    <Content Include="WebContent\content\scripts\jasmine.js" />
-    <Content Include="WebContent\content\scripts\jasmine.teamcity_reporter.js" />
-    <Content Include="WebContent\content\scripts\jasmine_favicon.png" />
-    <Content Include="WebContent\content\scripts\jasmine-html.js" />
-    <Content Include="WebContent\content\scripts\jasmine-jquery-1.3.1.js" />
-    <Content Include="WebContent\content\scripts\jasmine-runner.js" />
-    <Content Include="WebContent\content\scripts\jquery.treeview.css" />
-    <Content Include="WebContent\content\scripts\jquery.treeview.js" />
-    <Content Include="WebContent\content\scripts\jquery-1.7.min.js" />
-    <Content Include="WebContent\content\scripts\serenity-jasmine.js" />
-    <Content Include="WebContent\content\scripts\sinon-1.2.0.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -313,8 +247,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <EmbeddedResource Include="pak-WebContent.zip" />
-  </ItemGroup>
   <ItemGroup />
 </Project>

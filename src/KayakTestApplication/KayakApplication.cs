@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using FubuMVC.Core;
 using FubuMVC.StructureMap;
 using StructureMap;
-using FubuMVC.Spark;
 
 namespace KayakTestApplication
 {
@@ -21,8 +20,6 @@ namespace KayakTestApplication
     {
         public KayakRegistry()
         {
-            Routes.HomeIs<SayHelloController>(x => x.Hello());
-
             Actions.IncludeClassesSuffixedWithController();
         }
     }
@@ -32,9 +29,9 @@ namespace KayakTestApplication
         public string Name { get; set; }
     }
 
-    public class SayHelloController
+    public class HomeEndpoint
     {
-        public string Hello()
+        public string Index()
         {
             return "Hello, it's " + DateTime.Now;
         }
