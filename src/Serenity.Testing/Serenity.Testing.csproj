@@ -171,7 +171,6 @@
     <Compile Include="FubuMvcSystemTester.cs" />
     <Compile Include="MessageWatching_over_remote_AppDomain_integration_tester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Katana_System_Integrated_Tester.cs" />
     <Compile Include="WaitTester.cs" />
     <Compile Include="WebDriverSettingsTester.cs" />
     <Compile Include="WebDriver\JQueryTester.cs" />
