@@ -21,6 +21,15 @@ namespace KayakTestApplication
         public KayakRegistry()
         {
             Actions.IncludeClassesSuffixedWithController();
+            Actions.IncludeType<NameModelEndpoint>();
+        }
+    }
+
+    public class NameModelEndpoint
+    {
+        public NameModel get_name_model(NameModel input)
+        {
+            return input;
         }
     }
 
