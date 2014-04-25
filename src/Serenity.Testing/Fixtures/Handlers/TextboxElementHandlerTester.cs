@@ -84,7 +84,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void should_be_able_to_write_to_a_clean_field()
         {
-            const string input = "Hello There";
+            const string input = "Index There";
             var textbox1 = Driver.FindElement(_textboxById);
             _handler.EnterData(null, textbox1, input);
             _handler.GetData(null, textbox1).ShouldEqual(input);
@@ -93,7 +93,7 @@ namespace Serenity.Testing.Fixtures.Handlers
         [Test]
         public void should_be_able_to_write_to_a_clean_field_password()
         {
-            const string input = "Hello There";
+            const string input = "Index There";
             var textbox1 = Driver.FindElement(_passwordTextboxById);
             _handler.EnterData(null, textbox1, input);
             _handler.GetData(null, textbox1).ShouldEqual(input);

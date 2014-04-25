@@ -20,13 +20,6 @@ namespace Serenity
             return element.GetAttribute("href");
         }
 
-        public static string AssetName(this IWebElement element)
-        {
-            var parts = (element.Href() ?? element.GetAttribute("src")).Split('/').ToList();
-            var index = parts.IndexOf(AssetUrls.AssetsUrlFolder);
-
-            return parts.Skip(index).Join("/");
-        }
 
         public static MimeType GetMimeType(this IWebElement element)
         {

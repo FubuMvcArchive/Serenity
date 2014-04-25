@@ -1,6 +1,5 @@
 ﻿using System;
 using FubuCore.CommandLine;
-using Serenity.Jasmine;
 
 namespace SerenityRunner
 {
@@ -14,7 +13,6 @@ namespace SerenityRunner
             {
                 var factory = new CommandFactory();
                 factory.RegisterCommands(typeof (Program).Assembly);
-                factory.RegisterCommands(typeof (JasminePages).Assembly);
 
 
                 var executor = new CommandExecutor(factory);

@@ -1,7 +1,6 @@
 using FubuCore;
 using FubuMVC.Core;
 using FubuMVC.Katana;
-using FubuMVC.OwinHost;
 
 namespace Serenity
 {

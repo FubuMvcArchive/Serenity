@@ -23,9 +23,10 @@ end
   sln.ripple_enabled = true
   sln.fubudocs_enabled = true
 
-  sln.assembly_bottle 'Serenity'
-
-  sln.defaults = %w{run_jasmine st:chrome:run st:phantom:run}
+  sln.defaults = %w{st:chrome:run st:phantom:run}
+  
+	sln.options[:nuget_publish_folder] = 'nupkgs'
+	sln.options[:nuget_publish_url] = 'https://www.myget.org/F/fubumvc-edge/'
 end
 
 FubuRake::Storyteller.new({
@@ -46,11 +47,6 @@ FubuRake::Storyteller.new({
   :profile => 'chrome',
   :compilemode => @solution.compilemode
 })
-
-desc "Try out JasmineRunner"
-task :run_jasmine => [:compile] do
-  sh "src/SerenityRunner/bin/#{@solution.compilemode}/SerenityRunner.exe jasmine run src/JasmineTestApplication -b Firefox"
-end
 
 desc "Target used for the CI server (Mono)"
 task :mono_ci => [:compile]

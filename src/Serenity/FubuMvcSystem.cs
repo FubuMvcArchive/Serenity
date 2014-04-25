@@ -11,7 +11,6 @@ using FubuCore.Util;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
 using FubuMVC.Core.Registration.ObjectGraph;
-using FubuMVC.OwinHost;
 using HtmlTags;
 using Serenity.Fixtures.Handlers;
 using StoryTeller;
