@@ -10,6 +10,7 @@ using FubuCore.Conversion;
 using FubuCore.Util;
 using FubuMVC.Core;
 using FubuMVC.Core.Packaging;
+using FubuMVC.Core.Registration;
 using FubuMVC.Core.Registration.ObjectGraph;
 using HtmlTags;
 using Serenity.Fixtures.Handlers;
@@ -301,6 +302,8 @@ namespace Serenity
 
                 FubuMvcPackageFacility.PhysicalRootPath = _settings.PhysicalPath;
                 _runtime = _runtimeSource();
+
+                var graph = _runtime.Factory.Get<BehaviorGraph>();
 
                 var browserLifecycle = WebDriverSettings.GetBrowserLifecyle(ChooseBrowserType());
                 SetupApplicationHost();

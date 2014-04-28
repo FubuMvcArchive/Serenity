@@ -1,5 +1,6 @@
 using FubuCore;
 using FubuMVC.Core;
+using FubuMVC.Core.Registration;
 using FubuMVC.Katana;
 
 namespace Serenity
@@ -36,6 +37,9 @@ namespace Serenity
             _server = new EmbeddedFubuMvcServer(runtime, settings.PhysicalPath, port);
 
             settings.RootUrl = _server.BaseAddress;
+
+            var graph = runtime.Factory.Get<BehaviorGraph>();
+
             return new ApplicationUnderTest(runtime, settings, lifecycle);
         }
 
