@@ -17,6 +17,10 @@
     <FileUpgradeFlags></FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation></UpgradeBackupLocation>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +59,9 @@
       <HintPath>..\packages\HtmlTags\lib\4.0\HtmlTags.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap\lib\StructureMap.dll</HintPath>
     </Reference>
@@ -102,7 +109,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>47469</DevelopmentServerPort>
+          <DevelopmentServerPort>53591</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl></IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
