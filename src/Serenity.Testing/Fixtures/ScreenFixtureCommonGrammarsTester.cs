@@ -1,3 +1,4 @@
+using System;
 using FubuCore;
 using FubuMVC.Core.Endpoints;
 using FubuMVC.Core.Urls;
@@ -30,6 +31,8 @@ namespace Serenity.Testing.Fixtures
             {
                 Browser = lifecycle
             };
+
+            applicationUnderTest.Driver.Manage().Timeouts().SetScriptTimeout(TimeSpan.FromMilliseconds(1000));
 
             context.Store<IApplicationUnderTest>(applicationUnderTest);
 

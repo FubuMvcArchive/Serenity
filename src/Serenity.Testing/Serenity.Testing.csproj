@@ -167,6 +167,7 @@
     <Compile Include="WebDriver\JavaScriptBuilders\NullObjectJavaScriptBuilderTester.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\StringJavaScriptBuildertTester.cs" />
     <Compile Include="WebDriver\JavaScriptBuilders\WebElementJavaScriptBuilderTester.cs" />
+    <Compile Include="WebDriver\JavascriptReferenceErrorTests.cs" />
     <Compile Include="WebDriver\JavaScriptTester.cs" />
     <Compile Include="WebDriver\JavaScriptByFindTester.cs" />
     <Compile Include="Fixtures\Grammars\CheckValueGrammarTester.cs" />

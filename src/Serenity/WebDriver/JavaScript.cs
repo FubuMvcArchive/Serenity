@@ -12,6 +12,9 @@ namespace Serenity.WebDriver
     public class JavaScript : DynamicObject
     {
         public string Statement { get; private set; }
+        public int JQueryCheckCount { get; set; }
+        public TimeSpan JQueryCheckInterval { get; set; }
+        public bool CheckForJQuery { get; set; }
 
         private IList<IWebElement> Arguments { get; set; }
 
@@ -34,6 +37,9 @@ namespace Serenity.WebDriver
         {
             Statement = statement;
             Arguments = new List<IWebElement>(arguments);
+            JQueryCheckCount = 3;
+            JQueryCheckInterval = TimeSpan.FromMilliseconds(100.0);
+            CheckForJQuery = false;
         }
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
@@ -58,7 +64,60 @@ namespace Serenity.WebDriver
 
         public object ExecuteAndGet(IJavaScriptExecutor executor)
         {
-            return executor.ExecuteScript("return {0};".ToFormat(StatementWithArguments(true)), Arguments.Cast<object>().ToArray());
+            var statement = StatementWithArguments(true);
+            var script = ScriptWithoutJQueryCheck(statement);
+
+            if (CheckForJQuery)
+            {
+                script = ScriptWithJQueryCheck(statement, JQueryCheckCount, JQueryCheckInterval);
+            }
+
+            var result = executor.ExecuteAsyncScript(script, Arguments.Cast<object>().ToArray());
+
+            CheckForReferenceError(result);
+
+            return result;
+        }
+
+        private string ScriptWithJQueryCheck(string statement, int checkCount, TimeSpan checkInterval)
+        {
+            const string checkJQueryTemplate = "var __callback = arguments[arguments.length - 1], __checkCount = 0;\n" +
+                                    "function __checkForJQuery() {{\n" +
+                                    "  __checkCount++;\n" +
+                                    "  if(!window.jQuery && __checkCount < {1}) {{\n" +
+                                    "    window.setTimeout(__checkForJQuery, {2});\n" +
+                                    "  }}\n" +
+                                    "  else {{\n" +
+                                    "    try {{\n" +
+                                    "      __callback({0});\n" +
+                                    "    }} catch(err) {{\n" +
+                                    "      var errstr = err.toString();" +
+                                    "      __callback(errstr);" +
+                                    "    }}\n" +
+                                    "  }}\n" +
+                                    "}}\n" +
+                                    "if (!window.jQuery) {{\n" +
+                                    "  window.setTimeout(__checkForJQuery, {2});\n" +
+                                    "}}\n" +
+                                    "else __callback({0});";
+
+            return checkJQueryTemplate.ToFormat(statement, checkCount, checkInterval.TotalMilliseconds);
+        }
+
+        private string ScriptWithoutJQueryCheck(string statement)
+        {
+            const string basicTemplate = "var __callback = arguments[arguments.length - 1]; __callback({0});";
+            return basicTemplate.ToFormat(statement);
+        }
+
+        private void CheckForReferenceError(object result)
+        {
+            var resultStr = result as string;
+
+            if (!string.IsNullOrWhiteSpace(resultStr) && resultStr.StartsWith("ReferenceError"))
+            {
+                throw new InvalidOperationException(resultStr);
+            }
         }
 
         public T ExecuteAndGet<T>(IWebDriver driver)
@@ -78,7 +137,7 @@ namespace Serenity.WebDriver
 
         public void Execute(IJavaScriptExecutor executor)
         {
-            executor.ExecuteScript(StatementWithArguments(false), Arguments.Cast<object>().ToArray());
+            ExecuteAndGet(executor);
         }
 
         private string StatementWithArguments(bool returnValue)
@@ -141,12 +200,15 @@ namespace Serenity.WebDriver
 
         public static dynamic CreateJQuery(string selector)
         {
-            return new JavaScript("$(\"" + selector + "\")");
+            return new JavaScript("$(\"" + selector + "\")") {CheckForJQuery = true};
         }
 
         public static dynamic JQueryFrom(IWebElement element)
         {
-            return new JavaScript("$({0})".ToFormat(WebElementJavaScriptBuilder.Marker), element);
+            return new JavaScript("$({0})".ToFormat(WebElementJavaScriptBuilder.Marker), element)
+            {
+                CheckForJQuery = true
+            };
         }
 
         public static dynamic Function(JavaScript body)
