@@ -23,6 +23,7 @@ namespace Serenity.Testing.WebDriver
         {
             var javascriptExecutor = MockFor<IJavaScriptExecutor>();
             javascriptExecutor.Stub(x => x.ExecuteScript(Arg<string>.Is.Anything, Arg<object[]>.Is.Anything)).Return(ExpectedResult);
+            javascriptExecutor.Stub(x => x.ExecuteAsyncScript(Arg<string>.Is.Anything, Arg<object[]>.Is.Anything)).Return(ExpectedResult);
 
             _searchContext = MockFor<ISearchContext>();
 

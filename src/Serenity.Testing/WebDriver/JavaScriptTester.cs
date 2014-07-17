@@ -4,6 +4,7 @@ using FubuTestingSupport;
 using NUnit.Framework;
 using Serenity.WebDriver;
 using Serenity.WebDriver.JavaScriptBuilders;
+using By = Serenity.WebDriver.By;
 
 namespace Serenity.Testing.WebDriver
 {
@@ -116,6 +117,7 @@ namespace Serenity.Testing.WebDriver
                 typeof(WebElementJavaScriptBuilder),
                 typeof(DefaultJavaScriptBuilder));
         }
+
 
         public class TestJavaScript : JavaScript
         {
