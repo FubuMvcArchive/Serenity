@@ -160,6 +160,7 @@
     <Compile Include="Fixtures\Handlers\TextboxElementHandlerTester.cs" />
     <Compile Include="WebDriver\Benchmarks\WebDriverBenchmarkFiveElementTests.cs" />
     <Compile Include="WebDriver\Benchmarks\WebDriverBenchmarkGetAttributeTests.cs" />
+    <Compile Include="WebDriver\ByJQueryConfigureSample.cs" />
     <Compile Include="WebDriver\ByJQuerySamples.cs" />
     <Compile Include="WebDriver\ByJqueryTester.cs" />
     <Compile Include="WebDriver\EmbeddedDrivers\EmbeddedDriverExtractorTester.cs" />

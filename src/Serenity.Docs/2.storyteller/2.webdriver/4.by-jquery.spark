@@ -13,24 +13,39 @@ It is a C# dynamic so you will need to explicitly cast the selector to `OpenQA.S
 
 Why the new selector?
 ---------------------
+
 The default `OpenQA.Seleniumn.By` selectors are great for simple element location. Things get complicated and brittle though when you are looking for an element based on another element in a different branch of the DOM tree. As an example using those default selectors you would need to:
 
-  1. Select a broad grouping of elements
-  2. Marshal them back to your .net process __(Slow!)__
-  3. Filter the elements
-  4. Find that element's parent
-  5. Marshal it back to your .net process __(Slow!)__
-  6. Find the child element(s) of interest
-  7. Marshal them back to your .net process __(Slow!)__
-  8. Do something with the element(s)
+1. Select a broad grouping of elements
+2. Marshal them back to your .net process __(Slow!)__
+3. Filter the elements
+4. Find that element's parent
+5. Marshal it back to your .net process __(Slow!)__
+6. Find the child element(s) of interest
+7. Marshal them back to your .net process __(Slow!)__
+8. Do something with the element(s)
 
 With `By.jQuery` the same workflow would be: _(notice how many times elements are marshaled back and forth)_
 
-  1. Select a broad grouping of elements with jQuery
-  2. Filter those elements by some condition
-  3. Find the element's parent
-  4. Find the child element(s) of interest
-  7. Marshal them back to your .net process __(Slow!)__
-  8. Do something with the element(s)
+1. Select a broad grouping of elements with jQuery
+2. Filter those elements by some condition
+3. Find the element's parent
+4. Find the child element(s) of interest
+7. Marshal them back to your .net process __(Slow!)__
+8. Do something with the element(s)
+
+Configure jQuery retry
+---------------------
+The default behavior of `By.jQuery()` will retry the selector up to 3 times in 100ms increments if it does not initially find jQuery loaded on the page.  This is useful if you are using `require.js` to load jQuery; Serenity can sometimes attempt to run selectors before require has finished loading jQuery.  To configured these values, use `JQueryCheckCount` and `JQueryCheckInterval` on the `JavaScript` object.  To toggle this feature use `CheckForJQuery`.
+
+<Snippet name="simpleConfigureByJQuery" />
+
+The execution of `By.jQuery()` happens asynchronously.  Because of this, you may need to increase your script timeout using `SetScriptTimeout(TimeSpan.FromMilliseconds(1000))`.
+
+<Snippet name="simpleConfigureScriptTimeout" />
+
+Handling Errors
+--------------------
+If jQuery is not loaded on the page a javascript `ReferenceError` is captured.  This is re-thrown in C# as an `InvalidOperationException`.
 
 </markdown>
