@@ -11,6 +11,9 @@ namespace Serenity.WebDriver
 {
     public class JavaScript : DynamicObject
     {
+        const string Return_Template = "__result = {0};\n__callback(__result);";
+        const string Void_Template = "{0};\n__callback();";
+
         public string Statement { get; private set; }
         public int JQueryCheckCount { get; set; }
         public TimeSpan JQueryCheckInterval { get; set; }
@@ -45,7 +48,11 @@ namespace Serenity.WebDriver
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
             var javascriptFriendlyName = JavaScriptFriendlyName(binder.Name);
-            result = new JavaScript(AppendFunction(javascriptFriendlyName, args),
+            result = CreateWith(
+                AppendFunction(javascriptFriendlyName, args),
+                CheckForJQuery,
+                JQueryCheckCount,
+                JQueryCheckInterval,
                 Arguments.Union(args.Where(x => x is IWebElement).Cast<IWebElement>()).ToArray());
             return true;
         }
@@ -53,7 +60,12 @@ namespace Serenity.WebDriver
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             var javascriptFriendlyName = JavaScriptFriendlyName(binder.Name);
-            result = new JavaScript("{0}.{1}".ToFormat(Statement, javascriptFriendlyName), Arguments.ToArray());
+            result = CreateWith(
+                "{0}.{1}".ToFormat(Statement, javascriptFriendlyName),
+                CheckForJQuery,
+                JQueryCheckCount,
+                JQueryCheckInterval,
+                Arguments.ToArray());
             return true;
         }
 
@@ -64,12 +76,23 @@ namespace Serenity.WebDriver
 
         public object ExecuteAndGet(IJavaScriptExecutor executor)
         {
-            var statement = StatementWithArguments(true);
-            var script = ScriptWithoutJQueryCheck(statement);
+            return ExecuteAndGetPrivate(executor, true);
+        }
+
+        private object ExecuteAndGetPrivate(IJavaScriptExecutor executor, bool returnValue)
+        {
+
+            var statement = StatementWithArguments(returnValue);
+
+            var executeTemplate = returnValue
+                ? Return_Template.ToFormat(statement)
+                : Void_Template.ToFormat(statement);
+
+            var script = ScriptWithoutJQueryCheck(executeTemplate);
 
             if (CheckForJQuery)
             {
-                script = ScriptWithJQueryCheck(statement, JQueryCheckCount, JQueryCheckInterval);
+                script = ScriptWithJQueryCheck(executeTemplate, JQueryCheckCount, JQueryCheckInterval);
             }
 
             var result = executor.ExecuteAsyncScript(script, Arguments.Cast<object>().ToArray());
@@ -79,9 +102,9 @@ namespace Serenity.WebDriver
             return result;
         }
 
-        private string ScriptWithJQueryCheck(string statement, int checkCount, TimeSpan checkInterval)
+        private string ScriptWithJQueryCheck(string executeTemplate, int checkCount, TimeSpan checkInterval)
         {
-            const string checkJQueryTemplate = "var __callback = arguments[arguments.length - 1], __checkCount = 0;\n" +
+            const string checkJQueryTemplate = "var __callback = arguments[arguments.length - 1], __checkCount = 0, __result;\n" +
                                     "function __checkForJQuery() {{\n" +
                                     "  __checkCount++;\n" +
                                     "  if(!window.jQuery && __checkCount < {1}) {{\n" +
@@ -89,25 +112,28 @@ namespace Serenity.WebDriver
                                     "  }}\n" +
                                     "  else {{\n" +
                                     "    try {{\n" +
-                                    "      __callback({0});\n" +
+                                    "      {0}\n" +
                                     "    }} catch(err) {{\n" +
-                                    "      var errstr = err.toString();" +
-                                    "      __callback(errstr);" +
+                                    "      var errstr = err.toString();\n" +
+                                    "      __callback(errstr);\n" +
                                     "    }}\n" +
                                     "  }}\n" +
                                     "}}\n" +
                                     "if (!window.jQuery) {{\n" +
                                     "  window.setTimeout(__checkForJQuery, {2});\n" +
                                     "}}\n" +
-                                    "else __callback({0});";
+                                    "else {{" +
+                                    "  {0}" +
+                                    " }}";
 
-            return checkJQueryTemplate.ToFormat(statement, checkCount, checkInterval.TotalMilliseconds);
+            return checkJQueryTemplate.ToFormat(executeTemplate, checkCount, checkInterval.TotalMilliseconds);
         }
 
-        private string ScriptWithoutJQueryCheck(string statement)
+        private string ScriptWithoutJQueryCheck(string executeTemplate)
         {
-            const string basicTemplate = "var __callback = arguments[arguments.length - 1]; __callback({0});";
-            return basicTemplate.ToFormat(statement);
+
+            const string basicTemplate = "var __callback = arguments[arguments.length - 1];\n {0}";
+            return basicTemplate.ToFormat(executeTemplate);
         }
 
         private void CheckForReferenceError(object result)
@@ -137,7 +163,7 @@ namespace Serenity.WebDriver
 
         public void Execute(IJavaScriptExecutor executor)
         {
-            ExecuteAndGet(executor);
+            ExecuteAndGetPrivate(executor, false);
         }
 
         private string StatementWithArguments(bool returnValue)
@@ -166,7 +192,12 @@ namespace Serenity.WebDriver
 
         public dynamic ModifyStatement(string format)
         {
-            return new JavaScript(format.ToFormat(Statement), Arguments.ToArray());
+            return CreateWith(
+                format.ToFormat(Statement),
+                CheckForJQuery,
+                JQueryCheckCount,
+                JQueryCheckInterval,
+                Arguments.ToArray());
         }
 
         public override string ToString()
@@ -203,6 +234,20 @@ namespace Serenity.WebDriver
             return new JavaScript("$(\"" + selector + "\")") {CheckForJQuery = true};
         }
 
+        public static dynamic CreateWithJQueryCheck(string javaScript)
+        {
+            return new JavaScript(javaScript) {CheckForJQuery = true};
+        }
+
+        public static dynamic CreateWith(string statement, bool checkForJQuery, int jQueryCheckCount, TimeSpan jQueryCheckInterval, params IWebElement[] arguments)
+        {
+            var js = new JavaScript(statement, arguments);
+            js.CheckForJQuery = checkForJQuery;
+            js.JQueryCheckCount = jQueryCheckCount;
+            js.JQueryCheckInterval = jQueryCheckInterval;
+            return js;
+        }
+
         public static dynamic JQueryFrom(IWebElement element)
         {
             return new JavaScript("$({0})".ToFormat(WebElementJavaScriptBuilder.Marker), element)
@@ -221,7 +266,11 @@ namespace Serenity.WebDriver
             if (args == null)
                 throw new ArgumentNullException("args");
 
-            return new JavaScript("function({0}) {{ {1} }}".ToFormat(args.Join(", "), body.Statement));
+            return CreateWith(
+                "function({0}) {{ {1} }}".ToFormat(args.Join(", "), body.Statement),
+                body.CheckForJQuery,
+                body.JQueryCheckCount,
+                body.JQueryCheckInterval);
         }
 
         public static implicit operator By(JavaScript source)

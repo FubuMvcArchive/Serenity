@@ -111,6 +111,14 @@ namespace Serenity.Testing.WebDriver
             selector.ExecuteAndGet<long>(Driver).ShouldEqual(3);
         }
 
+        [Test]
+        public void CanSetText()
+        {
+            JavaScript js = "$(\".root-marker\").text('alternate text')".ToJQueryJS();
+            js.Execute(Driver);
+            Driver.FindElement((By) By.jQuery(".root-marker")).Text.ShouldEqual("alternate text");
+        }
+
         private static DivTag BuildTestDiv(Stack<int> indexes, int depth)
         {
             var div = new DivTag();
